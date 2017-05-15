@@ -1,6 +1,10 @@
-const ConfigPackager = () => {
-
+const ConfigPackager = ({ modules, tabBar, statusBar, }) => {
+  this.modules = modules || {};
+  this.tabBar = tabBar || {};
+  this.statusBar = statusBar || {};
 };
+
+// TODO: Finish this
 
 ConfigPackager.STRING = require('./dataTypes/string').dataType;
 ConfigPackager.NUMBER = require('./dataTypes/number').dataType;

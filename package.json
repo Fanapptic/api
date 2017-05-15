@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/Fanapptic/api/issues"
   },
-  "homepage": "https://github.com/Fanapptic/api#readme"
+  "homepage": "https://github.com/Fanapptic/api#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "express": "^4.15.2",
+    "mysql2": "^1.2.0",
+    "sequelize": "git+https://github.com/sequelize/sequelize.git"
+  }
 }

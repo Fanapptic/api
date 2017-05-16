@@ -9,6 +9,10 @@ module.exports = database.define('currencies', {
   isoCode: {
     type: Sequelize.STRING(3),
   },
+  exchangeRate: {
+    type: Sequelize.DECIMAL(10, 5),
+    defaultValue: 0,
+  },
   symbol: {
     type: Sequelize.STRING(5),
   },

@@ -1,4 +1,4 @@
-const ConfigPackager = ({ modules, tabBar, statusBar, }) => {
+const ConfigPackager = ({ modules, tabBar, statusBar }) => {
   this.modules = modules || {};
   this.tabBar = tabBar || {};
   this.statusBar = statusBar || {};

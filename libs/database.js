@@ -5,11 +5,11 @@ module.exports = new Sequelize(config.database, null, null, {
   port: config.port,
   replication: {
     read: config.readHosts,
-    write: config.writeHost
+    write: config.writeHost,
   },
   pool: {
     minConnections: config.readMinWorkerConnections,
-    maxConnections: config.readMaxWorkerConnections
+    maxConnections: config.readMaxWorkerConnections,
   },
   define: {
     charset: 'utf8mb4',
@@ -19,9 +19,9 @@ module.exports = new Sequelize(config.database, null, null, {
     paranoid: true,
     defaultScope: {
       attributes: {
-        exclude: ['updated_at', 'deleted_at']
-      }
-    }
+        exclude: ['updated_at', 'deleted_at'],
+      },
+    },
   },
-  logging: false
+  logging: false,
 });

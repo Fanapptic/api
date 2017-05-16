@@ -15,7 +15,7 @@ readHosts.forEach((readHost) => {
   module.exports.readHosts.push({
     host: readHost,
     username: username,
-    password: password
+    password: password,
   });
 });
 
@@ -26,5 +26,5 @@ module.exports.readMaxWorkerConnections = 8;
 module.exports.writeHost = {
   host: writeHost,
   username: username,
-  password: password
+  password: password,
 };

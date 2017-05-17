@@ -5,9 +5,13 @@ const authorizeConfig = rootRequire('/config/authorize');
 
 module.exports = (request, response, next) => {
   const parsedUrl = url.parse(request.url).pathname;
-  const ignoreRequestMethod = authorizeConfig.ignoreRoutes[parsedUrl];
+  const ignoreRouteMethods = authorizeConfig.ignoreRoutes[parsedUrl];
 
-  if (ignoreRequestMethod === '*' || ignoreRequestMethod.includes(request.method)) {
+  if (ignoreRouteMethods === '*') {
+    return next();
+  }
+
+  if (Array.isArray(ignoreRouteMethods) && ignoreRouteMethods.includes(request.method)) {
     return next();
   }
 

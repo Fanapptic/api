@@ -76,6 +76,12 @@ router.post('/', (request, response, next) => {
 
 router.put('/', (request, response, next) => {
   const { email, password } = request.body;
+
+  response.success('Authed on put..');
 });
+
+/*
+ * Export
+ */
 
 module.exports = router;

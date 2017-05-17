@@ -3,7 +3,6 @@
  */
 
 const auth = require('basic-auth');
-const bcrypt = require('bcrypt');
 
 const User = rootRequire('/models/User');
 const App = rootRequire('/models/App');
@@ -21,38 +20,44 @@ router.get('/', (request, response, next) => {
     return next(new Error('Authentication credentials were not provided.'));
   }
 
-  User.findOne({ where: { email } }).then(user => {
+  let user = null;
+
+  User.findOne({ where: { email } }).then(userInstance => {
+    user = userInstance;
+
     if (!user) {
       throw new Error(`User with email ${email} does not exist.`);
     }
 
-    return bcrypt.compare(password, user.password).then(authorized => {
-      if (!authorized) {
-        throw new Error('The password you provided is incorrect.');
-      }
+    return user.comparePassword(password);
+  }).then(authorized => {
+    if (!authorized) {
+      throw new Error('The password you provided is incorrect.');
+    }
 
-      response.success(user);
-    });
+    response.success(user);
   }).catch(next);
 });
 
 router.post('/', (request, response, next) => {
   const { email, password } = request.body;
 
-  bcrypt.hash(password, 10).then(passwordHash => {
+  let user = null;
+
+  User.hashPassword(password).then(password => {
     return database.transaction(transaction => {
-      // returns the final state of the promise chain to commit or drop the transaction.
-      let user = null;
 
       return User.create({
         email,
-        password: passwordHash
-      }, { transaction }).then(instance => {
-        user = instance;
-        return App.create({ userId: instance.id });
-      }).then(app => {
+        password,
+      }, { transaction }).then(userInstance => {
+        user = userInstance;
+
+        return App.create({ userId: user.id }, { transaction });
+      }).then(() => {
         response.success(user);
       });
+
     });
   }).catch(next);
 });

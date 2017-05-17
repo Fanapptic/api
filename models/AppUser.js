@@ -9,6 +9,7 @@ module.exports = database.define('appUsers', {
   },
   uuid: {
     type: Sequelize.UUID,
+    unique: true,
     defaultValue: Sequelize.UUIDV1,
   },
 });

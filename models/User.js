@@ -58,6 +58,14 @@ const User = database.define('users', {
       },
     },
   },
+  paypalEmail: {
+    type: Sequelize.STRING,
+    validate: {
+      isEmail: {
+        msg: 'A valid PayPal email address must be provided.',
+      },
+    },
+  },
 });
 
 /*

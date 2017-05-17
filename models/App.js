@@ -23,6 +23,26 @@ const App = database.define('apps', {
 });
 
 /*
+ * Instance Methods / Overrides
+ */
+
+App.userHasPermission = (id, userId) => {
+  return App.findAndCountAll({
+    where: {
+      id,
+      userId,
+    },
+    limit: 1,
+  }).then(userHasPermission => {
+    if (!userHasPermission) {
+      throw new Error('Insufficient application permissions.');
+    }
+
+    return;
+  });
+};
+
+/*
  * Export
  */
 

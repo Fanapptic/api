@@ -17,6 +17,15 @@ const AppModule = database.define('appModules', {
   config: {
     type: Sequelize.JSON,
   },
+  options: {
+    type: Sequelize.JSON,
+  },
+  styles: {
+    type: Sequelize.JSON,
+  },
+  position: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
 });
 
 /*

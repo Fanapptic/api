@@ -1,4 +1,8 @@
-module.exports = database.define('modules', {
+/*
+ * Model Definition
+ */
+
+const Module = database.define('modules', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -10,3 +14,9 @@ module.exports = database.define('modules', {
 }, {
   timestamps: false,
 });
+
+/*
+ * Export
+ */
+
+module.exports = Module;

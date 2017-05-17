@@ -11,6 +11,10 @@ const router = express.Router({
   mergeParams: true,
 });
 
+/*
+ * GET
+ */
+
 router.get('/', (request, response, next) => {
   const authCredentials = auth(request);
   const email = authCredentials.name;
@@ -39,6 +43,10 @@ router.get('/', (request, response, next) => {
   }).catch(next);
 });
 
+/*
+ * POST
+ */
+
 router.post('/', (request, response, next) => {
   const { email, password } = request.body;
 
@@ -61,6 +69,10 @@ router.post('/', (request, response, next) => {
     });
   }).catch(next);
 });
+
+/*
+ * PUT
+ */
 
 router.put('/', (request, response, next) => {
 

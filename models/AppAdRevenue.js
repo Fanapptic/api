@@ -1,4 +1,8 @@
-module.exports = database.define('appAdRevenues', {
+/*
+ * Model Definition
+ */
+
+const AppAdRevenue = database.define('appAdRevenues', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -14,3 +18,9 @@ module.exports = database.define('appAdRevenues', {
     type: Sequelize.DECIMAL(10, 2),
   },
 });
+
+/*
+ * Export
+ */
+
+module.exports = AppAdRevenue;

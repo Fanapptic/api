@@ -1,4 +1,8 @@
-module.exports = database.define('appUsers', {
+/*
+ * Model Definition
+ */
+
+const AppUser = database.define('appUsers', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -13,3 +17,9 @@ module.exports = database.define('appUsers', {
     defaultValue: Sequelize.UUIDV1,
   },
 });
+
+/*
+ * Export
+ */
+
+module.exports = AppUser;

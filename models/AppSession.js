@@ -1,4 +1,8 @@
-module.exports = database.define('appSessions', {
+/*
+ * Model Definition
+ */
+
+const AppSession = database.define('appSessions', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -14,3 +18,9 @@ module.exports = database.define('appSessions', {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
 });
+
+/*
+ * Export
+ */
+
+module.exports = AppSession;

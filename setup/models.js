@@ -23,5 +23,5 @@ Module.hasMany(AppModule);
 User.hasMany(App);
 
 database.sync({
-//  alter: true,
+  force: true,
 });

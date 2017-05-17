@@ -1,6 +1,10 @@
 const currencies = rootRequire('/config/currencies');
 
-module.exports = database.define('currencies', {
+/*
+ * Model Definition
+ */
+
+const Currency = database.define('currencies', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -25,19 +29,24 @@ module.exports = database.define('currencies', {
 }, {
   timestamps: false,
   paranoid: false,
-  hooks: {
-    afterSync: function() {
-      tableSetup(this);
-    },
-  },
 });
 
-function tableSetup(definition) {
-  return definition.findAndCountAll({
+/*
+ * Instance Hooks
+ */
+
+Currency.hook('afterSync', function() {
+  return this.findAndCountAll({
     limit: 1,
   }).then((result) => {
     if (result.count === 0) {
-      definition.bulkCreate(currencies);
+      this.bulkCreate(currencies);
     }
   });
-}
+});
+
+/*
+ * Export
+ */
+
+module.exports = Currency;

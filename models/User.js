@@ -1,5 +1,9 @@
 const bcrypt = require('bcrypt');
 
+/*
+ * Model Definition
+ */
+
 const User = database.define('users', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
@@ -35,9 +39,17 @@ const User = database.define('users', {
   },
 });
 
+/*
+ * Model Methods
+ */
+
 User.hashPassword = (password) => {
   return bcrypt.hash(password, 10);
 };
+
+/*
+ * Instance Methods / Overrides
+ */
 
 User.prototype.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
@@ -46,8 +58,12 @@ User.prototype.comparePassword = function(password) {
 User.prototype.toJSON = function() {
   let user = this.get();
   delete user.password; // We never want to return the user's password.
-  
+
   return user;
 };
+
+/*
+ * Export
+ */
 
 module.exports = User;

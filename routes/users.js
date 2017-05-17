@@ -1,5 +1,5 @@
 /*
- Route: /users
+ * Route: /users
  */
 
 const auth = require('basic-auth');
@@ -75,7 +75,7 @@ router.post('/', (request, response, next) => {
  */
 
 router.put('/', (request, response, next) => {
-
+  const { email, password } = request.body;
 });
 
 module.exports = router;

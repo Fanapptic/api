@@ -52,20 +52,16 @@ router.post('/', (request, response, next) => {
 
   let user = null;
 
-  User.hashPassword(password).then(password => {
-    return database.transaction(transaction => {
+  return database.transaction(transaction => {
+    return User.create({
+      email,
+      password,
+    }, { transaction }).then(userInstance => {
+      user = userInstance;
 
-      return User.create({
-        email,
-        password,
-      }, { transaction }).then(userInstance => {
-        user = userInstance;
-
-        return App.create({ userId: user.id }, { transaction });
-      }).then(() => {
-        response.success(user);
-      });
-
+      return App.create({ userId: user.id }, { transaction });
+    }).then(() => {
+      response.success(user);
     });
   }).catch(next);
 });
@@ -75,9 +71,17 @@ router.post('/', (request, response, next) => {
  */
 
 router.put('/', (request, response, next) => {
-  const { email, password } = request.body;
+  const user = request.user;
 
-  response.success('Authed on put..');
+  user.email = request.body.email || user.email;
+  user.password = request.body.password || user.password;
+  user.firstName = request.body.firstName || user.firstName;
+  user.lastName = request.body.lastName || user.lastName;
+  user.phoneNumber = request.body.phoneNumber || user.phoneNumber;
+
+  user.save().then(() => {
+    response.success(user);
+  }).catch(next);
 });
 
 /*

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const phone = require('phone');
 
 /*
  * Model Definition
@@ -15,7 +16,7 @@ const User = database.define('users', {
     unique: true,
     validate: {
       isEmail: {
-        msg: 'An email address must be provided.',
+        msg: 'A valid email address must be provided.',
       },
     },
   },
@@ -25,9 +26,11 @@ const User = database.define('users', {
       notEmpty: {
         msg: 'A password must be provided.',
       },
-      isBcrypt: value => {
-        if (typeof value !== 'string' || !value.startsWith('$2a')) {
-          throw new Error('Password is not a BCRYPT hash.');
+      isBcrypt: function(value) {
+        if (!value.startsWith('$2a')) {
+          return bcrypt.hash(value, 10).then(password => {
+            this.setDataValue('password', password);
+          });
         }
       },
     },
@@ -37,15 +40,25 @@ const User = database.define('users', {
     unique: true,
     defaultValue: Sequelize.UUIDV1,
   },
+  firstName: {
+    type: Sequelize.STRING,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+  },
+  phoneNumber: {
+    type: Sequelize.STRING,
+    validate: {
+      isPhoneNumber: function(value) {
+        this.setDataValue('phoneNumber', phone(value)[0]);
+
+        if (!this.phoneNumber) {
+          throw new Error('The phone number provided is invalid.');
+        }
+      },
+    },
+  },
 });
-
-/*
- * Model Methods
- */
-
-User.hashPassword = (password) => {
-  return bcrypt.hash(password, 10);
-};
 
 /*
  * Instance Methods / Overrides

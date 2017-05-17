@@ -27,6 +27,7 @@
     "compression": "^1.6.2",
     "express": "^4.15.2",
     "mysql2": "^1.2.0",
+    "phone": "^1.0.10",
     "sequelize": "git+https://github.com/sequelize/sequelize.git"
   }
 }

@@ -1,6 +1,10 @@
 const Joi = require('joi');
 
 class Module {
+  static get moduleName() {
+    throw new Error('Class extending Module must override: static get moduleName()');
+  }
+
   static get FIELDS() {
     return {
       TEXT: 'text',
@@ -68,6 +72,7 @@ class Module {
       description: Joi.string().required(),
       field: Joi.string().valid(Module.fieldsArray()).required(),
       fieldOptions: Joi.array().items(Joi.object()).optional(),
+      placeholder: Joi.string().optional(),
       defaultValue: [
         Joi.string().optional(),
         Joi.number().optional(),

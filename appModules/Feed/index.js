@@ -4,10 +4,14 @@
 
 const Module = rootRequire('./libs/app/module');
 
-module.exports = class extends Module {
+class Feed extends Module {
+  static get moduleName() {
+    return 'feed';
+  }
+
   constructor() {
     super({
-      name: 'Feed',
+      name: Feed.moduleName,
       displayName: 'Feed',
       description: 'Display an aggregate feed of your content from multiple sources.',
       moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
@@ -72,4 +76,6 @@ module.exports = class extends Module {
       defaultValue: 'Arial',
     });
   }
-};
+}
+
+module.exports = Feed;

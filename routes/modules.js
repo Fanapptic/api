@@ -1,8 +1,8 @@
 /*
- * Route: /modules/:moduleId*?
+ * Route: /modules/:moduleName*?
  */
 
-const Module = rootRequire('/models/Module');
+const appModules = rootRequire('/appModules');
 
 const router = express.Router({
   mergeParams: true,
@@ -13,16 +13,20 @@ const router = express.Router({
  */
 
 router.get('/', (request, response, next) => {
-  const { moduleId } = request.params;
+  const { moduleName } = request.params;
 
-  if (moduleId) {
-    Module.findById(moduleId).then(module => {
-      response.success(module);
-    }).catch(next);
+  if (moduleName) {
+    const ModuleClass = appModules[moduleName];
+
+    response.success(new ModuleClass());
   } else {
-    Module.findAll().then(modules => {
-      response.success(modules);
-    }).catch(next);
+    let modulesArray = [];
+
+    Object.keys(appModules).forEach(appModuleKey => {
+      modulesArray.push(new appModules[appModuleKey]);
+    });
+
+    response.success(modulesArray);
   }
 });
 

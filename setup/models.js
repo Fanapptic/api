@@ -7,7 +7,6 @@ const AppSession = rootRequire('/models/AppSession');
 const AppUser = rootRequire('/models/AppUser');
 
 const Currency = rootRequire('/models/Currency');
-const Module = rootRequire('/models/Module');
 const User = rootRequire('/models/User');
 
 App.hasMany(AppAdRevenue);
@@ -19,9 +18,8 @@ AppModule.hasMany(AppModuleData);
 AppUser.hasMany(AppSession);
 
 Currency.hasMany(AppAdRevenue);
-Module.hasMany(AppModule);
 User.hasMany(App);
 
 database.sync({
-  //force: true,
+//  force: true,
 });

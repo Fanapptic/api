@@ -16,6 +16,6 @@ module.exports = {
     icon: ConfigPackager.ICON.REQUIRED,
     title: ConfigPackager.STRING.REQUIRED,
   },
-  contentUrl: ConfigPackager.URL.REQUIRED,
+  moduleUrl: ConfigPackager.URL.REQUIRED,
   injectedJavaScript: ConfigPackager.JAVASCRIPT.OPTIONAL,
 };

@@ -1,90 +1,161 @@
-/*
-
-What will a module HAVE to have?
-
-content url
-injected javascript
-navigator config
-tab config
-
-module data - data structure and validators
-mapping of configurable options to css and validators
-
-*/
+const Joi = require('joi');
 
 class Module {
-  constructor(options) {
-    this.internalName = options.internalName;
-    this.displayName = options.displayName;
-    this.description = options.description;
-    this.contentUrl = options.contentUrl;
-    this.injectedJavaScript = options.injectedJavaScript;
-    this.navigatorConfig = options.navigatorConfig;
-    this.tabConfig = options.tabConfig;
-
-    this._configurableDataSources = {};
-    this._configurableOptions = {};
-    this._configurableStyles = {};
-  }
-
-  addConfigurableDataSource(options) {
-    this._configurableDataSources[options.internalName] = {
-      displayName: options.displayName,
-      description: options.description,
+  static get FIELDS() {
+    return {
+      TEXT: 'text',
+      TEXTAREA: 'textarea',
+      SELECT: 'select',
+      SWITCH: 'switch',
+      COLOR: 'color',
+      GRADIENT: 'gradient',
+      PIXELS: 'pixels',
+      BORDER: 'border',
+      FONT: 'font',
     };
   }
 
-  addConfigurableOption(options) {
-    this._configurableOptions[options.internalName] = {
-      displayName: options.displayName,
-      description: options.description,
-      field: options.field,
-      fieldOptions: options.fieldOptions,
-      buildOptionCallback: options.buildOptionCallback || this._buildOption,
-      parseOptionCallback: options.parseOptionCallback || this._parseOption,
-      _value: null,
-    };
+  static fieldsArray() {
+    return Object.keys(Module.FIELDS).reduce((fields, fieldKey) => {
+      return [...fields, Module.FIELDS[fieldKey]];
+    }, []);
   }
 
-  addConfigurableStyle(options) {
-    this._configurableStyles[options.internalName] = {
-      displayName: options.displayName,
-      description: options.description,
-      field: options.field,
-      fieldOptions: options.fieldOptions,
-      cssSelector: options.cssSelector,
-      cssProperty: options.cssProperty,
-      buildStyleCallback: options.buildStyleCallback || this._buildStyle,
-      parseStyleCallback: options.parseStyleCallback || this._parseStyle,
-      _value: null,
-    };
+  constructor(initObject) {
+    const schema = Joi.object({
+      name: Joi.string().required(),
+      displayName: Joi.string().required(),
+      description: Joi.string().required(),
+      moduleUrl: Joi.string().uri().required(),
+      injectedJavaScript: Joi.string().optional(),
+      navigatorConfig: Joi.object().required(),
+      tabConfig: Joi.object().required(),
+    });
+
+    const validationResult = Joi.validate(initObject, schema);
+
+    if (validationResult.error) {
+      throw validationResult.error;
+    }
+
+    Object.assign(this, initObject);
+
+    this.configurableDataSources = [];
+    this.configurableOptions = [];
+    this.configurableStyles = [];
   }
 
-  _buildOption(option) {
+  addConfigurableDataSource(dataSourceObject) {
+    const schema = Joi.object({
+      internalName: Joi.string().required(),
+      displayName: Joi.string().required(),
+      description: Joi.string().required(),
+    });
 
+    const validationResult = Joi.validate(dataSourceObject, schema);
+
+    if (validationResult.error) {
+      throw validationResult.error;
+    }
+
+    this.configurableDataSources.push(dataSourceObject);
   }
 
-  _buildStyle(style) {
+  addConfigurableOption(optionObject) {
+    const schema = Joi.object({
+      internalName: Joi.string().required(),
+      displayName: Joi.string().required(),
+      description: Joi.string().required(),
+      field: Joi.string().valid(Module.fieldsArray()).required(),
+      fieldOptions: Joi.array().items(Joi.object()).optional(),
+      defaultValue: [
+        Joi.string().optional(),
+        Joi.number().optional(),
+        Joi.boolean().optional(),
+      ],
+    });
 
+    const validationResult = Joi.validate(optionObject, schema);
+
+    if (validationResult.error) {
+      throw validationResult.error;
+    }
+
+    optionObject._value = null;
+
+    this.configurableOptions.push(optionObject);
   }
 
-  _parseOption(option) {
+  addConfigurableStyle(styleObject) {
+    const schema = Joi.object({
+      internalName: Joi.string().required(),
+      displayName: Joi.string().required(),
+      description: Joi.string().required(),
+      field: Joi.string().valid(Module.fieldsArray()).required(),
+      fieldOptions: Joi.array().items(Joi.object()).optional(),
+      cssSelector: Joi.string().required(),
+      cssProperty: Joi.string().required(),
+      defaultValue: [
+        Joi.string().optional(),
+        Joi.number().optional(),
+        Joi.boolean().optional(),
+      ],
+    });
 
+    const validationResult = Joi.validate(styleObject, schema);
+
+    if (validationResult.error) {
+      throw validationResult.error;
+    }
+
+    styleObject._value = null;
+
+    this.configurableStyles.push(styleObject);
   }
 
-  _parseStyle(style) {
+  exportOptions() {
+    return this._export(this.configurableOptions);
+  }
 
+  exportStyles() {
+    return this._export(this.configurableStyles);
+  }
+
+  exportJSON() {
+    return JSON.stringify(this);
+  }
+
+  importOptions(exportedOptions) {
+    this._import(this.configurableOptions, exportedOptions);
+  }
+
+  importStyles(exportedStyles) {
+    this._import(this.configurableStyles, exportedStyles);
+  }
+
+  _export(targetConfigurableArray) {
+    return targetConfigurableArray.reduce((exportObject, arrayItem) => {
+      exportObject[arrayItem.internalName] = arrayItem._value || arrayItem.defaultValue;
+
+      return exportObject;
+    }, {});
+  }
+
+  _import(targetConfigurableArray, exportedData) {
+    Object.keys(exportedData).forEach(exportedDataKey => {
+      const exportedDataValue = exportedData[exportedDataKey];
+
+      let option = this.configurableOptions.find(option => {
+        return exportedDataKey === option.internalName;
+      });
+
+      if (!option || option.defaultValue === exportedDataValue) {
+        return;
+      }
+
+      option._value = exportedDataValue;
+    });
   }
 }
-
-Module.FIELDS.TEXT = 'text';
-Module.FIELDS.TEXTAREA = 'textarea';
-Module.FIELDS.SELECT = 'select';
-Module.FIELDS.SWITCH = 'switch';
-Module.FIELDS.COLOR = 'color';
-Module.FIELDS.GRADIENT = 'gradient';
-Module.FIELDS.PIXELS = 'pixels';
-Module.FIELDS.BORDER = 'border';
-Module.FIELDS.FONT = 'font';
 
 module.exports = Module;

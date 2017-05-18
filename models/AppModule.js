@@ -11,8 +11,8 @@ const AppModule = database.define('appModules', {
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
-  moduleId: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
+  moduleName: {
+    type: Sequelize.STRING,
   },
   config: {
     type: Sequelize.JSON,

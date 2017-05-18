@@ -4,8 +4,8 @@
 
 const App = rootRequire('/models/App');
 const AppModule = rootRequire('/models/AppModule');
-const Module = rootRequire('/models/Module');
 const appConfig = rootRequire('/config/app');
+const appModules = rootRequire('/appModules');
 
 const router = express.Router({
   mergeParams: true,
@@ -26,6 +26,8 @@ router.get('/', (request, response, next) => {
       return AppModule.findAll({ where: { appId } });
     }
   }).then(result => {
+    console.log(result);
+
     response.success(result);
   }).catch(next);
 });

@@ -47,10 +47,10 @@ router.post('/', (request, response, next) => {
 });
 
 /*
- * PUT
+ * PATCH
  */
 
-router.put('/', (request, response, next) => {
+router.patch('/', (request, response, next) => {
   const { appId, appSessionId } = request.params;
   const { appUserId } = request.body;
 

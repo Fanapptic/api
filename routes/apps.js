@@ -28,10 +28,10 @@ router.get('/', (request, response, next) => {
 });
 
 /*
- * PUT
+ * PATCH
  */
 
-router.put('/', (request, response, next) => {
+router.patch('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
 

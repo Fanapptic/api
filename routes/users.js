@@ -67,10 +67,10 @@ router.post('/', (request, response, next) => {
 });
 
 /*
- * PUT
+ * PATCH
  */
 
-router.put('/', (request, response, next) => {
+router.patch('/', (request, response, next) => {
   const user = request.user;
 
   user.email = request.body.email || user.email;

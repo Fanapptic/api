@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId*?
+ * Route: /apps/:appId?
  */
 
 const App = rootRequire('/models/App');
@@ -48,7 +48,7 @@ router.put('/', (request, response, next) => {
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;
 
-    // these will need validating..
+    // these will need validating in the model class..
     app.statusBarConfig = request.body.statusBarConfig || app.statusBarConfig;
     app.tabBarConfig = request.body.tabBarConfig || app.tabBarConfig;
 

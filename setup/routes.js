@@ -1,7 +1,12 @@
 module.exports = (app) => {
-  app.use('/apps/:appId*?', rootRequire('/routes/apps'));
+  app.use('/apps/:appId?', rootRequire('/routes/apps'));
+  app.use('/apps/:appId/modules/:appModuleId?', rootRequire('/routes/apps/modules'));
+  app.use('/apps/:appId/users/:appUserId?', rootRequire('/routes/apps/users'));
+
   app.use('/health', rootRequire('/routes/health'));
-  app.use('/modules/:moduleName*?', rootRequire('/routes/modules'));
+
+  app.use('/modules/:moduleName?', rootRequire('/routes/modules'));
+
   app.use('/users', rootRequire('/routes/users'));
 
   app.use((error, request, response, next) => { // 4 params required to handle error.

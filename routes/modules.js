@@ -1,5 +1,5 @@
 /*
- * Route: /modules/:moduleName*?
+ * Route: /modules/:moduleName?
  */
 
 const appModules = rootRequire('/appModules');

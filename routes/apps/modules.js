@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId*?
+ * Route: /apps/:appId/modules/:appModuleId?
  */
 
 const App = rootRequire('/models/App');
@@ -26,8 +26,6 @@ router.get('/', (request, response, next) => {
       return AppModule.findAll({ where: { appId } });
     }
   }).then(result => {
-    console.log(result);
-
     response.success(result);
   }).catch(next);
 });
@@ -39,26 +37,24 @@ router.get('/', (request, response, next) => {
 router.post('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
-  const { moduleId, config, options, styles, position } = request.body;
+  const { moduleName, config, options, styles, position } = request.body;
 
-  if (!moduleId) {
-    return next(new Error('You must provide a module id.'));
+  if (!moduleName) {
+    return next(new Error('You must provide a module name.'));
+  }
+
+  if (!appModules.getModuleClass(moduleName)) {
+    return next(new Error('The module name provided is invaid.'));
   }
 
   App.userHasPermission(appId, userId).then(() => {
-    return Module.findById(moduleId);
-  }).then((module) => {
-    if (!module) {
-      throw new Error('The module id provided is invalid.');
-    }
-
     return AppModule.findAndCountAll({ where: { appId } });
   }).then(totalActiveAppModules => {
-    if (totalActiveAppModules === appConfig.activeModuleLimit) {
+    if (totalActiveAppModules >= appConfig.activeModuleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 
-    return AppModule.create({ appId, moduleId, config, options, styles, position });
+    return AppModule.create({ appId, moduleName, config, options, styles, position });
   }).then(appModule => {
     response.success(appModule);
   }).catch(next);
@@ -75,6 +71,7 @@ router.put('/', (request, response, next) => {
   App.userHasPermission(appId, userId).then(() => {
     return AppModule.find({ where: { id: appModuleId, appId } });
   }).then(appModule => {
+    // TODO: Validated configs in the model, handle position.
     appModule.config = 1 || appModule.config;
     appModule.options = 1 || appModule.config;
     appModule.styles = 1 || appModule.config;

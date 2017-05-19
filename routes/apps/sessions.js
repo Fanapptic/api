@@ -5,6 +5,7 @@
 const App = rootRequire('/models/App');
 const AppSession = rootRequire('/models/AppSession');
 const AppUser = rootRequire('/models/AppUser');
+const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -14,19 +15,19 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', appAuthorize);
 router.get('/', (request,  response, next) => {
-  const userId = request.user.id;
   const { appId, appSessionId } = request.params;
 
-  App.userHasPermission(appId, userId).then(() => {
-    if (appSessionId) {
-      AppSession.find({ where: { id: appSessionId, appId } });
-    } else {
-      AppSession.findAll({ where: { appId } });
-    }
-  }).then(result => {
-    response.success(result);
-  }).catch(next);
+  if (appSessionId) {
+    AppSession.find({ where: { id: appSessionId, appId } }).then(result => {
+      response.success(result);
+    }).catch(next);
+  } else {
+    AppSession.findAll({ where: { appId } }).then(result => {
+      response.success(result);
+    }).catch(next);
+  }
 });
 
 /*

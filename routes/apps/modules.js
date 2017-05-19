@@ -5,6 +5,7 @@
 const App = rootRequire('/models/App');
 const AppModule = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
+const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appModules = rootRequire('/appModules');
 
 const router = express.Router({
@@ -15,6 +16,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId, appModuleId } = request.params;
@@ -34,8 +36,8 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
+router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
-  const userId = request.user.id;
   const { appId } = request.params;
   const { moduleName, config, options, styles, position } = request.body;
 
@@ -47,9 +49,7 @@ router.post('/', (request, response, next) => {
     return next(new Error('The module name provided is invaid.'));
   }
 
-  App.userHasPermission(appId, userId).then(() => {
-    return AppModule.findAndCountAll({ where: { appId } });
-  }).then(totalActiveAppModules => {
+  AppModule.findAndCountAll({ where: { appId } }).then(totalActiveAppModules => {
     if (totalActiveAppModules >= appConfig.activeModuleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
@@ -64,13 +64,11 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
+router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
-  const userId = request.user.id;
   const { appId, appModuleId } = request.params;
 
-  App.userHasPermission(appId, userId).then(() => {
-    return AppModule.find({ where: { id: appModuleId, appId } });
-  }).then(appModule => {
+  AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
       throw new Error('patch app module error');
     }
@@ -91,13 +89,11 @@ router.patch('/', (request, response, next) => {
  * DELETE
  */
 
+router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
-  const userId = request.user.id;
   const { appId, appModuleId } = request.params;
 
-  App.userHasPermission(appId, userId).then(() => {
-    return AppModule.destroy({ where: { id: appModuleId, appId } });
-  }).then(() => {
+  AppModule.destroy({ where: { id: appModuleId, appId } }).then(() => {
     response.success();
   }).catch(next);
 });

@@ -35,7 +35,7 @@ router.get('/', (request, response, next) => {
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
 
-  AppUser.create().then(appUser => {
+  AppUser.create({ appId }).then(appUser => {
     response.success(appUser);
   }).catch(next);
 });

@@ -1,6 +1,7 @@
 module.exports = (app) => {
   app.use('/apps/:appId?', rootRequire('/routes/apps'));
   app.use('/apps/:appId/modules/:appModuleId?', rootRequire('/routes/apps/modules'));
+  app.use('/apps/:appId/sessions/:appSessionId?', rootRequire('/routes/apps/users'));
   app.use('/apps/:appId/users/:appUserId?', rootRequire('/routes/apps/users'));
 
   app.use('/health', rootRequire('/routes/health'));

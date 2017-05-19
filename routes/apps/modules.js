@@ -71,6 +71,10 @@ router.put('/', (request, response, next) => {
   App.userHasPermission(appId, userId).then(() => {
     return AppModule.find({ where: { id: appModuleId, appId } });
   }).then(appModule => {
+    if (!appModule) {
+      throw new Error('put app module error');
+    }
+
     // TODO: Validated configs in the model, handle position.
     appModule.config = 1 || appModule.config;
     appModule.options = 1 || appModule.config;

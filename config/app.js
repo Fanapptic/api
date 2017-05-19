@@ -1,3 +1,3 @@
 module.exports = {
-  activeModuleLimit: 5,
+  moduleLimit: 5,
 };

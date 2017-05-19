@@ -4,7 +4,7 @@ module.exports = (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
 
-  App.findAndCountAll({
+  App.count({
     where: {
       id: appId,
       userId,

@@ -36,10 +36,10 @@ const Currency = database.define('currencies', {
  */
 
 Currency.hook('afterSync', function() {
-  return this.findAndCountAll({
+  return this.count({
     limit: 1,
-  }).then((result) => {
-    if (result.count === 0) {
+  }).then((currenciesCount) => {
+    if (currenciesCount === 0) {
       this.bulkCreate(currencies);
     }
   });

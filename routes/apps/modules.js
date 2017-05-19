@@ -18,18 +18,17 @@ const router = express.Router({
 
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
-  const userId = request.user.id;
   const { appId, appModuleId } = request.params;
 
-  App.userHasPermission(appId, userId).then(() => {
-    if (appModuleId) {
-      return AppModule.find({ where: { id: appModuleId, appId } });
-    } else {
-      return AppModule.findAll({ where: { appId } });
-    }
-  }).then(result => {
-    response.success(result);
-  }).catch(next);
+  if (appModuleId) {
+    return AppModule.find({ where: { id: appModuleId, appId } }).then(result => {
+      response.success(result);
+    }).catch(next);
+  } else {
+    return AppModule.findAll({ where: { appId } }).then(result => {
+      response.success(result);
+    }).catch(next);
+  }
 });
 
 /*
@@ -49,8 +48,8 @@ router.post('/', (request, response, next) => {
     return next(new Error('The module name provided is invaid.'));
   }
 
-  AppModule.findAndCountAll({ where: { appId } }).then(totalActiveAppModules => {
-    if (totalActiveAppModules >= appConfig.activeModuleLimit) {
+  AppModule.count({ where: { appId } }).then(appModulesCount => {
+    if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 

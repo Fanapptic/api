@@ -16,7 +16,7 @@ const router = express.Router({
  */
 
 router.get('/', (request, response, next) => {
-  const authCredentials = auth(request);
+  const authCredentials = auth(request) || {};
   const email = authCredentials.name;
   const password = authCredentials.pass;
 

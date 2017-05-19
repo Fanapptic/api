@@ -72,7 +72,7 @@ router.patch('/', (request, response, next) => {
     return AppModule.find({ where: { id: appModuleId, appId } });
   }).then(appModule => {
     if (!appModule) {
-      throw new Error('put app module error');
+      throw new Error('patch app module error');
     }
 
     // TODO: Validated configs in the model, handle position.

@@ -56,7 +56,7 @@ router.patch('/', (request, response, next) => {
 
   AppSession.find({ where: { id: appSessionId, appId, appUserId } }).then(appSession => {
     if (!appSession) {
-      throw new Error('app session put error');
+      throw new Error('app session patch error');
     }
 
     appSession.duration = 1; // TODO: calculate this

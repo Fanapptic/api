@@ -1,6 +1,7 @@
 const appsRouter = rootRequire('/routes/apps');
-const appDeplyomentsRouter = rootRequire('/routes/apps/deployments');
+const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
 const appModulesRouter = rootRequire('/routes/apps/modules');
+const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
 const appUsersRouter = rootRequire('/routes/apps/users');
 const healthRouter = rootRequire('/routes/health');
@@ -9,8 +10,9 @@ const usersRouter = rootRequire('/routes/users');
 
 module.exports = (app) => {
   app.use('/apps/:appId?', appsRouter);
-  app.use('/apps/:appId/deployments/:appDeploymentId?', appDeplyomentsRouter);
+  app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
+  app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
   app.use('/health', healthRouter);

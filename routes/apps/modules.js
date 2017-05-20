@@ -21,12 +21,12 @@ router.get('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
   if (appModuleId) {
-    return AppModule.find({ where: { id: appModuleId, appId } }).then(result => {
-      response.success(result);
+    return AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
+      response.success(appModule);
     }).catch(next);
   } else {
-    return AppModule.findAll({ where: { appId } }).then(result => {
-      response.success(result);
+    return AppModule.findAll({ where: { appId } }).then(appModules => {
+      response.success(appModules);
     }).catch(next);
   }
 });

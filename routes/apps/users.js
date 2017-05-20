@@ -19,12 +19,12 @@ router.get('/', (request, response, next) => {
   const { appId, appUserId } = request.params;
 
   if (appUserId) {
-    AppUser.find({ where: { id: appUserId, appId } }).then(result => {
-      response.success(result);
+    AppUser.find({ where: { id: appUserId, appId } }).then(appUser => {
+      response.success(appUser);
     }).catch(next);
   } else {
-    AppUser.findAll({ where: { appId } }).then(result => {
-      response.success(result);
+    AppUser.findAll({ where: { appId } }).then(appUsers => {
+      response.success(appUsers);
     }).catch(next);
   }
 });

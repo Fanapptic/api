@@ -20,12 +20,12 @@ router.get('/', (request,  response, next) => {
   const { appId, appSessionId } = request.params;
 
   if (appSessionId) {
-    AppSession.find({ where: { id: appSessionId, appId } }).then(result => {
-      response.success(result);
+    AppSession.find({ where: { id: appSessionId, appId } }).then(appSession => {
+      response.success(appSession);
     }).catch(next);
   } else {
-    AppSession.findAll({ where: { appId } }).then(result => {
-      response.success(result);
+    AppSession.findAll({ where: { appId } }).then(appSessions => {
+      response.success(appSessions);
     }).catch(next);
   }
 });

@@ -48,7 +48,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { email, password } = request.body;
+  const { email, password, firstName, lastName, phoneNumber } = request.body;
 
   let user = null;
 
@@ -56,6 +56,9 @@ router.post('/', (request, response, next) => {
     return User.create({
       email,
       password,
+      firstName,
+      lastName,
+      phoneNumber,
     }, { transaction }).then(userInstance => {
       user = userInstance;
 

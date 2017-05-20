@@ -1,4 +1,8 @@
 const Joi = require('joi');
+const ConfigurableDataSource = require('./ConfigurableDataSource');
+const ConfigurableOption = require('./ConfigurableOption');
+const ConfigurableStyle = require('./ConfigurableStyle');
+const fields = require('./fields');
 
 class Module {
   static get moduleName() {
@@ -6,23 +10,7 @@ class Module {
   }
 
   static get FIELDS() {
-    return {
-      TEXT: 'text',
-      TEXTAREA: 'textarea',
-      SELECT: 'select',
-      SWITCH: 'switch',
-      COLOR: 'color',
-      GRADIENT: 'gradient',
-      PIXELS: 'pixels',
-      BORDER: 'border',
-      FONT: 'font',
-    };
-  }
-
-  static fieldsArray() {
-    return Object.keys(Module.FIELDS).reduce((fields, fieldKey) => {
-      return [...fields, Module.FIELDS[fieldKey]];
-    }, []);
+    return fields;
   }
 
   constructor(initObject) {
@@ -50,72 +38,21 @@ class Module {
   }
 
   addConfigurableDataSource(dataSourceObject) {
-    const schema = Joi.object({
-      internalName: Joi.string().required(),
-      displayName: Joi.string().required(),
-      description: Joi.string().required(),
-    });
-
-    const validationResult = Joi.validate(dataSourceObject, schema);
-
-    if (validationResult.error) {
-      throw validationResult.error;
-    }
-
-    this.configurableDataSources.push(dataSourceObject);
+    this.configurableDataSources.push(
+      new ConfigurableDataSource(dataSourceObject)
+    );
   }
 
   addConfigurableOption(optionObject) {
-    const schema = Joi.object({
-      internalName: Joi.string().required(),
-      displayName: Joi.string().required(),
-      description: Joi.string().required(),
-      field: Joi.string().valid(Module.fieldsArray()).required(),
-      fieldOptions: Joi.array().items(Joi.object()).optional(),
-      placeholder: Joi.string().optional(),
-      defaultValue: [
-        Joi.string().optional(),
-        Joi.number().optional(),
-        Joi.boolean().optional(),
-      ],
-    });
-
-    const validationResult = Joi.validate(optionObject, schema);
-
-    if (validationResult.error) {
-      throw validationResult.error;
-    }
-
-    optionObject._value = null;
-
-    this.configurableOptions.push(optionObject);
+    this.configurableOptions.push(
+      new ConfigurableOption(optionObject)
+    );
   }
 
   addConfigurableStyle(styleObject) {
-    const schema = Joi.object({
-      internalName: Joi.string().required(),
-      displayName: Joi.string().required(),
-      description: Joi.string().required(),
-      field: Joi.string().valid(Module.fieldsArray()).required(),
-      fieldOptions: Joi.array().items(Joi.object()).optional(),
-      cssSelector: Joi.string().required(),
-      cssProperty: Joi.string().required(),
-      defaultValue: [
-        Joi.string().optional(),
-        Joi.number().optional(),
-        Joi.boolean().optional(),
-      ],
-    });
-
-    const validationResult = Joi.validate(styleObject, schema);
-
-    if (validationResult.error) {
-      throw validationResult.error;
-    }
-
-    styleObject._value = null;
-
-    this.configurableStyles.push(styleObject);
+    this.configurableStyles.push(
+      new ConfigurableStyle(styleObject)
+    );
   }
 
   exportOptions() {
@@ -157,6 +94,8 @@ class Module {
       if (!option || option.defaultValue === exportedDataValue) {
         return;
       }
+
+      // handle validation here?
 
       option._value = exportedDataValue;
     });

@@ -11,6 +11,9 @@ const AppModuleData = database.define('appModuleData', {
   appModuleId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
+  data: {
+    type: Sequelize.JSON,
+  },
 });
 
 /*

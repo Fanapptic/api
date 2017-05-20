@@ -7,15 +7,15 @@ fs.readdirSync(__dirname).filter(directoryItem => {
   return fs.lstatSync(path.join(__dirname, directoryItem)).isDirectory();
 }).forEach(moduleDirectory => {
   const ModuleClass = require('./' + moduleDirectory);
-  const { moduleName } = ModuleClass;
-
-  if (moduleName) {
-    moduleClasses[moduleName] = ModuleClass;
-  }
+  
+  moduleClasses[ModuleClass.moduleName] = ModuleClass;
 });
 
 module.exports = {
   moduleClasses,
+  initModule: (moduleName, config, options, styles, position) => {
+    const ModuleClass = moduleClasses[moduleName];
+  },
   getModuleClass: (moduleName) => {
     return moduleClasses[moduleName];
   },

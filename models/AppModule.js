@@ -14,7 +14,13 @@ const AppModule = database.define('appModules', {
   moduleName: {
     type: Sequelize.STRING,
   },
-  config: {
+  navigatorConfig: {
+    type: Sequelize.JSON,
+  },
+  tabConfig: {
+    type: Sequelize.JSON,
+  },
+  dataSources: {
     type: Sequelize.JSON,
   },
   options: {

@@ -23,6 +23,8 @@ class ConfigurableStyle {
     if (validationResult.error) {
       throw validationResult.error;
     }
+
+    Object.assign(this, initObject);
   }
 }
 

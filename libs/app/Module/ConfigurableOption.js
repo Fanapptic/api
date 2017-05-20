@@ -22,6 +22,8 @@ class ConfigurableOption {
     if (validationResult.error) {
       throw validationResult.error;
     }
+
+    Object.assign(this, initObject);
   }
 }
 

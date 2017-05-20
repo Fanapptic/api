@@ -63,10 +63,6 @@ class Module {
     return this._export(this.configurableStyles);
   }
 
-  exportJSON() {
-    return JSON.stringify(this);
-  }
-
   importOptions(exportedOptions) {
     this._import(this.configurableOptions, exportedOptions);
   }

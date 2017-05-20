@@ -60,7 +60,7 @@ router.patch('/', (request, response, next) => {
       throw new Error('app session patch error');
     }
 
-    appSession.duration = 1; // TODO: calculate this
+    appSession.duration = 1; // TODO: calculate this, maybe refactor this.
 
     return appSession.save();
   }).then((appSession) => {

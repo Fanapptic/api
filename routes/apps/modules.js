@@ -2,7 +2,6 @@
  * Route: /apps/:appId/modules/:appModuleId?
  */
 
-const App = rootRequire('/models/App');
 const AppModule = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
@@ -52,6 +51,13 @@ router.post('/', (request, response, next) => {
     if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
+
+    /*
+     * What needs to happen here?
+     *
+     * Trigger any module data source setups?
+     *
+     */
 
     return AppModule.create({ appId, moduleName, config, options, styles, position });
   }).then(appModule => {

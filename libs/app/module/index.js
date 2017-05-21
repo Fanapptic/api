@@ -55,12 +55,20 @@ class Module {
     );
   }
 
+  exportDataSources() {
+    return this._export(this.configurableDataSources);
+  }
+
   exportOptions() {
     return this._export(this.configurableOptions);
   }
 
   exportStyles() {
     return this._export(this.configurableStyles);
+  }
+
+  importDataSources(exportedDataSources) {
+    this._import(this.configurableDataSources, exportedDataSources);
   }
 
   importOptions(exportedOptions) {
@@ -83,17 +91,17 @@ class Module {
     Object.keys(exportedData).forEach(exportedDataKey => {
       const exportedDataValue = exportedData[exportedDataKey];
 
-      let option = this.configurableOptions.find(option => {
-        return exportedDataKey === option.internalName;
+      let configurable = targetConfigurableArray.find(configurable => {
+        return exportedDataKey === configurable.internalName;
       });
 
-      if (!option || option.defaultValue === exportedDataValue) {
+      if (!configurable || configurable.defaultValue === exportedDataValue) {
         return;
       }
 
       // handle validation here?
 
-      option._value = exportedDataValue;
+      configurable._value = exportedDataValue;
     });
   }
 }

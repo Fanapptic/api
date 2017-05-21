@@ -1,3 +1,8 @@
+/*
+ * Ownership Authorization For Matching Routes
+ * Possible Route Usage: /*
+ */
+
 const url = require('url');
 
 const User = rootRequire('/models/User');

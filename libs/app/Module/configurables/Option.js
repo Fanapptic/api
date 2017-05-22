@@ -1,7 +1,7 @@
 const Joi = require('joi');
-const fields = require('./fields');
+const fields = require('../fields');
 
-class ConfigurableStyle {
+module.exports = class {
   constructor(initObject) {
     const schema = Joi.object({
       internalName: Joi.string().required(),
@@ -9,8 +9,7 @@ class ConfigurableStyle {
       description: Joi.string().required(),
       field: fields.schema,
       fieldOptions: Joi.array().items(Joi.object()).optional(),
-      cssSelector: Joi.string().required(),
-      cssProperty: Joi.string().required(),
+      placeholder: Joi.string().optional(),
       defaultValue: [
         Joi.string().optional(),
         Joi.number().optional(),
@@ -26,8 +25,4 @@ class ConfigurableStyle {
 
     Object.assign(this, initObject);
   }
-}
-
-
-
-module.exports = ConfigurableStyle;
+};

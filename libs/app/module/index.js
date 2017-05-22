@@ -1,7 +1,7 @@
 const Joi = require('joi');
-const ConfigurableDataSource = require('./ConfigurableDataSource');
-const ConfigurableOption = require('./ConfigurableOption');
-const ConfigurableStyle = require('./ConfigurableStyle');
+const ConfigurableDataSource = require('./configurables/DataSource');
+const ConfigurableOption = require('./configurables/Option');
+const ConfigurableStyle = require('./configurables/Style');
 const fields = require('./fields');
 
 class Module {

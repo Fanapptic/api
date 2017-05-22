@@ -1,11 +1,21 @@
 const Joi = require('joi');
+const fields = require('../fields');
 
-class ConfigurableDataSource {
+module.exports = class {
   constructor(initObject) {
     const schema = Joi.object({
       internalName: Joi.string().required(),
       displayName: Joi.string().required(),
       description: Joi.string().required(),
+      field: fields.schema,
+      fieldOptions: Joi.array().items(Joi.object()).optional(),
+      cssSelector: Joi.string().required(),
+      cssProperty: Joi.string().required(),
+      defaultValue: [
+        Joi.string().optional(),
+        Joi.number().optional(),
+        Joi.boolean().optional(),
+      ],
     });
 
     const validationResult = Joi.validate(initObject, schema);
@@ -16,6 +26,4 @@ class ConfigurableDataSource {
 
     Object.assign(this, initObject);
   }
-}
-
-module.exports = ConfigurableDataSource;
+};

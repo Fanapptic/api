@@ -1,7 +1,5 @@
 const Joi = require('joi');
-const ConfigurableDataSource = require('./configurables/DataSource');
-const ConfigurableOption = require('./configurables/Option');
-const ConfigurableStyle = require('./configurables/Style');
+const configurables = require('./configurables');
 const fields = require('./fields');
 
 class Module {
@@ -37,46 +35,44 @@ class Module {
     this.configurableStyles = [];
   }
 
-  addConfigurableDataSource(dataSourceObject) {
-    this.configurableDataSources.push(
-      new ConfigurableDataSource(dataSourceObject)
-    );
+  addConfigurableDataSource(Class) {
+    if (!(Class.prototype instanceof configurables.DataSource)) {
+      throw new Error('Invalid data source class provided.');
+    }
+
+    this.configurableDataSources.push(new Class());
   }
 
-  addConfigurableOption(optionObject) {
-    this.configurableOptions.push(
-      new ConfigurableOption(optionObject)
-    );
+  addConfigurableOption(Class) {
+    if (!(Class.prototype instanceof configurables.Option)) {
+      throw new Error('Invalid option class provided.');
+    }
+
+    this.configurableOptions.push(new Class());
   }
 
-  addConfigurableStyle(styleObject) {
-    this.configurableStyles.push(
-      new ConfigurableStyle(styleObject)
-    );
+  addConfigurableStyle(Class) {
+    if (!(Class.prototype instanceof configurables.Style)) {
+      throw new Error('Invalid style class provided.');
+    }
+
+    this.configurableStyles.push(new Class());
   }
 
-  exportDataSources() {
-    return this._export(this.configurableDataSources);
+  exportConfig() {
+    return {
+      dataSources: this._export(this.configurableDataSources),
+      options: this._export(this.configurableOptions),
+      styles: this._export(this.configurableStyles),
+    };
   }
 
-  exportOptions() {
-    return this._export(this.configurableOptions);
-  }
+  importConfig(exportedConfig) {
+    const { dataSources, options, styles } = exportedConfig;
 
-  exportStyles() {
-    return this._export(this.configurableStyles);
-  }
-
-  importDataSources(exportedDataSources) {
-    this._import(this.configurableDataSources, exportedDataSources);
-  }
-
-  importOptions(exportedOptions) {
-    this._import(this.configurableOptions, exportedOptions);
-  }
-
-  importStyles(exportedStyles) {
-    this._import(this.configurableStyles, exportedStyles);
+    this._import(this.configurableDataSources, dataSources);
+    this._import(this.configurableOptions, options);
+    this._import(this.configurableStyles, styles);
   }
 
   _export(targetConfigurableArray) {

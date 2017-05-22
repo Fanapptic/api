@@ -2,7 +2,10 @@
  * Module: Feed
  */
 
-const Module = rootRequire('./libs/app/module');
+const Module = rootRequire('/libs/app/Module');
+const dataSources = require('./dataSources');
+const options = require('./options');
+const styles = require('./styles');
 
 class Feed extends Module {
   static get moduleName() {
@@ -24,58 +27,24 @@ class Feed extends Module {
      * Data Sources
      */
 
-    this.addConfigurableDataSource({
-      internalName: 'youtube',
-      displayName: 'YouTube',
-      description: 'Some description of pulling in YT vids',
-      // somehow make this pluggable where we can define the connection functionality
-      // the disconnection functionality, and how it interacts with the appModuleData
-      // table...
-    });
+    this.addConfigurableDataSource(dataSources.Facebook);
+    this.addConfigurableDataSource(dataSources.Instagram);
+    this.addConfigurableDataSource(dataSources.YouTube);
 
     /*
      * Options
      */
 
-    this.addConfigurableOption({
-      internalName: 'feedStyle',
-      displayName: 'Feed Style',
-      description: 'Modifies the display style of the feed.',
-      field: Module.FIELDS.SELECT,
-      fieldOptions: [
-        {
-          name: 'Collection',
-          value: 'collection',
-          tooltip: 'Displays content in a 3x3 tile layout.',
-        },
-        {
-          name: 'List',
-          value: 'list',
-          tooltip: 'Displays content in a list layout.',
-        },
-        {
-          name: 'Column',
-          value: 'column',
-          tooltip: 'Displays content in a column layout.',
-        },
-      ],
-      defaultValue: 'collection',
-    });
+    this.addConfigurableOption(options.FeedStyle);
 
     /*
      * Styles
      */
 
-    this.addConfigurableStyle({
-      internalName: 'font',
-      displayName: 'Font',
-      description: 'The font of the feed items.',
-      field: Module.FIELDS.FONT,
-      cssSelector: '.grid-item',
-      cssProperty: 'font',
-      defaultValue: 'Arial',
-    });
+    this.addConfigurableStyle(styles.Font);
   }
 }
+
+const test = new Feed();
 
 module.exports = Feed;

@@ -67,8 +67,8 @@ class Module {
     };
   }
 
-  importConfig(exportedConfig) {
-    const { dataSources, options, styles } = exportedConfig;
+  importConfig(config) {
+    const { dataSources, options, styles } = config;
 
     this._import(this.configurableDataSources, dataSources);
     this._import(this.configurableOptions, options);
@@ -76,30 +76,27 @@ class Module {
   }
 
   _export(targetConfigurableArray) {
-    return targetConfigurableArray.reduce((exportObject, arrayItem) => {
-      exportObject[arrayItem.internalName] = arrayItem._value || arrayItem.defaultValue;
+    return targetConfigurableArray.reduce((exportObject, configurable) => {
+      exportObject[configurable.internalName] = configurable.exportValue();
 
       return exportObject;
     }, {});
   }
 
-  _import(targetConfigurableArray, exportedData) {
-    Object.keys(exportedData).forEach(exportedDataKey => {
-      const exportedDataValue = exportedData[exportedDataKey];
+  _import(targetConfigurableArray, data) {
+    Object.keys(data).forEach(dataKey => {
+      const dataValue = data[dataKey];
 
       let configurable = targetConfigurableArray.find(configurable => {
-        return exportedDataKey === configurable.internalName;
+        return configurable.internalName === dataKey;
       });
 
       if (!configurable) {
         return;
       }
 
-      configurable._value = exportedDataValue;
-
-      // TODO: Refactor this forEach logic and validation to be more clear?
-      if (!configurable.validate()) {
-        throw new Error(`${exportedDataKey} has an invalid value.`);
+      if (!configurable.importValueAndValidate(dataValue)) {
+        throw new Error(`${dataKey} has an invalid value.`);
       }
     });
   }

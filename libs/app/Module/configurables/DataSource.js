@@ -47,11 +47,35 @@ module.exports = class {
      */
   }
 
-  validate() {
+  exportValue() {
     if (!this.options || !this.options.length) {
+      return null;
+    }
+
+    const options = this.options.reduce((exportObject, option) => {
+      exportObject[option.internalName] = option.exportValue();
+    });
+
+    return { options };
+  }
+
+  importValueAndValidate(value) {
+    if (!this.options || !this.option.length) {
       return true;
     }
 
-    return this.options.every(option => option.validate());
+    Object.keys(value.options).every(optionInternalName => {
+      const optionValue = value.options[optionInternalName];
+
+      const option = this.options.find(option => {
+        return option.internalName === optionInternalName;
+      });
+
+      if (!option) {
+        return true;
+      }
+
+      return option.importValueAndValidate(optionValue);
+    });
   }
 };

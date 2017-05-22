@@ -28,7 +28,13 @@ module.exports = class {
     Object.assign(this, initObject);
   }
 
-  validate() {
+  exportValue() {
+    return this.value;
+  }
+
+  importValueAndValidate(value) {
+    this.value = value;
+
     return this.field.validate(this.value);
   }
 };

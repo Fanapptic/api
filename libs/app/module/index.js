@@ -91,13 +91,16 @@ class Module {
         return exportedDataKey === configurable.internalName;
       });
 
-      if (!configurable || configurable.defaultValue === exportedDataValue) {
+      if (!configurable) {
         return;
       }
 
-      // handle validation here?
-
       configurable._value = exportedDataValue;
+
+      // TODO: Refactor this forEach logic and validation to be more clear?
+      if (!configurable.validate()) {
+        throw new Error(`${exportedDataKey} has an invalid value.`);
+      }
     });
   }
 }

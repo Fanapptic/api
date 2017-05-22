@@ -15,6 +15,7 @@ module.exports = class {
         Joi.number().optional(),
         Joi.boolean().optional(),
       ],
+      value: null,
     });
 
     const validationResult = Joi.validate(initObject, schema);
@@ -24,5 +25,9 @@ module.exports = class {
     }
 
     Object.assign(this, initObject);
+  }
+
+  validate() {
+    return this.field.validate(this.value);
   }
 };

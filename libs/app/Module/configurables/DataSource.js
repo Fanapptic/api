@@ -46,4 +46,12 @@ module.exports = class {
      * into the AppModuleData table.
      */
   }
+
+  validate() {
+    if (!this.options || !this.options.length) {
+      return true;
+    }
+
+    return this.options.every(option => option.validate());
+  }
 };

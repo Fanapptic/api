@@ -67,7 +67,7 @@ class Module {
     };
   }
 
-  importConfig(config) {
+  importConfig(config = {}) {
     const { dataSources, options, styles } = config;
 
     this._import(this.configurableDataSources, dataSources);
@@ -83,7 +83,7 @@ class Module {
     }, {});
   }
 
-  _import(targetConfigurableArray, data) {
+  _import(targetConfigurableArray, data = {}) {
     Object.keys(data).forEach(dataKey => {
       const dataValue = data[dataKey];
 

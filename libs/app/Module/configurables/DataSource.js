@@ -64,7 +64,7 @@ module.exports = class {
       return true;
     }
 
-    Object.keys(value.options).every(optionInternalName => {
+    return Object.keys(value.options).every(optionInternalName => {
       const optionValue = value.options[optionInternalName];
 
       const option = this.options.find(option => {

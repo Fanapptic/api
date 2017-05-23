@@ -60,7 +60,7 @@ module.exports = class {
   }
 
   importValueAndValidate(value) {
-    if (!this.options || !this.option.length) {
+    if (!this.options || !this.options.length) {
       return true;
     }
 

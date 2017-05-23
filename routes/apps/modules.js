@@ -36,30 +36,19 @@ router.get('/', (request, response, next) => {
 
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
+  // TODO: Revisit and review this code.
   const { appId } = request.params;
-  const { moduleName, config, options, styles, position } = request.body;
-
-  if (!moduleName) {
-    return next(new Error('You must provide a module name.'));
-  }
-
-  if (!appModules.getModuleClass(moduleName)) {
-    return next(new Error('The module name provided is invaid.'));
-  }
+  const { moduleName, moduleConfig, navigatorConfig, tabConfig, position } = request.body;
+  const module = appModules.initModule(moduleName, moduleConfig);
 
   AppModule.count({ where: { appId } }).then(appModulesCount => {
     if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 
-    /*
-     * What needs to happen here?
-     *
-     * Trigger any module data source setups?
-     *
-     */
-
-    return AppModule.create({ appId, moduleName, config, options, styles, position });
+    return module.exportConfig(); // returns the cleaned module config
+  }).then((moduleConfig) => {
+    return AppModule.create({ appId, moduleName, moduleConfig, position });
   }).then(appModule => {
     response.success(appModule);
   }).catch(next);
@@ -71,18 +60,22 @@ router.post('/', (request, response, next) => {
 
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
+  // TODO: Revisit and review this code.
   const { appId, appModuleId } = request.params;
+  const { moduleConfig, navigatorConfig, tabConfig, position } = request.body;
 
   AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
       throw new Error('patch app module error');
     }
 
-    // TODO: Validated configs in the model, handle position.
-    appModule.config = 1 || appModule.config;
-    appModule.options = 1 || appModule.config;
-    appModule.styles = 1 || appModule.config;
-    appModule.position = 1 || appModule.position;
+    if (moduleConfig) {
+      const module = appModules.initModule(appModule.moduleName, moduleConfig);
+
+      appModule.config = module.exportConfig();
+    }
+
+    appModule.position = position || appModule.position;
 
     return appModule.save();
   }).then(appModule => {

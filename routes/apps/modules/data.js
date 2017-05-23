@@ -41,18 +41,16 @@ router.post('/', (request, response, next) => {
   const { appModule } = request;
   const { dataSourceName } = request.query;
 
-  const ModuleClass = appModules.getModuleClass(appModule.moduleName);
-  const module = new ModuleClass();
+  const module = appModules.initModule(appModule.name);
 
   const dataSource = module.configurableDataSources.find(dataSource => {
     return dataSource.internalName === dataSourceName;
   });
 
   if (!dataSource) {
-    return next(new Error(`This module does not have a data source of "${dataSourceName}".`));
+    throw new Error(`This module does not have a data source of "${dataSourceName}".`);
   }
 
-  dataSource.
   // refactor configurableDataSource to dataSource?
 });
 

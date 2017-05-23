@@ -12,17 +12,11 @@ const router = express.Router({
  * GET
  */
 
-router.get('/', (request, response, next) => {
+router.get('/', (request, response) => {
   const { moduleName } = request.params;
 
   if (moduleName) {
-    const ModuleClass = appModules.getModuleClass(moduleName);
-
-    if (!ModuleClass) {
-      return next(new Error(`The module "${moduleName}" does not exist.`));
-    }
-
-    response.success(new ModuleClass());
+    response.success(appModules.initModule(moduleName));
   } else {
     let modulesArray = [];
 

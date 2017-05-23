@@ -8,7 +8,6 @@ module.exports = class {
       displayName: Joi.string().required(),
       description: Joi.string().required(),
       field: fields.schema,
-      fieldOptions: Joi.array().items(Joi.object()).optional(),
       placeholder: Joi.string().optional(),
       defaultValue: [
         Joi.string().optional(),

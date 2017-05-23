@@ -7,8 +7,7 @@ module.exports = class extends Option {
       internalName: 'feedStyle',
       displayName: 'Feed Style',
       description: 'Modifies the display style of the feed.',
-      field: Module.FIELDS.SELECT,
-      fieldOptions: [
+      field: Module.FIELDS.SELECT([
         {
           name: 'Collection',
           value: 'collection',
@@ -24,7 +23,7 @@ module.exports = class extends Option {
           value: 'column',
           tooltip: 'Displays content in a column layout.',
         },
-      ],
+      ]),
       defaultValue: 'collection',
     });
   }

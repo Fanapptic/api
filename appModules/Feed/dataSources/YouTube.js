@@ -13,7 +13,7 @@ module.exports = class extends DataSource {
           internalName: 'channel',
           displayName: 'Channel',
           description: 'Your YouTube channel',
-          field: Module.FIELDS.SELECT,
+          field: Module.FIELDS.SELECT([]),
         }),
       ],
     });

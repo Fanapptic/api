@@ -3,9 +3,14 @@ const path = require('path');
 const Joi = require('joi');
 
 let fields = {
-  list: [],
   schema: Joi.object().keys({
     name: Joi.string().required(),
+    options: Joi.array().items(Joi.object({
+      name: Joi.string().required(),
+      value: Joi.string().required(),
+      tooltip: Joi.string().optional(),
+    })).optional(),
+    tooltip: Joi.string().optional(),
     validate: Joi.func().required(),
   }).required(),
 };
@@ -13,10 +18,10 @@ let fields = {
 fs.readdirSync(__dirname).filter(directoryItem => {
   return path.extname(directoryItem) === '.js' && directoryItem !== 'index.js';
 }).forEach(fieldFile => {
-  const field = require('./' + fieldFile);
+  let field = require('./' + fieldFile);
+  field = (typeof field === 'function') ? field() : field;
 
-  fields.list.push(field);
-  fields[field.name.toUpperCase()] = field;
+  fields[field.name.toUpperCase()] = require('./' + fieldFile);
 });
 
 module.exports = fields;

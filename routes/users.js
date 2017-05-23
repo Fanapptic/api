@@ -21,7 +21,7 @@ router.get('/', (request, response, next) => {
   const password = authCredentials.pass;
 
   if (!email || !password) {
-    return next(new Error('Authentication credentials were not provided.'));
+    throw new Error('Authentication credentials were not provided.');
   }
 
   let user = null;

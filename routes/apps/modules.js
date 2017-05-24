@@ -46,6 +46,7 @@ router.post('/', (request, response, next) => {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 
+    // TODO: Move this sanitization into pre insert / update model logic.
     return module.exportConfig(); // returns the cleaned module config
   }).then((moduleConfig) => {
     return AppModule.create({ appId, moduleName, moduleConfig, position });
@@ -69,7 +70,7 @@ router.patch('/', (request, response, next) => {
       throw new Error('patch app module error');
     }
 
-    if (moduleConfig) {
+    if (moduleConfig) { // TODO: Move this sanitization into pre update model logic.
       const module = appModules.initModule(appModule.moduleName, moduleConfig);
 
       appModule.config = module.exportConfig();

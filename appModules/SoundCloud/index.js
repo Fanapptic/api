@@ -2,7 +2,7 @@
  * Module: SoundCloud
  */
 
-const Module = rootRequire('./libs/app/module');
+const Module = rootRequire('/libs/app/module');
 
 class SoundCloud extends Module {
   static get moduleName() {

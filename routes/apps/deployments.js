@@ -34,7 +34,7 @@ router.get('/', (request, response, next) => {
 
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
-  // TODO: Write the deployment logic.
+  // TODO: Write this logic for deployments, submitting queue data, etc.
 });
 
 /*

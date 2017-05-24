@@ -1,8 +1,11 @@
 const Joi = require('joi');
+const Configurable = require('./Configurable');
 const Option = require('./Option');
 
-module.exports = class {
+module.exports = class extends Configurable {
   constructor(initObject) {
+    super();
+
     const schema = Joi.object({
       internalName: Joi.string().required(),
       displayName: Joi.string().required(),
@@ -10,11 +13,7 @@ module.exports = class {
       options: Joi.array().items(Joi.object().type(Option)).optional(),
     });
 
-    const validationResult = Joi.validate(initObject, schema);
-
-    if (validationResult.error) {
-      throw validationResult.error;
-    }
+    Joi.assert(initObject, schema);
 
     Object.assign(this, initObject);
   }

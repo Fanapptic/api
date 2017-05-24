@@ -18,61 +18,62 @@ class Module {
       description: Joi.string().required(),
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),
-      navigatorConfig: Joi.object().required(),
-      tabConfig: Joi.object().required(),
     });
 
-    const validationResult = Joi.validate(initObject, schema);
-
-    if (validationResult.error) {
-      throw validationResult.error;
-    }
+    Joi.assert(initObject, schema);
 
     Object.assign(this, initObject);
 
-    this.configurableDataSources = [];
-    this.configurableOptions = [];
-    this.configurableStyles = [];
+    // Configurables
+    this.navigator = new configurables.Navigator();
+    this.tab = new configurables.Tab();
+    this.dataSources = [];
+    this.options = [];
+    this.styles = [];
   }
 
-  addConfigurableDataSource(Class) {
+  addDataSource(Class) {
     if (!(Class.prototype instanceof configurables.DataSource)) {
       throw new Error('Invalid data source class provided.');
     }
 
-    this.configurableDataSources.push(new Class());
+    this.dataSources.push(new Class());
   }
 
-  addConfigurableOption(Class) {
+  addOption(Class) {
     if (!(Class.prototype instanceof configurables.Option)) {
       throw new Error('Invalid option class provided.');
     }
 
-    this.configurableOptions.push(new Class());
+    this.options.push(new Class());
   }
 
-  addConfigurableStyle(Class) {
+  addStyle(Class) {
     if (!(Class.prototype instanceof configurables.Style)) {
       throw new Error('Invalid style class provided.');
     }
 
-    this.configurableStyles.push(new Class());
+    this.styles.push(new Class());
   }
 
   exportConfig() {
     return {
-      dataSources: this._export(this.configurableDataSources),
-      options: this._export(this.configurableOptions),
-      styles: this._export(this.configurableStyles),
+      navigator: this.navigatorConfig.exportValue(),
+      tab: this.tabConfig.exportValue(),
+      dataSources: this._export(this.dataSources),
+      options: this._export(this.options),
+      styles: this._export(this.styles),
     };
   }
 
   importConfig(config = {}) {
-    const { dataSources, options, styles } = config;
+    const { navigator, tab, dataSources, options, styles } = config;
 
-    this._import(this.configurableDataSources, dataSources);
-    this._import(this.configurableOptions, options);
-    this._import(this.configurableStyles, styles);
+    this.navigator.importValueAndValidate(navigator);
+    this.tab.importValueAndValidate(tab);
+    this._import(this.dataSources, dataSources);
+    this._import(this.options, options);
+    this._import(this.styles, styles);
   }
 
   _export(targetConfigurableArray) {

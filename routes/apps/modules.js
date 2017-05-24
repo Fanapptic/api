@@ -38,7 +38,7 @@ router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   // TODO: Revisit and review this code.
   const { appId } = request.params;
-  const { moduleName, moduleConfig, navigatorConfig, tabConfig, position } = request.body;
+  const { moduleName, moduleConfig, position } = request.body;
   const module = appModules.initModule(moduleName, moduleConfig);
 
   AppModule.count({ where: { appId } }).then(appModulesCount => {

@@ -19,29 +19,50 @@ class Feed extends Module {
       description: 'Display an aggregate feed of your content from multiple sources.',
       moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
       //injectedJavaScript: '',
-      navigatorConfig: {}, // Extend a default navigator config
-      tabConfig: {}, // Extend a default tabConfig
+    });
+
+    /*
+     * Default Navigator
+     */
+
+    this.navigator.importValueAndValidate({
+      navigationOptions: {
+        title: 'Feed',
+        headerTintColor: '#000',
+      },
+    });
+
+    /*
+     * Default Tab
+     */
+
+    this.tab.importValueAndValidate({
+      title: 'Feed',
+      icon: {
+        set: 'ion-icons',
+        name: 'feed',
+      },
     });
 
     /*
      * Data Sources
      */
 
-    this.addConfigurableDataSource(dataSources.Facebook);
-    this.addConfigurableDataSource(dataSources.Instagram);
-    this.addConfigurableDataSource(dataSources.YouTube);
+    this.addDataSource(dataSources.Facebook);
+    this.addDataSource(dataSources.Instagram);
+    this.addDataSource(dataSources.YouTube);
 
     /*
      * Options
      */
 
-    this.addConfigurableOption(options.FeedStyle);
+    this.addOption(options.FeedStyle);
 
     /*
      * Styles
      */
 
-    this.addConfigurableStyle(styles.Font);
+    this.addStyle(styles.Font);
   }
 }
 

@@ -1,6 +1,10 @@
-module.exports = {
-  name: 'textarea',
-  validate: (input) => {
-    return (input) ? true : false;
-  },
+module.exports = (overrides = {}) => {
+  const { validate } = overrides;
+
+  return {
+    name: 'textArea',
+    validate: validate || ((input) => {
+      return (input) ? true : false;
+    }),
+  };
 };

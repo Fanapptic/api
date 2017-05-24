@@ -18,10 +18,7 @@ let fields = {
 fs.readdirSync(__dirname).filter(directoryItem => {
   return path.extname(directoryItem) === '.js' && directoryItem !== 'index.js';
 }).forEach(fieldFile => {
-  let field = require('./' + fieldFile);
-  field = (typeof field === 'function') ? field() : field;
-
-  fields[field.name.toUpperCase()] = require('./' + fieldFile);
+  fields[path.basename(fieldFile, '.js').toUpperCase()] = require('./' + fieldFile);
 });
 
 module.exports = fields;

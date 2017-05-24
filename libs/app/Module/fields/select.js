@@ -1,9 +1,11 @@
-module.exports = (options) => {
+module.exports = (overrides = {}) => {
+  const { options, validate } = overrides;
+
   return {
     name: 'select',
     options,
-    validate: (input) => {
+    validate: validate || ((input) => {
       return options.some(option => option.value === input);
-    },
+    }),
   };
 };

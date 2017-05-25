@@ -21,7 +21,7 @@ router.get('/', (request, response) => {
     let modulesArray = [];
 
     Object.keys(appModules.moduleClasses).forEach(moduleName => {
-      modulesArray.push(new appModules.moduleClasses[moduleName]);
+      modulesArray.push(appModules.initModule(moduleName));
     });
 
     response.success(modulesArray);

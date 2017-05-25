@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Configurable = require('./Configurable');
 const fields = require('../fields');
 
-module.exports = class extends Configurable {
+class Style extends Configurable {
   constructor(initObject) {
     super();
 
@@ -36,4 +36,6 @@ module.exports = class extends Configurable {
 
     return this.field.validate(this.value);
   }
-};
+}
+
+module.exports = Style;

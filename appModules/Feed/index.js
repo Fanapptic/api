@@ -3,6 +3,8 @@
  */
 
 const Module = rootRequire('/libs/app/Module');
+const navigator = require('./navigator');
+const tab = require('./tab');
 const dataSources = require('./dataSources');
 const options = require('./options');
 const styles = require('./styles');
@@ -19,29 +21,8 @@ class Feed extends Module {
       description: 'Display an aggregate feed of your content from multiple sources.',
       moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
       //injectedJavaScript: '',
-    });
-
-    /*
-     * Default Navigator
-     */
-
-    this.navigator.importValueAndValidate({
-      navigationOptions: {
-        title: 'Feed',
-        headerTintColor: '#000',
-      },
-    });
-
-    /*
-     * Default Tab
-     */
-
-    this.tab.importValueAndValidate({
-      title: 'Feed',
-      icon: {
-        set: 'ion-icons',
-        name: 'feed',
-      },
+      navigator,
+      tab,
     });
 
     /*

@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Configurable = require('./Configurable');
 const Option = require('./Option');
 
-module.exports = class extends Configurable {
+class DataSource extends Configurable {
   constructor(initObject) {
     super();
 
@@ -77,4 +77,6 @@ module.exports = class extends Configurable {
       return option.importValueAndValidate(optionValue);
     });
   }
-};
+}
+
+module.exports = DataSource;

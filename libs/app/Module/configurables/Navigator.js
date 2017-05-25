@@ -1,19 +1,22 @@
 const Joi = require('joi');
 const Configurable = require('./Configurable');
 
-module.exports = class extends Configurable {
-  constructor() {
+const schema = Joi.object({
+  backgroundGradient: Joi.array().items().optional(),
+  navigationOptions: Joi.object({
+    title: Joi.string().required(),
+    headerTintColor: Joi.string().required(),
+    headerStyle: Joi.object().optional(),
+  }).required(),
+});
+
+class Navigator extends Configurable {
+  constructor(initObject) {
     super();
 
-    this.backgroundGradient = {
-      colors: [],
-    };
+    Joi.assert(initObject, schema);
 
-    this.navigationOptions = {
-      title: '',
-      headerTintColor: '',
-      headerStyle: { },
-    };
+    Object.assign(this, initObject);
   }
 
   exportValue() {
@@ -21,19 +24,12 @@ module.exports = class extends Configurable {
   }
 
   importValueAndValidate(value) {
-    const schema = Joi.object({
-      backgroundGradient: Joi.array().items().optional(),
-      navigationOptions: Joi.object({
-        title: Joi.string().required(),
-        headerTintColor: Joi.string().required(),
-        headerStyle: Joi.object().optional(),
-      }).required(),
-    });
-
     Joi.assert(value, schema);
 
     Object.assign(this, value);
 
     return true;
   }
-};
+}
+
+module.exports = Navigator;

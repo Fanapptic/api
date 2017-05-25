@@ -18,15 +18,15 @@ class Module {
       description: Joi.string().required(),
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),
+      navigator: Joi.object().type(configurables.Navigator).required(),
+      tab: Joi.object().type(configurables.Tab).required(),
     });
 
     Joi.assert(initObject, schema);
 
     Object.assign(this, initObject);
 
-    // Configurables
-    this.navigator = new configurables.Navigator();
-    this.tab = new configurables.Tab();
+    // Configurable Arrays
     this.dataSources = [];
     this.options = [];
     this.styles = [];
@@ -58,8 +58,8 @@ class Module {
 
   exportConfig() {
     return {
-      navigator: this.navigatorConfig.exportValue(),
-      tab: this.tabConfig.exportValue(),
+      navigator: this.navigator.exportValue(),
+      tab: this.tab.exportValue(),
       dataSources: this._export(this.dataSources),
       options: this._export(this.options),
       styles: this._export(this.styles),

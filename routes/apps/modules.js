@@ -39,16 +39,12 @@ router.post('/', (request, response, next) => {
   // TODO: Revisit and review this code.
   const { appId } = request.params;
   const { moduleName, moduleConfig, position } = request.body;
-  const module = appModules.initModule(moduleName, moduleConfig);
 
   AppModule.count({ where: { appId } }).then(appModulesCount => {
     if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 
-    // TODO: Move this sanitization into pre insert / update model logic.
-    return module.exportConfig(); // returns the cleaned module config
-  }).then((moduleConfig) => {
     return AppModule.create({ appId, moduleName, moduleConfig, position });
   }).then(appModule => {
     response.success(appModule);
@@ -63,19 +59,14 @@ router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
   // TODO: Revisit and review this code.
   const { appId, appModuleId } = request.params;
-  const { moduleConfig, navigatorConfig, tabConfig, position } = request.body;
+  const { moduleConfig, position } = request.body;
 
   AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
       throw new Error('patch app module error');
     }
 
-    if (moduleConfig) { // TODO: Move this sanitization into pre update model logic.
-      const module = appModules.initModule(appModule.moduleName, moduleConfig);
-
-      appModule.config = module.exportConfig();
-    }
-
+    appModule.moduleConfig = moduleConfig || appModule.moduleConfig;
     appModule.position = position || appModule.position;
 
     return appModule.save();

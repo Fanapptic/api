@@ -1,3 +1,5 @@
+const appModules = rootRequire('/appModules');
+
 /*
  * Model Definition
  */
@@ -16,6 +18,18 @@ const AppModule = database.define('appModules', {
   },
   moduleConfig: {
     type: Sequelize.JSON,
+    validate: {
+      isValid(value) {
+        // initModule throws when passed an invalid config.
+        const moduleName = this.getDataValue('moduleName');
+        const module = appModules.initModule(moduleName, value);
+
+        // exportConfig returns a sanitized config object.
+        this.setDataValue('moduleConfig', module.exportConfig());
+
+        return true;
+      },
+    },
   },
   navigatorConfig: {
     type: Sequelize.JSON,

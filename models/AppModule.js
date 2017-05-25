@@ -31,12 +31,6 @@ const AppModule = database.define('appModules', {
       },
     },
   },
-  navigatorConfig: {
-    type: Sequelize.JSON,
-  },
-  tabConfig: {
-    type: Sequelize.JSON,
-  },
   position: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },

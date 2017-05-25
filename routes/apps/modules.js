@@ -5,7 +5,6 @@
 const AppModule = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
-const appModules = rootRequire('/appModules');
 
 const router = express.Router({
   mergeParams: true,
@@ -36,7 +35,6 @@ router.get('/', (request, response, next) => {
 
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
-  // TODO: Revisit and review this code.
   const { appId } = request.params;
   const { moduleName, moduleConfig, position } = request.body;
 
@@ -57,7 +55,6 @@ router.post('/', (request, response, next) => {
 
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
-  // TODO: Revisit and review this code.
   const { appId, appModuleId } = request.params;
   const { moduleConfig, position } = request.body;
 

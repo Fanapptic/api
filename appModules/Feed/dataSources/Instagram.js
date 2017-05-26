@@ -1,6 +1,6 @@
-const DataSource = rootRequire('/libs/app/Module/configurables/DataSource');
+const Module = rootRequire('/libs/app/Module');
 
-module.exports = class extends DataSource {
+module.exports = class extends Module.CONFIGURABLES.DataSource {
   constructor() {
     super({
       internalName: 'instagram',

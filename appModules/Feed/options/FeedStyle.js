@@ -1,7 +1,6 @@
 const Module = rootRequire('/libs/app/Module');
-const Option = rootRequire('/libs/app/Module/configurables/Option');
 
-module.exports = class extends Option {
+module.exports = class extends Module.CONFIGURABLES.Option {
   constructor() {
     super({
       internalName: 'feedStyle',

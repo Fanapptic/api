@@ -1,6 +1,6 @@
-const Tab = rootRequire('/libs/app/Module/configurables/Tab');
+const Module = rootRequire('/libs/app/Module');
 
-module.exports = new Tab({
+module.exports = new Module.CONFIGURABLES.Tab({
   title: 'Feed',
   icon: {
     set: 'ion-icons',

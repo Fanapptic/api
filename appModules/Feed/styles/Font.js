@@ -1,7 +1,6 @@
 const Module = rootRequire('/libs/app/Module');
-const Style = rootRequire('/libs/app/Module/configurables/Style');
 
-module.exports = class extends Style {
+module.exports = class extends Module.CONFIGURABLES.Style {
   constructor() {
     super({
       internalName: 'font',

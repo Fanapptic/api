@@ -1,6 +1,6 @@
-const Navigator = rootRequire('/libs/app/Module/configurables/Navigator');
+const Module = rootRequire('/libs/app/Module');
 
-module.exports = new Navigator({
+module.exports = new Module.CONFIGURABLES.Navigator({
   navigationOptions: {
     title: 'Feed',
     headerTintColor: '#000',

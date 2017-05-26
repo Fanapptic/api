@@ -7,6 +7,10 @@ class Module {
     throw new Error('Class extending Module must override: static get moduleName()');
   }
 
+  static get CONFIGURABLES() {
+    return configurables;
+  }
+
   static get FIELDS() {
     return fields;
   }

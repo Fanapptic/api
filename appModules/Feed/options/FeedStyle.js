@@ -3,7 +3,7 @@ const Module = rootRequire('/libs/app/Module');
 module.exports = class extends Module.CONFIGURABLES.Option {
   constructor() {
     super({
-      internalName: 'feedStyle',
+      name: 'feedStyle',
       displayName: 'Feed Style',
       description: 'Modifies the display style of the feed.',
       field: Module.FIELDS.SELECT({

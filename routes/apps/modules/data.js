@@ -44,7 +44,7 @@ router.post('/', (request, response, next) => {
   const module = appModules.initModule(appModule.name);
 
   const dataSource = module.configurableDataSources.find(dataSource => {
-    return dataSource.internalName === dataSourceName;
+    return dataSource.name === dataSourceName;
   });
 
   if (!dataSource) {

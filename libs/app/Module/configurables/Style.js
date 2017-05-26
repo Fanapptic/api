@@ -7,7 +7,7 @@ class Style extends Configurable {
     super();
 
     const schema = Joi.object({
-      internalName: Joi.string().required(),
+      name: Joi.string().required(),
       displayName: Joi.string().required(),
       description: Joi.string().required(),
       field: fields.schema,

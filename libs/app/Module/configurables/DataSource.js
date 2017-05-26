@@ -7,7 +7,7 @@ class DataSource extends Configurable {
     super();
 
     const schema = Joi.object({
-      internalName: Joi.string().required(),
+      name: Joi.string().required(),
       displayName: Joi.string().required(),
       description: Joi.string().required(),
       options: Joi.array().items(Joi.object().type(Option)).optional(),
@@ -52,7 +52,7 @@ class DataSource extends Configurable {
     }
 
     const options = this.options.reduce((exportObject, option) => {
-      exportObject[option.internalName] = option.exportValue();
+      exportObject[option.name] = option.exportValue();
     });
 
     return { options };
@@ -63,11 +63,11 @@ class DataSource extends Configurable {
       return true;
     }
 
-    return Object.keys(value.options).every(optionInternalName => {
-      const optionValue = value.options[optionInternalName];
+    return Object.keys(value.options).every(optionName => {
+      const optionValue = value.options[optionName];
 
       const option = this.options.find(option => {
-        return option.internalName === optionInternalName;
+        return option.name === optionName;
       });
 
       if (!option) {

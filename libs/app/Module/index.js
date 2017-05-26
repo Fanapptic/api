@@ -82,7 +82,7 @@ class Module {
 
   _export(targetConfigurableArray) {
     return targetConfigurableArray.reduce((exportObject, configurable) => {
-      exportObject[configurable.internalName] = configurable.exportValue();
+      exportObject[configurable.name] = configurable.exportValue();
 
       return exportObject;
     }, {});
@@ -93,7 +93,7 @@ class Module {
       const dataValue = data[dataKey];
 
       let configurable = targetConfigurableArray.find(configurable => {
-        return configurable.internalName === dataKey;
+        return configurable.name === dataKey;
       });
 
       if (!configurable) {

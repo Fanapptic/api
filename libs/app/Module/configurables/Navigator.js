@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const Configurable = require('./Configurable');
+const Configurable = require('../../Component/Configurable');
 
 const schema = Joi.object({
   backgroundGradient: Joi.array().items().optional(),

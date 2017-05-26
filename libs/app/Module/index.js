@@ -1,21 +1,19 @@
 const Joi = require('joi');
+const Component = require('../Component');
 const configurables = require('./configurables');
-const fields = require('./fields');
 
-class Module {
+class Module extends Component {
   static get moduleName() {
     throw new Error('Class extending Module must override: static get moduleName()');
   }
 
   static get CONFIGURABLES() {
-    return configurables;
-  }
-
-  static get FIELDS() {
-    return fields;
+    return Object.assign(configurables, Component.CONFIGURABLES);
   }
 
   constructor(initObject) {
+    super();
+
     const schema = Joi.object({
       name: Joi.string().required(),
       displayName: Joi.string().required(),
@@ -30,10 +28,7 @@ class Module {
 
     Object.assign(this, initObject);
 
-    // Configurable Arrays
     this.dataSources = [];
-    this.options = [];
-    this.styles = [];
   }
 
   addDataSource(Class) {
@@ -44,66 +39,22 @@ class Module {
     this.dataSources.push(new Class());
   }
 
-  addOption(Class) {
-    if (!(Class.prototype instanceof configurables.Option)) {
-      throw new Error('Invalid option class provided.');
-    }
-
-    this.options.push(new Class());
-  }
-
-  addStyle(Class) {
-    if (!(Class.prototype instanceof configurables.Style)) {
-      throw new Error('Invalid style class provided.');
-    }
-
-    this.styles.push(new Class());
-  }
-
   exportConfig() {
-    return {
+    return Object.assign({
       navigator: this.navigator.exportValue(),
       tab: this.tab.exportValue(),
-      dataSources: this._export(this.dataSources),
-      options: this._export(this.options),
-      styles: this._export(this.styles),
-    };
+      dataSources: this._exportConfigurableArray(this.dataSources),
+    }, super.exportConfig());
   }
 
   importConfig(config = {}) {
-    const { navigator, tab, dataSources, options, styles } = config;
+    super.importConfig(config);
+
+    const { navigator, tab, dataSources } = config;
 
     this.navigator.importValueAndValidate(navigator);
     this.tab.importValueAndValidate(tab);
-    this._import(this.dataSources, dataSources);
-    this._import(this.options, options);
-    this._import(this.styles, styles);
-  }
-
-  _export(targetConfigurableArray) {
-    return targetConfigurableArray.reduce((exportObject, configurable) => {
-      exportObject[configurable.name] = configurable.exportValue();
-
-      return exportObject;
-    }, {});
-  }
-
-  _import(targetConfigurableArray, data = {}) {
-    Object.keys(data).forEach(dataKey => {
-      const dataValue = data[dataKey];
-
-      let configurable = targetConfigurableArray.find(configurable => {
-        return configurable.name === dataKey;
-      });
-
-      if (!configurable) {
-        return;
-      }
-
-      if (!configurable.importValueAndValidate(dataValue)) {
-        throw new Error(`${dataKey} has an invalid value.`);
-      }
-    });
+    this._importConfigurableArray(this.dataSources, dataSources);
   }
 }
 

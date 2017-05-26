@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const Configurable = require('./Configurable');
+const Configurable = require('../Configurable');
 const fields = require('../fields');
 
 class Style extends Configurable {

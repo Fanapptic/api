@@ -1,6 +1,7 @@
 const Joi = require('joi');
-const Configurable = require('./Configurable');
-const Option = require('./Option');
+const Configurable = require('../../Component/Configurable');
+const Component = require('../../Component');
+const { Option } = Component.CONFIGURABLES;
 
 class DataSource extends Configurable {
   constructor(initObject) {

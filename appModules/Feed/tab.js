@@ -1,4 +1,4 @@
-const Module = rootRequire('/libs/app/Module');
+const Module = rootRequire('/libs/App/Module');
 
 module.exports = new Module.CONFIGURABLES.Tab({
   title: 'Feed',

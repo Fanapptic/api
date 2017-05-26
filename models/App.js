@@ -70,10 +70,7 @@ const App = database.define('apps', {
       },
     },
   },
-  statusBarConfig: {
-    type: Sequelize.JSON,
-  },
-  tabBarConfig: {
+  config: {
     type: Sequelize.JSON,
   },
   deployedVersion: {

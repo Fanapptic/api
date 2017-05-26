@@ -2,7 +2,7 @@
  * Module: Feed
  */
 
-const Module = rootRequire('/libs/app/Module');
+const Module = rootRequire('/libs/App/Module');
 const navigator = require('./navigator');
 const tab = require('./tab');
 const dataSources = require('./dataSources');

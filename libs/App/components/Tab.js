@@ -1,13 +1,33 @@
-const Joi = require('joi');
 const Component = require('../Component');
-const configurables = require('../configurables');
+const Configurable = require('../Configurable');
+const { Option } = require('../configurables');
 
 class Tab extends Component {
-  constructor(initObject) {
-    super(initObject, Joi.object({
-      title: Joi.object().type(configurables.Option).required(),
-      icon: Joi.object().type(configurables.Option).required(),
-    }));
+  constructor() {
+    super({
+      name: 'tab',
+      displayName: 'Tab',
+      description: 'The tab of the module.',
+    });
+
+    this.title = new Option({
+      name: 'title',
+      displayName: 'Title',
+      description: 'The title shown under the tab icon.',
+      field: Configurable.FIELDS.TEXT(),
+      defaultValue: 'Item',
+    });
+
+    this.icon = new Option({
+      name: 'icon',
+      displayName: 'Icon',
+      description: 'The icon shown for the tab.',
+      field: Configurable.FIELDS.ICON(),
+      defaultValue: {
+        name: 'question',
+        set: 'ion-icons',
+      },
+    });
   }
 }
 

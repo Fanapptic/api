@@ -11,6 +11,10 @@ class Module extends Component {
   }
 
   constructor(initObject) {
+    if (new.target === Component) {
+      throw new TypeError('Cannot construct Module instances directly.');
+    }
+
     super(initObject, Joi.object({
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 class Component {
-  constructor(initObject, overrideSchema) {
+  constructor(initObject = {}, overrideSchema = null) {
     if (new.target === Component) {
       throw new TypeError('Cannot construct Component instances directly.');
     }

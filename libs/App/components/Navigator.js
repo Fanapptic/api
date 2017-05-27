@@ -1,13 +1,25 @@
-const Joi = require('joi');
 const Component = require('../Component');
-const configurables = require('../configurables');
+const Configurable = require('../Configurable');
+const NavigationOptions = require('./NavigationOptions');
+const { Option } = require('../configurables');
 
 class Navigator extends Component {
-  constructor(initObject) {
-    super(initObject, Joi.object({
-      backgroundGradient: Joi.object().type(configurables.Option).optional(),
-      navigationOptions: Joi.object().type(Component).required(),
-    }));
+  constructor() {
+    super({
+      name: 'navigator',
+      displayName: 'Navigator',
+      description: 'The top header of the module.',
+    });
+
+    this.backgroundGradient = new Option({
+      name: 'backgroundGradient',
+      displayName: 'Background Gradient',
+      description: 'The background gradient of the header.',
+      field: Configurable.FIELDS.GRADIENT(),
+      defaultValue: '#000000,#FFFFFF',
+    });
+
+    this.navigationOptions = new NavigationOptions();
   }
 }
 

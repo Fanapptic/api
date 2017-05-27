@@ -20,6 +20,7 @@ class Configurable {
         Joi.string().optional(),
         Joi.number().optional(),
         Joi.boolean().optional(),
+        Joi.object().optional(),
       ],
     });
 

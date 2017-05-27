@@ -1,6 +1,6 @@
-const Module = rootRequire('/libs/App/Module');
+const { DataSource } = rootRequire('/libs/App/components');
 
-module.exports = class extends Module.CONFIGURABLES.DataSource {
+module.exports = class extends DataSource {
   constructor() {
     super({
       name: 'facebook',

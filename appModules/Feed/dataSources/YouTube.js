@@ -1,17 +1,19 @@
-const Module = rootRequire('/libs/App/Module');
+const Configurable = rootRequire('/libs/App/Configurable');
+const { DataSource } = rootRequire('/libs/App/components');
+const { Option } = rootRequire('/libs/App/configurables');
 
-module.exports = class extends Module.CONFIGURABLES.DataSource {
+module.exports = class extends DataSource {
   constructor() {
     super({
       name: 'youtube',
       displayName: 'YouTube',
       description: 'Display YouTube video feed content.',
       options: [
-        new Module.CONFIGURABLES.Option({
+        new Option({
           name: 'channel',
           displayName: 'Channel',
           description: 'Your YouTube channel',
-          field: Module.FIELDS.SELECT({
+          field: Configurable.FIELDS.SELECT({
             options: [
               {
                 name: 'Default',

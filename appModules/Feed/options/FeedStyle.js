@@ -1,12 +1,13 @@
-const Module = rootRequire('/libs/App/Module');
+const Configurable = rootRequire('/libs/App/Configurable');
+const { Option } = rootRequire('/libs/App/configurables');
 
-module.exports = class extends Module.CONFIGURABLES.Option {
+module.exports = class extends Option {
   constructor() {
     super({
       name: 'feedStyle',
       displayName: 'Feed Style',
       description: 'Modifies the display style of the feed.',
-      field: Module.FIELDS.SELECT({
+      field: Configurable.FIELDS.SELECT({
         options: [
           {
             name: 'Collection',

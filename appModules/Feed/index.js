@@ -2,9 +2,7 @@
  * Module: Feed
  */
 
-const { Module } = rootRequire('/libs/App/components');
-const navigator = require('./navigator');
-const tab = require('./tab');
+const { Module, Navigator, Tab } = rootRequire('/libs/App/components');
 const dataSources = require('./dataSources');
 const options = require('./options');
 const styles = require('./styles');
@@ -21,8 +19,8 @@ class Feed extends Module {
       description: 'Display an aggregate feed of your content from multiple sources.',
       moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
       //injectedJavaScript: '',
-      navigator,
-      tab,
+      navigator: new Navigator(),
+      tab: new Tab(),
     });
 
     /*
@@ -46,7 +44,5 @@ class Feed extends Module {
     this.addStyle(styles.Font);
   }
 }
-
-const test = new Feed();
 
 module.exports = Feed;

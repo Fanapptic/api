@@ -4,12 +4,6 @@ const { Option, Style } = require('../configurables');
 
 class NavigationOptions extends Component {
   constructor() {
-/*    super(initObject, Joi.object({
-      title: Joi.object().type(configurables.Option).required(),
-      headerTintColor: Joi.object().type(configurables.Option).required(),
-      headerStyle: Joi.array().items(Joi.object().type(configurables.Style)).optional(),
-    }));*/
-
     super({
       name: 'navigationOptions',
       displayName: 'Naviation Options',

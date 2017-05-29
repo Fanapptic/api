@@ -24,8 +24,8 @@ const AppModule = database.define('appModules', {
         const moduleName = this.getDataValue('moduleName');
         const module = appModules.initModule(moduleName, value);
 
-        // exportConfig returns a sanitized config object.
-        this.setDataValue('moduleConfig', module.exportConfig());
+        // export returns a sanitized config object.
+        this.setDataValue('moduleConfig', module.export());
 
         return true;
       },

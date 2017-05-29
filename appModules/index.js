@@ -21,7 +21,7 @@ module.exports = {
     }
 
     const module = new ModuleClass();
-    module.importConfig(moduleConfig);
+    module.import(moduleConfig);
 
     return module;
   },

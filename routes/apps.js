@@ -47,10 +47,7 @@ router.patch('/', (request, response, next) => {
     app.iconUrl = request.body.iconUrl || app.iconUrl;
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;
-
-    // these will need validating in the model class..
-    app.statusBarConfig = request.body.statusBarConfig || app.statusBarConfig;
-    app.tabBarConfig = request.body.tabBarConfig || app.tabBarConfig;
+    app.config = request.body.config || app.config;
 
     return app.save();
   }).then(app => {

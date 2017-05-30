@@ -27,28 +27,28 @@ class Module extends Component {
     this.styles = [];
   }
 
-  addDataSource(Class) {
-    if (!(Class.prototype instanceof DataSource)) {
-      throw new Error('A DataSource class must be provided.');
+  addDataSource(dataSource) {
+    if (!(dataSource instanceof DataSource)) {
+      throw new Error('A DataSource instance must be provided.');
     }
 
-    this.dataSources.push(new Class());
+    this.dataSources.push(dataSource);
   }
 
-  addOption(Class) {
-    if (!(Class.prototype instanceof configurables.Option)) {
-      throw new Error('A Option class must be provided.');
+  addOption(option) {
+    if (!(option instanceof configurables.Option)) {
+      throw new Error('A Option instance must be provided.');
     }
 
-    this.options.push(new Class());
+    this.options.push(option);
   }
 
-  addStyle(Class) {
-    if (!(Class.prototype instanceof configurables.Style)) {
-      throw new Error('A Style class must be provided.');
+  addStyle(style) {
+    if (!(style instanceof configurables.Style)) {
+      throw new Error('A Style instance must be provided.');
     }
 
-    this.styles.push(new Class());
+    this.styles.push(style);
   }
 }
 

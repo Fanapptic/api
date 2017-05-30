@@ -27,22 +27,28 @@ class Feed extends Module {
      * Data Sources
      */
 
-    this.addDataSource(dataSources.Facebook);
-    this.addDataSource(dataSources.Instagram);
-    this.addDataSource(dataSources.YouTube);
+    this.addDataSource(new dataSources.Facebook());
+    this.addDataSource(new dataSources.Instagram());
+    this.addDataSource(new dataSources.YouTube());
 
     /*
      * Options
      */
 
-    this.addOption(options.FeedStyle);
+    this.addOption(new options.FeedStyle());
 
     /*
      * Styles
      */
 
-    this.addStyle(styles.Font);
+    this.addStyle(new styles.Font());
   }
 }
+
+const test = new Feed();
+const App = rootRequire('/libs/App');
+const app = new App();
+
+console.log(app.export());
 
 module.exports = Feed;

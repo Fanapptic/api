@@ -34,7 +34,11 @@ class Configurable {
   }
 
   export() {
-    return this.value;
+    return this.value || this.defaultValue;
+  }
+
+  exportPackagedConfig() {
+    return this.export();
   }
 
   import(data) {

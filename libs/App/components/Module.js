@@ -50,6 +50,16 @@ class Module extends Component {
 
     this.styles.push(style);
   }
+
+  exportPackagedConfig() {
+    return {
+      name: this.name,
+      navigator: this.navigator.exportPackagedConfig(),
+      tab: this.tab.exportPackagedConfig(),
+      moduleUrl: this.moduleUrl,
+      injectedJavaScript: this.injectedJavaScript,
+    };
+  }
 }
 
 module.exports = Module;

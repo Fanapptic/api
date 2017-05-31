@@ -47,6 +47,33 @@ class Component {
     return recurse(this);
   }
 
+  exportPackagedConfig() {
+    const excludeKeys = [ 'name', 'displayName', 'description'];
+
+    const recurse = object => {
+      return Object.keys(object).reduce((result, key) => {
+        if (excludeKeys.includes(key)) {
+          return result;
+        }
+
+        const value = object[key];
+
+        if (Array.isArray(value)) {
+          result[key] = recurse(value);
+        }
+
+        if (value instanceof Component || value instanceof Configurable) {
+          key = (Array.isArray(object)) ? value.name : key;
+          result[key] = value.exportPackagedConfig();
+        }
+
+        return result;
+      }, {});
+    };
+
+    return recurse(this);
+  }
+
   import(data = {}) {
     const recurse = (object, data) => {
       Object.keys(object).forEach(key => {

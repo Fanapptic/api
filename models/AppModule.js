@@ -4,7 +4,7 @@ const appModules = rootRequire('/appModules');
  * Model Definition
  */
 
-const AppModule = database.define('appModules', {
+const AppModuleModel = database.define('appModules', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -40,4 +40,4 @@ const AppModule = database.define('appModules', {
  * Export
  */
 
-module.exports = AppModule;
+module.exports = AppModuleModel;

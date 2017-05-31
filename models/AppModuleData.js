@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppModuleData = database.define('appModuleData', {
+const AppModuleDataModel = database.define('appModuleData', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -20,4 +20,4 @@ const AppModuleData = database.define('appModuleData', {
  * Export
  */
 
-module.exports = AppModuleData;
+module.exports = AppModuleDataModel;

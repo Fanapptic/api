@@ -2,7 +2,7 @@
  * Route: /apps/:appId?
  */
 
-const App = rootRequire('/models/App');
+const AppModel = rootRequire('/models/App');
 
 const router = express.Router({
   mergeParams: true,
@@ -17,11 +17,11 @@ router.get('/', (request, response, next) => {
   const { appId } = request.params;
 
   if (appId) {
-    App.find({ where: { id: appId, userId } }).then(app => {
+    AppModel.find({ where: { id: appId, userId } }).then(app => {
       response.success(app);
     }).catch(next);
   } else {
-    App.findAll({ where: { userId } }).then(apps => {
+    AppModel.findAll({ where: { userId } }).then(apps => {
       response.success(apps);
     }).catch(next);
   }
@@ -35,7 +35,7 @@ router.patch('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
 
-  App.find({ where: { id: appId, userId } }).then(app => {
+  AppModel.find({ where: { id: appId, userId } }).then(app => {
     if (!app) {
       throw new Error('The app does not exist.');
     }

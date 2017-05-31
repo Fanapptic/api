@@ -2,7 +2,7 @@
  * Route: /apps/:appId/modules/:appModuleId?
  */
 
-const AppModule = rootRequire('/models/AppModule');
+const AppModuleModel = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
@@ -19,11 +19,11 @@ router.get('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
   if (appModuleId) {
-    return AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
+    return AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
       response.success(appModule);
     }).catch(next);
   } else {
-    return AppModule.findAll({ where: { appId } }).then(appModules => {
+    return AppModuleModel.findAll({ where: { appId } }).then(appModules => {
       response.success(appModules);
     }).catch(next);
   }
@@ -38,12 +38,12 @@ router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { moduleName, moduleConfig, position } = request.body;
 
-  AppModule.count({ where: { appId } }).then(appModulesCount => {
+  AppModuleModel.count({ where: { appId } }).then(appModulesCount => {
     if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
     }
 
-    return AppModule.create({ appId, moduleName, moduleConfig, position });
+    return AppModuleModel.create({ appId, moduleName, moduleConfig, position });
   }).then(appModule => {
     response.success(appModule);
   }).catch(next);
@@ -58,7 +58,7 @@ router.patch('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
   const { moduleConfig, position } = request.body;
 
-  AppModule.find({ where: { id: appModuleId, appId } }).then(appModule => {
+  AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
       throw new Error('patch app module error');
     }
@@ -80,7 +80,7 @@ router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
-  AppModule.destroy({ where: { id: appModuleId, appId } }).then(() => {
+  AppModuleModel.destroy({ where: { id: appModuleId, appId } }).then(() => {
     response.success();
   }).catch(next);
 });

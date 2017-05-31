@@ -2,7 +2,7 @@
  * Route: /apps/:appId/deployments/:appDeploymentId?
  */
 
-const AppDeployment = rootRequire('/models/AppDeployment');
+const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -18,11 +18,11 @@ router.get('/', (request, response, next) => {
   const { appId, appDeploymentId } = request.params;
 
   if (appDeploymentId) {
-    AppDeployment.find({ where: { id: appDeploymentId, appId } }).then(appDeployment => {
+    AppDeploymentModel.find({ where: { id: appDeploymentId, appId } }).then(appDeployment => {
       response.success(appDeployment);
     }).catch(next);
   } else {
-    AppDeployment.findAll({ where: { appId } }).then(appDeployments => {
+    AppDeploymentModel.findAll({ where: { appId } }).then(appDeployments => {
       response.success(appDeployments);
     }).catch(next);
   }

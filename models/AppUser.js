@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppUser = database.define('appUsers', {
+const AppUserModel = database.define('appUsers', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -22,4 +22,4 @@ const AppUser = database.define('appUsers', {
  * Export
  */
 
-module.exports = AppUser;
+module.exports = AppUserModel;

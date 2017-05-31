@@ -2,8 +2,7 @@
  * Route: /apps/:appId/modules/:appModuleId/data/:appModuleDataId?
  */
 
-const AppModule = rootRequire('/models/AppModule');
-const AppModuleData = rootRequire('/models/AppModuleData');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appModuleAuthorize = rootRequire('/middlewares/apps/modules/authorize');
 const appModules = rootRequire('/appModules');
@@ -21,11 +20,11 @@ router.get('/', (request, response, next) => {
   const { appModuleId, appModuleDataId } = request.params;
 
   if (appModuleDataId) {
-    AppModuleData.find({ where: { id: appModuleDataId, appModuleId } }).then(appModuleData => {
+    AppModuleDataModel.find({ where: { id: appModuleDataId, appModuleId } }).then(appModuleData => {
       response.success(appModuleData);
     }).catch(next);
   } else {
-    AppModuleData.findAll({ where: { appModuleId } }).then(appModuleDatas => {
+    AppModuleDataModel.findAll({ where: { appModuleId } }).then(appModuleDatas => {
       response.success(appModuleDatas);
     }).catch(next);
   }

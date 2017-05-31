@@ -4,8 +4,8 @@
 
 const auth = require('basic-auth');
 
-const User = rootRequire('/models/User');
-const App = rootRequire('/models/App');
+const UserModel = rootRequire('/models/User');
+const AppModel = rootRequire('/models/App');
 
 const router = express.Router({
   mergeParams: true,
@@ -26,7 +26,7 @@ router.get('/', (request, response, next) => {
 
   let user = null;
 
-  User.findOne({ where: { email } }).then(userInstance => {
+  UserModel.findOne({ where: { email } }).then(userInstance => {
     user = userInstance;
 
     if (!user) {
@@ -53,7 +53,7 @@ router.post('/', (request, response, next) => {
   let user = null;
 
   return database.transaction(transaction => {
-    return User.create({
+    return UserModel.create({
       email,
       password,
       firstName,
@@ -62,7 +62,7 @@ router.post('/', (request, response, next) => {
     }, { transaction }).then(userInstance => {
       user = userInstance;
 
-      return App.create({ userId: user.id }, { transaction });
+      return AppModel.create({ userId: user.id }, { transaction });
     }).then(() => {
       response.success(user);
     });

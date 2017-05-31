@@ -5,7 +5,7 @@ const phone = require('phone');
  * Model Definition
  */
 
-const User = database.define('users', {
+const UserModel = database.define('users', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -72,11 +72,11 @@ const User = database.define('users', {
  * Instance Methods / Overrides
  */
 
-User.prototype.comparePassword = function(password) {
+UserModel.prototype.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-User.prototype.toJSON = function() {
+UserModel.prototype.toJSON = function() {
   let user = this.get();
   delete user.password; // We never want to return the user's password.
 
@@ -87,4 +87,4 @@ User.prototype.toJSON = function() {
  * Export
  */
 
-module.exports = User;
+module.exports = UserModel;

@@ -1,8 +1,10 @@
+const App = rootRequire('/libs/App');
+
 /*
  * Model Definition
  */
 
-const App = database.define('apps', {
+const AppModel = database.define('apps', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -72,6 +74,11 @@ const App = database.define('apps', {
   },
   config: {
     type: Sequelize.JSON,
+    validate: {
+      isValid(value) {
+
+      },
+    },
   },
   deployedVersion: {
     type: Sequelize.STRING,
@@ -82,4 +89,4 @@ const App = database.define('apps', {
  * Export
  */
 
-module.exports = App;
+module.exports = AppModel;

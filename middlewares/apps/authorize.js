@@ -3,13 +3,13 @@
  * Possible Route Usage: /apps/:appId/*
  */
 
-const App = rootRequire('/models/App');
+const AppModel = rootRequire('/models/App');
 
 module.exports = (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
 
-  App.find({
+  AppModel.find({
     where: {
       id: appId,
       userId,

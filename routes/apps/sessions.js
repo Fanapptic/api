@@ -2,9 +2,9 @@
  * Route: /apps/:appId/sessions/:appSessionId?
  */
 
-const App = rootRequire('/models/App');
-const AppSession = rootRequire('/models/AppSession');
-const AppUser = rootRequire('/models/AppUser');
+const AppModel = rootRequire('/models/App');
+const AppSessionModel = rootRequire('/models/AppSession');
+const AppUserModel = rootRequire('/models/AppUser');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -20,11 +20,11 @@ router.get('/', (request,  response, next) => {
   const { appId, appSessionId } = request.params;
 
   if (appSessionId) {
-    AppSession.find({ where: { id: appSessionId, appId } }).then(appSession => {
+    AppSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
       response.success(appSession);
     }).catch(next);
   } else {
-    AppSession.findAll({ where: { appId } }).then(appSessions => {
+    AppSessionModel.findAll({ where: { appId } }).then(appSessions => {
       response.success(appSessions);
     }).catch(next);
   }
@@ -38,12 +38,12 @@ router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { appUserId } = request.body;
 
-  AppUser.find({ where: { id: appUserId, appId } }).then(appUser => {
+  AppUserModel.find({ where: { id: appUserId, appId } }).then(appUser => {
     if (!appUser) {
       throw new Error('The user provided does not belong to the application provided.');
     }
 
-    return AppSession.create({ appId, appUserId });
+    return AppSessionModel.create({ appId, appUserId });
   }).catch(next);
 });
 
@@ -55,7 +55,7 @@ router.patch('/', (request, response, next) => {
   const { appId, appSessionId } = request.params;
   const { appUserId } = request.body;
 
-  AppSession.find({ where: { id: appSessionId, appId, appUserId } }).then(appSession => {
+  AppSessionModel.find({ where: { id: appSessionId, appId, appUserId } }).then(appSession => {
     if (!appSession) {
       throw new Error('app session patch error');
     }

@@ -1,27 +1,27 @@
-const App = rootRequire('/models/App');
-const AppDeployment = rootRequire('/models/AppDeployment');
-const AppRevenue = rootRequire('/models/AppRevenue');
-const AppModule = rootRequire('/models/AppModule');
-const AppModuleData = rootRequire('/models/AppModuleData');
-const AppPushNotification = rootRequire('/models/AppPushNotification');
-const AppSession = rootRequire('/models/AppSession');
-const AppUser = rootRequire('/models/AppUser');
+const AppModel = rootRequire('/models/App');
+const AppDeploymentModel = rootRequire('/models/AppDeployment');
+const AppRevenueModel = rootRequire('/models/AppRevenue');
+const AppModuleModel = rootRequire('/models/AppModule');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
+const AppPushNotificationModel = rootRequire('/models/AppPushNotification');
+const AppSessionModel = rootRequire('/models/AppSession');
+const AppUserModel = rootRequire('/models/AppUser');
 
-const Currency = rootRequire('/models/Currency');
-const User = rootRequire('/models/User');
+const CurrencyModel = rootRequire('/models/Currency');
+const UserModel = rootRequire('/models/User');
 
-App.hasMany(AppDeployment);
-App.hasMany(AppModule);
-App.hasMany(AppPushNotification);
-App.hasMany(AppRevenue);
-App.hasMany(AppSession);
-App.hasMany(AppUser);
-AppModule.hasMany(AppModuleData);
-AppUser.hasMany(AppSession);
+AppModel.hasMany(AppDeploymentModel);
+AppModel.hasMany(AppModuleModel);
+AppModel.hasMany(AppPushNotificationModel);
+AppModel.hasMany(AppRevenueModel);
+AppModel.hasMany(AppSessionModel);
+AppModel.hasMany(AppUserModel);
+AppModuleModel.hasMany(AppModuleDataModel);
+AppUserModel.hasMany(AppSessionModel);
 
-Currency.hasMany(AppRevenue);
-User.hasMany(App);
+CurrencyModel.hasMany(AppRevenueModel);
+UserModel.hasMany(AppModel);
 
 database.sync({
-  force: true,
+//  force: true,
 });

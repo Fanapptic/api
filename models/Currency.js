@@ -4,7 +4,7 @@ const currencies = rootRequire('/config/currencies');
  * Model Definition
  */
 
-const Currency = database.define('currencies', {
+const CurrencyModel = database.define('currencies', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -35,7 +35,7 @@ const Currency = database.define('currencies', {
  * Instance Hooks
  */
 
-Currency.hook('afterSync', function() {
+CurrencyModel.hook('afterSync', function() {
   return this.count({
     limit: 1,
   }).then((currenciesCount) => {
@@ -49,4 +49,4 @@ Currency.hook('afterSync', function() {
  * Export
  */
 
-module.exports = Currency;
+module.exports = CurrencyModel;

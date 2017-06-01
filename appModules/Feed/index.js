@@ -18,7 +18,7 @@ class Feed extends Module {
       displayName: 'Feed',
       description: 'Display an aggregate feed of your content from multiple sources.',
       moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
-      //injectedJavaScript: '',
+//      injectedJavaScript: 'js',
       navigator: new Navigator(),
       tab: new Tab(),
     });
@@ -44,11 +44,5 @@ class Feed extends Module {
     this.addStyle(new styles.Font());
   }
 }
-
-const test = new Feed();
-const App = rootRequire('/libs/App');
-const app = new App();
-
-console.log(app.export());
 
 module.exports = Feed;

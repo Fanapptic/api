@@ -23,7 +23,10 @@ class App extends Component {
   }
 
   export() {
-    let result = super.export();
+    let target = Object.assign({}, this);
+    delete target.modules;
+
+    let result = super.export(target);
 
     return result;
   }

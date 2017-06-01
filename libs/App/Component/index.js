@@ -22,7 +22,7 @@ class Component {
     Object.assign(this, initObject);
   }
 
-  export() {
+  export(target = this) {
     const recurse = object => {
       return Object.keys(object).reduce((result, key) => {
         const value = object[key];
@@ -44,7 +44,7 @@ class Component {
       }, {});
     };
 
-    return recurse(this);
+    return recurse(target);
   }
 
   exportPackagedConfig() {

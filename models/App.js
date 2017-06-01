@@ -76,7 +76,15 @@ const AppModel = database.define('apps', {
     type: Sequelize.JSON,
     validate: {
       isValid(value) {
+        const app = new App();
 
+        // import throws when passed an invalid config.
+        app.import(value);
+
+        // export returns a sanitized config object.
+        this.setDataValue('config', app.export());
+
+        return true;
       },
     },
   },

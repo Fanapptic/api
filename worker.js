@@ -3,6 +3,7 @@ const app = express();
 
 const port = process.env.PORT || 8000;
 
+require('./setup/globals');
 rootRequire('/setup/prototypes');
 rootRequire('/setup/models');
 rootRequire('/setup/middlewares')(app);

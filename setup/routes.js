@@ -20,7 +20,6 @@ module.exports = (app) => {
   app.use('/users', usersRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.
-    //console.log(error);
     response.error(error.message);
   });
 

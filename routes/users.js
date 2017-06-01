@@ -48,7 +48,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { email, password, firstName, lastName, phoneNumber } = request.body;
+  const { email, password, firstName, lastName, phoneNumber, paypalEmail } = request.body;
 
   let user = null;
 
@@ -59,6 +59,7 @@ router.post('/', (request, response, next) => {
       firstName,
       lastName,
       phoneNumber,
+      paypalEmail,
     }, { transaction }).then(userInstance => {
       user = userInstance;
 
@@ -81,6 +82,7 @@ router.patch('/', (request, response, next) => {
   user.firstName = request.body.firstName || user.firstName;
   user.lastName = request.body.lastName || user.lastName;
   user.phoneNumber = request.body.phoneNumber || user.phoneNumber;
+  user.paypalEmail = request.body.paypalEmail || user.paypalEmail;
 
   user.save().then(() => {
     response.success(user);

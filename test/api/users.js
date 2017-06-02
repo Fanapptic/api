@@ -31,16 +31,16 @@ describe('Users', () => {
    */
 
   describe('POST /users', () => {
-    it('200s with created user object.', (done) => {
-      const fields = {
-        email: 'aTestEmail@fanapptic.com',
-        password: 'aTestPassword',
-        firstName: 'First',
-        lastName: 'Last',
-        phoneNumber: '+12062415243',
-        paypalEmail: 'test@paypal.com',
-      };
+    const fields = {
+      email: 'aTestEmail@fanapptic.com',
+      password: 'aTestPassword',
+      firstName: 'First',
+      lastName: 'Last',
+      phoneNumber: '+12062415243',
+      paypalEmail: 'test@paypal.com',
+    };
 
+    it('200s with created user object.', (done) => {
       chai.request(server)
         .post('/users')
         .send(fields)
@@ -64,7 +64,7 @@ describe('Users', () => {
     it('400s when email address is in use', (done) => {
       chai.request(server)
         .post('/users')
-        .send(testUser)
+        .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
 

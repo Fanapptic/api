@@ -42,7 +42,10 @@ class Configurable {
   }
 
   import(data) {
-    this.field.validate(data);
+    if (!this.field.validate(data)) {
+      throw new Error(`"${data}" is not an allowed value for ${this.name}`);
+    }
+
     this.value = data;
   }
 }

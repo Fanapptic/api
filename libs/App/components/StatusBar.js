@@ -14,23 +14,25 @@ class StatusBar extends Component {
       name: 'barStyle',
       displayName: 'Bar Style',
       description: 'The display style of the top status bar',
-      field: Configurable.FIELDS.SELECT([
-        {
-          name: 'Default',
-          value: 'default',
-          tooltip: 'Default style bar on both iOS and Android.',
-        },
-        {
-          name: 'Light',
-          value: 'light-content',
-          tooltip: 'Light colored status bar text.',
-        },
-        {
-          name: 'Dark',
-          value: 'dark-content',
-          tooltip: 'Dark colored status bar text.',
-        },
-      ]),
+      field: Configurable.FIELDS.SELECT({
+        options: [
+          {
+            name: 'Default',
+            value: 'default',
+            tooltip: 'Default style bar on both iOS and Android.',
+          },
+          {
+            name: 'Light',
+            value: 'light-content',
+            tooltip: 'Light colored status bar text.',
+          },
+          {
+            name: 'Dark',
+            value: 'dark-content',
+            tooltip: 'Dark colored status bar text.',
+          },
+        ],
+      }),
       defaultValue: 'default',
     });
 

@@ -18,6 +18,10 @@ router.get('/', (request, response, next) => {
 
   if (appId) {
     AppModel.find({ where: { id: appId, userId } }).then(app => {
+      if (!app) {
+        throw new Error('The app does not exist.');
+      }
+
       response.success(app);
     }).catch(next);
   } else {

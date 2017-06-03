@@ -6,6 +6,7 @@ global.chai = require('chai');
 global.chaiHttp = require('chai-http');
 global.server = 'http://localhost:8000';
 global.testUser = {
+  id: '',
   email: 'tester@fanapptic.com',
   password: 'testpassword',
   accessToken: '',
@@ -36,8 +37,8 @@ before(done => {
   fatLog('Testing DB connection...');
 
   sequelize.authenticate().then(() => {
+    fatLog('Truncating DB...');
     sequelize.transaction((transaction) => {
-      fatLog('Truncating DB...');
 
       return sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { transaction }).then(() => {
         return sequelize.query(`
@@ -57,11 +58,13 @@ before(done => {
 
         return Promise.all(truncatePromises);
       });
+
     }).then(() => {
       fatLog('Creating global test user in DB...');
 
       return chai.request(server).post('/users').send(testUser);
     }).then((response) => {
+      testUser.id = response.body.id;
       testUser.accessToken = response.body.accessToken;
     }).then(() => {
       fatLog('Starting tests...');

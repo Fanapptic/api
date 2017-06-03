@@ -1,10 +1,21 @@
+const helpers = require('../helpers');
+
+let scopedUser = {
+  email: 'aTestEmail@fanapptic.com',
+  password: 'aTestPassword',
+  firstName: 'First',
+  lastName: 'Last',
+  phoneNumber: '+12062415243',
+  paypalEmail: 'test@paypal.com',
+};
+
 describe('Users', () => {
   /*
    * GET
    */
 
   describe('GET /users', () => {
-    it('200s with authenticated user object.', (done) => {
+    it('200s with authenticated user object', (done) => {
       chai.request(server)
         .get('/users')
         .auth(testUser.email, testUser.password)
@@ -15,7 +26,7 @@ describe('Users', () => {
         });
     });
 
-    it('400s when authentication is invalid.', (done) => {
+    it('400s when authentication is invalid', (done) => {
       chai.request(server)
         .get('/users')
         .auth('someinvaliduser@test.com', 'somebadpassword')
@@ -31,32 +42,23 @@ describe('Users', () => {
    */
 
   describe('POST /users', () => {
-    const fields = {
-      email: 'aTestEmail@fanapptic.com',
-      password: 'aTestPassword',
-      firstName: 'First',
-      lastName: 'Last',
-      phoneNumber: '+12062415243',
-      paypalEmail: 'test@paypal.com',
-    };
-
-    it('200s with created user object.', (done) => {
+    it('200s with created user object', (done) => {
       chai.request(server)
         .post('/users')
-        .send(fields)
+        .send(scopedUser)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.a('object');
           response.body.id.should.be.a('number');
           response.body.accessToken.should.be.a('string');
-          response.body.email.should.equal(fields.email);
-          response.body.firstName.should.equal(fields.firstName);
-          response.body.lastName.should.equal(fields.lastName);
-          response.body.phoneNumber.should.equal(fields.phoneNumber);
-          response.body.paypalEmail.should.equal(fields.paypalEmail);
+          response.body.email.should.equal(scopedUser.email);
+          response.body.firstName.should.equal(scopedUser.firstName);
+          response.body.lastName.should.equal(scopedUser.lastName);
+          response.body.phoneNumber.should.equal(scopedUser.phoneNumber);
+          response.body.paypalEmail.should.equal(scopedUser.paypalEmail);
 
-          testUser.accessToken = response.body.accessToken;
-
+          scopedUser.id = response.body.id;
+          scopedUser.accessToken = response.body.accessToken;
           done();
         });
     });
@@ -64,10 +66,9 @@ describe('Users', () => {
     it('400s when email address is in use', (done) => {
       chai.request(server)
         .post('/users')
-        .send(fields)
+        .send(scopedUser)
         .end((error, response) => {
           response.should.have.status(400);
-
           done();
         });
     });
@@ -78,7 +79,7 @@ describe('Users', () => {
    */
 
   describe('PATCH /users', () => {
-    it('200s with updated user object.', (done) => {
+    it('200s with updated user object', (done) => {
       const fields = {
         email: 'aNewEmail@gmail.com',
         password: 'aNewPassword',
@@ -90,7 +91,7 @@ describe('Users', () => {
 
       chai.request(server)
         .patch('/users')
-        .set('X-Access-Token', testUser.accessToken)
+        .set('X-Access-Token', scopedUser.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
@@ -101,24 +102,21 @@ describe('Users', () => {
           response.body.lastName.should.equal(fields.lastName);
           response.body.phoneNumber.should.equal(fields.phoneNumber);
           response.body.paypalEmail.should.equal(fields.paypalEmail);
-
           done();
         });
     });
 
-    it('400s when updated email address is in use.', (done) => {
-      // TODO: Write this test.
-      done();
-    });
-
-    it('401s when authorization is invalid.', (done) => {
+    it('400s when updated email address is in use', (done) => {
       chai.request(server)
         .patch('/users')
-        .set('X-Access-Token', 'some bad token')
+        .set('X-Access-Token', scopedUser.accessToken)
+        .send({ email: testUser.email })
         .end((error, response) => {
-          response.should.have.status(401);
+          response.should.have.status(400);
           done();
         });
     });
+
+    helpers.it401sWhenAuthorizationIsInvalid('/users');
   });
 });

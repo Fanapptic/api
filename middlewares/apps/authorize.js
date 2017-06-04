@@ -1,5 +1,6 @@
 /*
  * App Ownership Authorization For Matching Routes
+ * Must be mounted after authorize.
  * Possible Route Usage: /apps/:appId/*
  */
 

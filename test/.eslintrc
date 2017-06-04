@@ -7,6 +7,8 @@
       "chai": true,
       "chaiHttp": true,
       "server": true,
+      "appId": true,
       "testUser": true,
+      "testAppUser": true,
     },
 }

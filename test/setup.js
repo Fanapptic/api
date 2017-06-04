@@ -5,14 +5,23 @@
 global.chai = require('chai');
 global.chaiHttp = require('chai-http');
 global.server = 'http://localhost:8000';
+
+global.appId = 1;
+
 global.testUser = {
-  id: '',
+  id: null,
   email: 'tester@fanapptic.com',
   password: 'testpassword',
-  accessToken: '',
+  accessToken: null,
   firstName: 'Fanapptic',
   lastName: 'Man',
   phoneNumber: '+12535452412',
+};
+
+global.testAppUser = {
+  id: null,
+  appId: null,
+  uuid: null,
 };
 
 chai.should();
@@ -64,9 +73,12 @@ before(done => {
 
       return chai.request(server).post('/users').send(testUser);
     }).then((response) => {
-      testUser.id = response.body.id;
-      testUser.accessToken = response.body.accessToken;
-    }).then(() => {
+      Object.assign(testUser, response.body);
+      fatLog('Creating global test app user in DB...');
+
+      return chai.request(server).post('/apps/1/users');
+    }).then((response) => {
+      Object.assign(testAppUser, response.body);
       fatLog('Starting tests...');
       done();
     });

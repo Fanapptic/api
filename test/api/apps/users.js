@@ -1,7 +1,5 @@
 const helpers = require('../../helpers');
 
-const appId = 1;
-
 describe('App Users', () => {
   /*
    * POST
@@ -50,7 +48,7 @@ describe('App Users', () => {
         });
     });
 
-    it('200s with app user object owned by app when passed app user id.', (done) => {
+    it('200s with app user object owned by app when passed app user id', (done) => {
       chai.request(server)
         .get(`/apps/${appId}/users/1`)
         .set('X-Access-Token', testUser.accessToken)
@@ -62,7 +60,7 @@ describe('App Users', () => {
         });
     });
 
-    it('400s when passed invalid app user id.', (done) => {
+    it('400s when passed invalid app user id', (done) => {
       chai.request(server)
         .get(`/apps/${appId}/users/1241241`)
         .set('X-Access-Token', testUser.accessToken)
@@ -73,5 +71,6 @@ describe('App Users', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/users');
+    helpers.it401sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/users');
   });
 });

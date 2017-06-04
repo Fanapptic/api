@@ -23,6 +23,10 @@ router.get('/', (request,  response, next) => {
 
   if (appSessionId) {
     AppSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
+      if (!appSession) {
+        throw new Error('The app session does not exist.');
+      }
+
       response.success(appSession);
     }).catch(next);
   } else {
@@ -46,6 +50,8 @@ router.post('/', (request, response, next) => {
     }
 
     return AppSessionModel.create({ appId, appUserId });
+  }).then(appSession => {
+    response.success(appSession);
   }).catch(next);
 });
 
@@ -55,14 +61,13 @@ router.post('/', (request, response, next) => {
 
 router.patch('/', (request, response, next) => {
   const { appId, appSessionId } = request.params;
-  const { appUserId } = request.body;
 
-  AppSessionModel.find({ where: { id: appSessionId, appId, appUserId } }).then(appSession => {
-    if (!appSession) {
-      throw new Error('app session patch error');
+  AppSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
+    if (!appSession || appSession.endedAt) {
+      throw new Error('The app session is invalid.');
     }
 
-    appSession.duration = 1; // TODO: calculate this, maybe refactor this.
+    appSession.endedAt = new Date();
 
     return appSession.save();
   }).then((appSession) => {

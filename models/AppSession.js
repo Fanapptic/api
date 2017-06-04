@@ -14,9 +14,16 @@ const AppSessionModel = database.define('appSessions', {
   appUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
-  durationSeconds: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
+  startedAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
   },
+  endedAt: {
+    type: Sequelize.DATE,
+  },
+}, {
+  timestamps: false,
+  paranoid: false,
 });
 
 /*

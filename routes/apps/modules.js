@@ -22,6 +22,10 @@ router.get('/', (request, response, next) => {
 
   if (appModuleId) {
     return AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
+      if (!appModule) {
+        throw new Error('The app module does not exist.');
+      }
+
       response.success(appModule);
     }).catch(next);
   } else {
@@ -80,6 +84,7 @@ router.patch('/', (request, response, next) => {
  * DELETE
  */
 
+router.patch('/', authorize);
 router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;

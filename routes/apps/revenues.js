@@ -21,8 +21,12 @@ router.get('/', (request, response, next) => {
 
   if (appRevenueId) {
     AppRevenueModel.find({ where: { id: appRevenueId, appId } }).then(appRevenue => {
+      if (!appRevenue) {
+        throw new Error('The app revenue does not exist.');
+      }
+
       response.success(appRevenue);
-    });
+    }).catch(next);
   } else {
     AppRevenueModel.findAll({ where: { appId } }).then(appRevenues => {
       response.success(appRevenues);

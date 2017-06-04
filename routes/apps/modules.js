@@ -4,6 +4,7 @@
 
 const AppModuleModel = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
+const authorize = rootRequire('/middlewares/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -14,6 +15,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
@@ -33,6 +35,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
+router.post('/', authorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
@@ -53,6 +56,7 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
+router.patch('/', authorize);
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;

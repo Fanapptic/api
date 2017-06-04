@@ -3,6 +3,7 @@
  */
 
 const appModules = rootRequire('/appModules');
+const authorize = rootRequire('/middlewares/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -12,6 +13,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', (request, response) => {
   const { moduleName } = request.params;
 

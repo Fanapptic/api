@@ -3,6 +3,7 @@
  */
 
 const AppModuleDataModel = rootRequire('/models/AppModuleData');
+const authorize = rootRequire('/middlewares/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appModuleAuthorize = rootRequire('/middlewares/apps/modules/authorize');
 const appModules = rootRequire('/appModules');
@@ -34,6 +35,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
+router.post('/', authorize);
 router.post('/', appAuthorize);
 router.post('/', appModuleAuthorize);
 router.post('/', (request, response, next) => {

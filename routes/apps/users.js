@@ -3,6 +3,7 @@
  */
 
 const AppUserModel = rootRequire('/models/AppUser');
+const authorize = rootRequire('/middlewares/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -13,12 +14,17 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const { appId, appUserId } = request.params;
 
   if (appUserId) {
     AppUserModel.find({ where: { id: appUserId, appId } }).then(appUser => {
+      if (!appUser) {
+        throw new Error('The app user does not exist.');
+      }
+
       response.success(appUser);
     }).catch(next);
   } else {

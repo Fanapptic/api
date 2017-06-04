@@ -3,6 +3,7 @@
  */
 
 const AppModel = rootRequire('/models/App');
+const authorize = rootRequire('/middlewares/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -12,6 +13,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
@@ -35,6 +37,7 @@ router.get('/', (request, response, next) => {
  * PATCH
  */
 
+router.patch('/', authorize);
 router.patch('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;

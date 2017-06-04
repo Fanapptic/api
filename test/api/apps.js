@@ -2,51 +2,6 @@ const helpers = require('../helpers');
 
 describe('Apps', () => {
   /*
-   * GET
-   */
-
-  describe('GET /apps', () => {
-    it('200s with array of app objects owned by user', (done) => {
-      chai.request(server)
-        .get('/apps')
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body.forEach(appObject => {
-            appObject.should.be.a('object');
-            appObject.userId.should.equal(testUser.id);
-          });
-          done();
-        });
-    });
-
-    it('200s with app object owned by user when passed app id', (done) => {
-      chai.request(server)
-        .get('/apps/1')
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.an('object');
-          response.body.userId.should.equal(testUser.id);
-          done();
-        });
-    });
-
-    it('400s when passed invalid app id', (done) => {
-      chai.request(server)
-        .get('/apps/1241241')
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps');
-  });
-
-  /*
    * PATCH
    */
 
@@ -135,5 +90,51 @@ describe('Apps', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('patch', '/apps');
+  });
+
+  /*
+   * GET
+   */
+
+  describe('GET /apps', () => {
+    it('200s with array of app objects owned by user', (done) => {
+      chai.request(server)
+        .get('/apps')
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body.length.should.be.at.least(1);
+          response.body.forEach(appObject => {
+            appObject.should.be.an('object');
+            appObject.userId.should.equal(testUser.id);
+          });
+          done();
+        });
+    });
+
+    it('200s with app object owned by user when passed app id', (done) => {
+      chai.request(server)
+        .get('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.userId.should.equal(testUser.id);
+          done();
+        });
+    });
+
+    it('400s when passed invalid app id', (done) => {
+      chai.request(server)
+        .get('/apps/1241241')
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
+    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps');
   });
 });

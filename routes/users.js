@@ -6,6 +6,7 @@ const auth = require('basic-auth');
 
 const UserModel = rootRequire('/models/User');
 const AppModel = rootRequire('/models/App');
+const authorize = rootRequire('/middlewares/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -74,6 +75,7 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
+router.patch('/', authorize);
 router.patch('/', (request, response, next) => {
   const user = request.user;
 

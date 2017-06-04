@@ -5,6 +5,7 @@
 const AppModel = rootRequire('/models/App');
 const AppSessionModel = rootRequire('/models/AppSession');
 const AppUserModel = rootRequire('/models/AppUser');
+const authorize = rootRequire('/middlewares/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -15,6 +16,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', appAuthorize);
 router.get('/', (request,  response, next) => {
   const { appId, appSessionId } = request.params;

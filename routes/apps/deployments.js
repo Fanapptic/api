@@ -3,6 +3,7 @@
  */
 
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
+const authorize = rootRequire('/middlewares/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -13,6 +14,7 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', authorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const { appId, appDeploymentId } = request.params;
@@ -32,6 +34,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
+router.post('/', authorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   // TODO: Write this logic for deployments, submitting queue data, etc.
@@ -41,6 +44,7 @@ router.post('/', (request, response, next) => {
  * DELETE
  */
 
+router.delete('/', authorize);
 router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
  // TODO: Write the pending deployment rollback logic.

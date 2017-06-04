@@ -11,33 +11,6 @@ let scopedUser = {
 
 describe('Users', () => {
   /*
-   * GET
-   */
-
-  describe('GET /users', () => {
-    it('200s with authenticated user object', (done) => {
-      chai.request(server)
-        .get('/users')
-        .auth(testUser.email, testUser.password)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.a('object');
-          done();
-        });
-    });
-
-    it('400s when authentication is invalid', (done) => {
-      chai.request(server)
-        .get('/users')
-        .auth('someinvaliduser@test.com', 'somebadpassword')
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-  });
-
-  /*
    * POST
    */
 
@@ -48,7 +21,7 @@ describe('Users', () => {
         .send(scopedUser)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.a('object');
+          response.body.should.be.an('object');
           response.body.id.should.be.a('number');
           response.body.accessToken.should.be.a('string');
           response.body.email.should.equal(scopedUser.email);
@@ -95,7 +68,7 @@ describe('Users', () => {
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.a('object');
+          response.body.should.be.an('object');
           response.body.id.should.be.a('number');
           response.body.email.should.equal(fields.email);
           response.body.firstName.should.equal(fields.firstName);
@@ -118,5 +91,32 @@ describe('Users', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('patch', '/users');
+  });
+
+  /*
+   * GET
+   */
+
+  describe('GET /users', () => {
+    it('200s with authenticated user object', (done) => {
+      chai.request(server)
+        .get('/users')
+        .auth(testUser.email, testUser.password)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          done();
+        });
+    });
+
+    it('400s when authentication is invalid', (done) => {
+      chai.request(server)
+        .get('/users')
+        .auth('someinvaliduser@test.com', 'somebadpassword')
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
   });
 });

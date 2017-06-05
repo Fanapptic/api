@@ -22,6 +22,10 @@ router.get('/', (request, response, next) => {
 
   if (appModuleDataId) {
     AppModuleDataModel.find({ where: { id: appModuleDataId, appModuleId } }).then(appModuleData => {
+      if (!appModuleData) {
+        throw new Error('The app module data does not exist.');
+      }
+
       response.success(appModuleData);
     }).catch(next);
   } else {
@@ -52,7 +56,7 @@ router.post('/', (request, response, next) => {
     throw new Error(`This module does not have a data source of "${dataSourceName}".`);
   }
 
-  // refactor configurableDataSource to dataSource?
+
 });
 
  /*

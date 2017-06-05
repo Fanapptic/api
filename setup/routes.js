@@ -1,6 +1,7 @@
 const appsRouter = rootRequire('/routes/apps');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
 const appModulesRouter = rootRequire('/routes/apps/modules');
+const appModulesDataRouter = rootRequire('/routes/apps/modules/data');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
 const appUsersRouter = rootRequire('/routes/apps/users');
@@ -12,6 +13,7 @@ module.exports = (app) => {
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
+  app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModulesDataRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
@@ -20,6 +22,14 @@ module.exports = (app) => {
   app.use('/users', usersRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.
+    /*console.log('===========================');
+    console.log(request.method, request.path);
+    console.log('===========================');
+    console.log(error);
+    for (let i = 0; i < 10; i++) {
+      console.log('');
+    }*/
+
     response.error(error.message);
   });
 

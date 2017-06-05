@@ -16,7 +16,7 @@ module.exports = (request, response, next) => {
     limit: 1,
   }).then(appModule => {
     if (!appModule) {
-      return response.error(403, 'The module accessed is not owned by this app.');
+      return response.respond(403, 'The module accessed is not owned by this app.');
     }
 
     request.appModule = appModule;

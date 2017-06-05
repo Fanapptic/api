@@ -23,3 +23,14 @@ module.exports.it401sWhenPassedAppIdNotOwnedByUser = (method, route) => {
       });
   });
 };
+
+module.exports.it403sWhenPassedAppModuleIdNotOwnedByApp = (method, route) => {
+  it('403 when passed app module id not owned by app', (done) => {
+    chai.request(server)[method](route)
+      .set('X-Access-Token', testUser.accessToken)
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+  });
+};

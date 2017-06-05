@@ -24,13 +24,23 @@ global.testAppUser = {
   uuid: null,
 };
 
+global.testAppModule = {
+  id: null,
+  appId: appId,
+  moduleName: 'feed',
+  position: 0,
+};
+
 chai.should();
 chai.use(chaiHttp);
 
 /*
  * Test Connection
  * Truncate DB
- * Create Global Test User In DB
+ * Create Global Test User + App In DB
+ * Create Global Test App User In DB
+ * Create Global Test App Module In DB
+ * Start Tests
  */
 
 const Sequelize = require('sequelize');
@@ -47,7 +57,7 @@ before(done => {
 
   sequelize.authenticate().then(() => {
     fatLog('Truncating DB...');
-    sequelize.transaction((transaction) => {
+    sequelize.transaction(transaction => {
 
       return sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { transaction }).then(() => {
         return sequelize.query(`
@@ -56,7 +66,7 @@ before(done => {
           WHERE table_schema in ('${database.database}');`,
           { transaction }
         );
-      }).then((results) => {
+      }).then(results => {
         let truncatePromises = [];
 
         results[0].forEach(result => {
@@ -69,16 +79,25 @@ before(done => {
       });
 
     }).then(() => {
-      fatLog('Creating global test user in DB...');
+      fatLog('Creating global test user & app in DB...');
 
       return chai.request(server).post('/users').send(testUser);
-    }).then((response) => {
+    }).then(response => {
       Object.assign(testUser, response.body);
       fatLog('Creating global test app user in DB...');
 
       return chai.request(server).post('/apps/1/users');
-    }).then((response) => {
+    }).then(response => {
       Object.assign(testAppUser, response.body);
+      fatLog('Creating global test app module in DB...');
+
+      return chai.request(server)
+        .post('/apps/1/modules')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(testAppModule);
+    }).then(response => {
+      Object.assign(testAppModule, response.body);
+
       fatLog('Starting tests...');
       done();
     });

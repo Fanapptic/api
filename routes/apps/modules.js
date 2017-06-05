@@ -89,7 +89,7 @@ router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
-  AppModuleModel.destroy({ where: { id: appModuleId, appId } }).then((affectedRows) => {
+  AppModuleModel.destroy({ where: { id: appModuleId, appId } }).then(affectedRows => {
     if (!affectedRows) {
       throw new Error('The app module does not exist.');
     }

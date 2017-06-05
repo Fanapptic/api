@@ -10,5 +10,6 @@
       "appId": true,
       "testUser": true,
       "testAppUser": true,
+      "testAppModule": true,
     },
 }

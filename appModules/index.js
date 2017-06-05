@@ -25,7 +25,7 @@ module.exports = {
 
     return module;
   },
-  getModuleClass: (moduleName) => {
+  getModuleClass: moduleName => {
     return moduleClasses[moduleName];
   },
 };

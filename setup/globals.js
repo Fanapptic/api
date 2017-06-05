@@ -2,7 +2,7 @@ const path = require('path');
 
 const rootPath = __dirname.replace('/setup', '');
 
-global.rootRequire = (filePath) => {
+global.rootRequire = filePath => {
   return require(path.join(rootPath, filePath));
 };
 

@@ -70,7 +70,7 @@ router.patch('/', (request, response, next) => {
     appSession.endedAt = new Date();
 
     return appSession.save();
-  }).then((appSession) => {
+  }).then(appSession => {
     response.success(appSession);
   }).catch(next);
 });

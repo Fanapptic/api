@@ -3,7 +3,7 @@ module.exports = (overrides = {}) => {
 
   return {
     name: 'icon',
-    validate: validate || ((input) => {
+    validate: validate || (input => {
       return (input) ? true : false;
     }),
   };

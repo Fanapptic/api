@@ -6,7 +6,7 @@ describe('App Revenues', () => {
    */
 
   describe('GET /apps/{appId}/revenues', () => {
-    it('200s with an array of app revenue objects owned by app', (done) => {
+    it('200s with an array of app revenue objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/revenues`)
         .set('X-Access-Token', testUser.accessToken)
@@ -25,7 +25,7 @@ describe('App Revenues', () => {
 //
 //    });
 
-    it('400s when passed invalid app revenue id', (done) => {
+    it('400s when passed invalid app revenue id', done => {
       chai.request(server)
         .get(`/apps/${appId}/revenues/124124`)
         .set('X-Access-Token', testUser.accessToken)

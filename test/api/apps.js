@@ -6,7 +6,7 @@ describe('Apps', () => {
    */
 
   describe('PATCH /apps', () => {
-    it('200s with updated app object and ignores properties not in config schema when passed config', (done) => {
+    it('200s with updated app object and ignores properties not in config schema when passed config', done => {
       const fields = {
         name: 'My cool app',
         shortDescription: 'A really awesome app.',
@@ -60,7 +60,7 @@ describe('Apps', () => {
         });
     });
 
-    it('400s when passed invalid config', (done) => {
+    it('400s when passed invalid config', done => {
       const fields = {
         config: {
           statusBar: {
@@ -79,7 +79,7 @@ describe('Apps', () => {
         });
     });
 
-    it('400s when passed invalid app id', (done) => {
+    it('400s when passed invalid app id', done => {
       chai.request(server)
         .patch('/apps/1241253')
         .set('X-Access-Token', testUser.accessToken)
@@ -97,7 +97,7 @@ describe('Apps', () => {
    */
 
   describe('GET /apps', () => {
-    it('200s with array of app objects owned by user', (done) => {
+    it('200s with array of app objects owned by user', done => {
       chai.request(server)
         .get('/apps')
         .set('X-Access-Token', testUser.accessToken)
@@ -113,7 +113,7 @@ describe('Apps', () => {
         });
     });
 
-    it('200s with app object owned by user when passed app id', (done) => {
+    it('200s with app object owned by user when passed app id', done => {
       chai.request(server)
         .get('/apps/1')
         .set('X-Access-Token', testUser.accessToken)
@@ -125,7 +125,7 @@ describe('Apps', () => {
         });
     });
 
-    it('400s when passed invalid app id', (done) => {
+    it('400s when passed invalid app id', done => {
       chai.request(server)
         .get('/apps/1241241')
         .set('X-Access-Token', testUser.accessToken)

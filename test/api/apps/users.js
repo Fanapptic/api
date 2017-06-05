@@ -6,7 +6,7 @@ describe('App Users', () => {
    */
 
   describe('POST /apps/{appId}/users', () => {
-    it('200s with created app user object owned by app', (done) => {
+    it('200s with created app user object owned by app', done => {
       chai.request(server)
         .post(`/apps/${appId}/users`)
         .end((error, response) => {
@@ -17,7 +17,7 @@ describe('App Users', () => {
         });
     });
 
-    it('400s when passed invalid app id', (done) => {
+    it('400s when passed invalid app id', done => {
       chai.request(server)
         .post('/apps/9494949/users')
         .end((error, response) => {
@@ -32,7 +32,7 @@ describe('App Users', () => {
    */
 
   describe('GET /apps/{appId}/users', () => {
-    it('200s with array of app user objects owned by app', (done) => {
+    it('200s with array of app user objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/users`)
         .set('X-Access-Token', testUser.accessToken)
@@ -48,7 +48,7 @@ describe('App Users', () => {
         });
     });
 
-    it('200s with app user object owned by app when passed app user id', (done) => {
+    it('200s with app user object owned by app when passed app user id', done => {
       chai.request(server)
         .get(`/apps/${appId}/users/1`)
         .set('X-Access-Token', testUser.accessToken)
@@ -60,7 +60,7 @@ describe('App Users', () => {
         });
     });
 
-    it('400s when passed invalid app user id', (done) => {
+    it('400s when passed invalid app user id', done => {
       chai.request(server)
         .get(`/apps/${appId}/users/1241241`)
         .set('X-Access-Token', testUser.accessToken)

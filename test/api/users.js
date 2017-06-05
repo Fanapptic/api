@@ -15,7 +15,7 @@ describe('Users', () => {
    */
 
   describe('POST /users', () => {
-    it('200s with created user object', (done) => {
+    it('200s with created user object', done => {
       chai.request(server)
         .post('/users')
         .send(scopedUser)
@@ -36,7 +36,7 @@ describe('Users', () => {
         });
     });
 
-    it('400s when email address is in use', (done) => {
+    it('400s when email address is in use', done => {
       chai.request(server)
         .post('/users')
         .send(scopedUser)
@@ -52,7 +52,7 @@ describe('Users', () => {
    */
 
   describe('PATCH /users', () => {
-    it('200s with updated user object', (done) => {
+    it('200s with updated user object', done => {
       const fields = {
         email: 'aNewEmail@gmail.com',
         password: 'aNewPassword',
@@ -79,7 +79,7 @@ describe('Users', () => {
         });
     });
 
-    it('400s when updated email address is in use', (done) => {
+    it('400s when updated email address is in use', done => {
       chai.request(server)
         .patch('/users')
         .set('X-Access-Token', scopedUser.accessToken)
@@ -98,7 +98,7 @@ describe('Users', () => {
    */
 
   describe('GET /users', () => {
-    it('200s with authenticated user object', (done) => {
+    it('200s with authenticated user object', done => {
       chai.request(server)
         .get('/users')
         .auth(testUser.email, testUser.password)
@@ -109,7 +109,7 @@ describe('Users', () => {
         });
     });
 
-    it('400s when authentication is invalid', (done) => {
+    it('400s when authentication is invalid', done => {
       chai.request(server)
         .get('/users')
         .auth('someinvaliduser@test.com', 'somebadpassword')

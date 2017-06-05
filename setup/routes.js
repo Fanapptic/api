@@ -9,7 +9,7 @@ const healthRouter = rootRequire('/routes/health');
 const modulesRouter = rootRequire('/routes/modules');
 const usersRouter = rootRequire('/routes/users');
 
-module.exports = (app) => {
+module.exports = app => {
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);

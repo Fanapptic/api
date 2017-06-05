@@ -11,7 +11,7 @@ module.exports.port = process.env.MYSQL_PORT || 3306;
 // Read Hosts
 module.exports.readHosts = [];
 
-readHosts.forEach((readHost) => {
+readHosts.forEach(readHost => {
   module.exports.readHosts.push({
     host: readHost,
     username: username,

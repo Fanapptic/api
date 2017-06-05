@@ -3,7 +3,7 @@
  */
 
 module.exports.it401sWhenAuthorizationIsInvalid = (method, route) => {
-  it('401s when authorization is invalid', (done) => {
+  it('401s when authorization is invalid', done => {
     chai.request(server)[method](route)
       .set('X-Access-Token', 'some bad token')
       .end((error, response) => {
@@ -14,7 +14,7 @@ module.exports.it401sWhenAuthorizationIsInvalid = (method, route) => {
 };
 
 module.exports.it401sWhenPassedAppIdNotOwnedByUser = (method, route) => {
-  it('401s when passed app id now owned by user', (done) => {
+  it('401s when passed app id now owned by user', done => {
     chai.request(server)[method](route)
       .set('X-Access-Token', testUser.accessToken)
       .end((error, response) => {
@@ -25,7 +25,7 @@ module.exports.it401sWhenPassedAppIdNotOwnedByUser = (method, route) => {
 };
 
 module.exports.it403sWhenPassedAppModuleIdNotOwnedByApp = (method, route) => {
-  it('403 when passed app module id not owned by app', (done) => {
+  it('403 when passed app module id not owned by app', done => {
     chai.request(server)[method](route)
       .set('X-Access-Token', testUser.accessToken)
       .end((error, response) => {

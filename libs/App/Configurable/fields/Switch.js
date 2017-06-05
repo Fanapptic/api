@@ -3,7 +3,7 @@ module.exports = (overrides = {}) => {
 
   return {
     name: 'switch',
-    validate: validate || ((input) => {
+    validate: validate || (input => {
       return (input) ? true : false;
     }),
   };

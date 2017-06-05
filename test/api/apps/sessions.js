@@ -6,7 +6,7 @@ describe('App Sessions', () => {
    */
 
   describe('POST /apps/{appId}/sessions', () => {
-    it('200s with created app session object owned by app', (done) => {
+    it('200s with created app session object owned by app', done => {
       const fields = {
         appUserId: testAppUser.id,
       };
@@ -24,7 +24,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('400s when passed invalid app id', (done) => {
+    it('400s when passed invalid app id', done => {
       const fields = {
         appUserId: testAppUser.id,
       };
@@ -44,7 +44,7 @@ describe('App Sessions', () => {
    */
 
   describe('PATCH /apps/{appId}/sessions', () => {
-    it('200s with ended app session object', (done) => {
+    it('200s with ended app session object', done => {
       chai.request(server)
         .patch(`/apps/${appId}/sessions/1`)
         .end((error, response) => {
@@ -58,7 +58,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('400s when patching ended app session', (done) => {
+    it('400s when patching ended app session', done => {
       chai.request(server)
         .patch(`/apps/${appId}/sessions/1`)
         .end((error, response) => {
@@ -67,7 +67,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('400s when passed invalid app id', (done) => {
+    it('400s when passed invalid app id', done => {
       chai.request(server)
         .patch('/apps/414124/sessions/1')
         .end((error, response) => {
@@ -76,7 +76,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('400s when passed invalid app session id', (done) => {
+    it('400s when passed invalid app session id', done => {
       chai.request(server)
         .patch(`/apps/${appId}/sessions/412412`)
         .end((error, response) => {
@@ -91,7 +91,7 @@ describe('App Sessions', () => {
    */
 
   describe('GET /apps/{appId}/sessions', () => {
-    it('200s with an array of app session objects owned by app', (done) => {
+    it('200s with an array of app session objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/sessions`)
         .set('X-Access-Token', testUser.accessToken)
@@ -107,7 +107,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('200s with app session object owned by app when passed app session id', (done) => {
+    it('200s with app session object owned by app when passed app session id', done => {
       chai.request(server)
         .get(`/apps/${appId}/sessions/1`)
         .set('X-Access-Token', testUser.accessToken)
@@ -119,7 +119,7 @@ describe('App Sessions', () => {
         });
     });
 
-    it('400s when passed invalid app session id', (done) => {
+    it('400s when passed invalid app session id', done => {
       chai.request(server)
         .get(`/apps/${appId}/sessions/4124124`)
         .set('X-Access-Token', testUser.accessToken)

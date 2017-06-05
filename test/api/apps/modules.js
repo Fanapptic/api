@@ -6,11 +6,38 @@ describe('App Modules', () => {
    */
 
   describe('POST /apps/{appId}/modules', () => {
-    it('200s with created app module object owned by app', (done) => {
-      const fields = {
-          
-      };
+    const fields = {
+      moduleName: 'feed',
+      moduleConfig: {
+        navigator: {
+          backgroundGradient: '#333333, #CCCCCC',
+          navigationOptions: {
+            title: 'Feed',
+            headerTintColor: '#FFFFFF',
+            headerStyle: {
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+            },
+          },
+        },
+        tab: {
+          title: 'Feed',
+          icon: {
+            name: 'ion-icons',
+            set: 'feed',
+          },
+        },
+        dataSources: {
+          youtube: {
+            options: {
+              channel: 'solomondron',
+            },
+          },
+        },
+      },
+      position: 0,
+    };
 
+    it('200s with created app module object owned by app', (done) => {
       chai.request(server)
         .post(`/apps/${appId}/modules`)
         .set('X-Access-Token', testUser.accessToken)
@@ -18,16 +45,47 @@ describe('App Modules', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-
+          response.body.appId.should.equal(appId + '');
+          response.body.moduleName.should.equal(fields.moduleName);
+          response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
+          response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
+          response.body.moduleConfig.dataSources.should.deep.include(fields.moduleConfig.dataSources);
+          response.body.position.should.equal(fields.position);
+          done();
         });
     });
 
-    it('400s when passed invalid config', (done) => {
-      done();
-    });
-
     it('400s when creating another module that passes the total modules limit', (done) => {
-      done();
+      let promises = [];
+
+      // module limit in /config/app.js is 5.
+      // The previous POST test counts for 1.
+      // This loop adds 4 more modules.
+      // The 6th should fail.
+
+      for (let i = 0; i < 4; i++) {
+        promises.push(
+          chai.request(server)
+            .post(`/apps/${appId}/modules`)
+            .set('X-Access-Token', testUser.accessToken)
+            .send(fields)
+        );
+      }
+
+      Promise.all(promises).then(() => {
+        promises.forEach(promise => {
+          promise.response.should.have.status(200);
+        });
+
+        chai.request(server)
+          .post(`/apps/${appId}/modules`)
+          .set('X-Access-Token', testUser.accessToken)
+          .send(fields)
+          .end((error, response) => {
+            response.should.have.status(400);
+            done();
+          });
+      });
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('post', '/apps/1/modules');
@@ -40,10 +98,6 @@ describe('App Modules', () => {
 
   describe('PATCH /apps/{appId}/modules', () => {
     it('200s with updated module object owned by app and ignores properties not in config schema when passed config', (done) => {
-      done();
-    });
-
-    it('400s when passed invalid config', (done) => {
       done();
     });
 

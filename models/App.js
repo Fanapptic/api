@@ -74,6 +74,7 @@ const AppModel = database.define('apps', {
   },
   config: {
     type: Sequelize.JSON,
+    allowNull: false,
     validate: {
       isValid(value) {
         const app = new App();
@@ -87,6 +88,7 @@ const AppModel = database.define('apps', {
         return true;
       },
     },
+    defaultValue: '',
   },
   deployedVersion: {
     type: Sequelize.STRING,

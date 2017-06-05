@@ -18,6 +18,7 @@ const AppModuleModel = database.define('appModules', {
   },
   moduleConfig: {
     type: Sequelize.JSON,
+    allowNull: false,
     validate: {
       isValid(value) {
         // initModule throws when passed an invalid config.
@@ -30,6 +31,7 @@ const AppModuleModel = database.define('appModules', {
         return true;
       },
     },
+    defaultValue: '',
   },
   position: {
     type: Sequelize.INTEGER(10).UNSIGNED,

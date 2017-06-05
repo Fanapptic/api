@@ -98,7 +98,49 @@ describe('App Modules', () => {
 
   describe('PATCH /apps/{appId}/modules', () => {
     it('200s with updated module object owned by app and ignores properties not in config schema when passed config', (done) => {
-      done();
+      const fields = {
+        moduleName: 'shouldnotchange',
+        moduleConfig: {
+          navigator: {
+            backgroundGradient: '#3A3A3A, #C1C1C1',
+            navigationOptions: {
+              title: 'Feed Yo',
+              headerTintColor: '#AAAAAA',
+              headerStyle: {
+                backgroundColor: 'rgba(1, 1, 1, 1)',
+              },
+            },
+          },
+          tab: {
+            title: 'Muh Cool Feed',
+            icon: {
+              name: 'fontawesome',
+              set: 'rocket',
+            },
+          },
+          pointlessConfig: {
+            someIgnoredItem: true,
+          },
+        },
+        position: 3,
+      };
+
+      chai.request(server)
+        .patch(`/apps/${appId}/modules/1`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.appId.should.equal(appId);
+          response.body.moduleName.should.not.equal(fields.moduleName);
+          response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
+          response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
+          response.body.moduleConfig.dataSources.should.be.an('object');
+          response.body.moduleConfig.should.not.have.property('pointlessConfig');
+          response.body.position.should.equal(fields.position);
+          done();
+        });
     });
 
     it('400s when passed invalid app module id', (done) => {
@@ -170,12 +212,19 @@ describe('App Modules', () => {
 
   describe('DELETE /apps/{appId}/modules', () => {
     it('200s with a 200 response code when passed app module id', (done) => {
-      done();
+      chai.request(server)
+        .delete(`/apps/${appId}/modules/1`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          console.log(response.body);
+          response.should.have.status(200);
+          done();
+        });
     });
 
     it('400s when passed invalid app module id', (done) => {
       chai.request(server)
-        .get(`/apps/${appId}/modules/412412`)
+        .delete(`/apps/${appId}/modules/412412`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(400);

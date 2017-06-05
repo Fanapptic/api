@@ -68,7 +68,7 @@ router.patch('/', (request, response, next) => {
 
   AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
-      throw new Error('patch app module error');
+      throw new Error('The app module does not exist.');
     }
 
     appModule.moduleConfig = moduleConfig || appModule.moduleConfig;
@@ -84,12 +84,16 @@ router.patch('/', (request, response, next) => {
  * DELETE
  */
 
-router.patch('/', authorize);
+router.delete('/', authorize);
 router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
-  AppModuleModel.destroy({ where: { id: appModuleId, appId } }).then(() => {
+  AppModuleModel.destroy({ where: { id: appModuleId, appId } }).then((affectedRows) => {
+    if (!affectedRows) {
+      throw new Error('The app module does not exist.');
+    }
+
     response.success();
   }).catch(next);
 });

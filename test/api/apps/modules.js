@@ -73,7 +73,6 @@ describe('App Modules', () => {
       }
 
       Promise.all(promises).then(() => {
-        console.log('all promises done');
         chai.request(server)
           .post(`/apps/${appId}/modules`)
           .set('X-Access-Token', testUser.accessToken)

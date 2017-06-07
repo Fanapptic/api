@@ -12,6 +12,7 @@ const AppModuleModel = database.define('appModules', {
   },
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   key: {
     type: Sequelize.UUID,
@@ -19,6 +20,7 @@ const AppModuleModel = database.define('appModules', {
   },
   moduleName: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   moduleConfig: {
     type: Sequelize.JSON,

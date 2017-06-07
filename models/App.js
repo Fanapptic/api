@@ -13,6 +13,7 @@ const AppModel = database.define('apps', {
   },
   userId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   bundleId: {
     type: Sequelize.STRING,

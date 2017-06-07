@@ -23,5 +23,5 @@ CurrencyModel.hasMany(AppRevenueModel);
 UserModel.hasMany(AppModel);
 
 database.sync({
-//  force: true,
+  force: true,
 });

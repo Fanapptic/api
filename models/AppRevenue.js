@@ -10,12 +10,15 @@ const AppRevenueModel = database.define('appRevenues', {
   },
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   currencyId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   type: {
     type: Sequelize.STRING,
+    allowNull: false,
     validate: {
       isIn: {
         args: [['ad']],
@@ -25,6 +28,7 @@ const AppRevenueModel = database.define('appRevenues', {
   },
   amount: {
     type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
   },
 });
 

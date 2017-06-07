@@ -10,9 +10,11 @@ const AppPushNotificationModel = database.define('appPushNotifications', {
   },
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   message: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   targetUrl: {
     type: Sequelize.STRING,

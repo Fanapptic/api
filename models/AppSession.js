@@ -10,9 +10,11 @@ const AppSessionModel = database.define('appSessions', {
   },
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   appUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   startedAt: {
     type: Sequelize.DATE,

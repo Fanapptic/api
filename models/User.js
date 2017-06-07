@@ -13,6 +13,7 @@ const UserModel = database.define('users', {
   },
   email: {
     type: Sequelize.STRING,
+    allowNull: false,
     unique: true,
     validate: {
       isEmail: {
@@ -22,6 +23,7 @@ const UserModel = database.define('users', {
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
     validate: {
       notEmpty: {
         msg: 'A password must be provided.',

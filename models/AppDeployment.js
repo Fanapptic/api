@@ -10,6 +10,7 @@ const AppDeploymentModel = database.define('appDeployments', {
   },
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
 });
 

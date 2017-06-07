@@ -30,6 +30,20 @@ describe('App Users', () => {
           done();
         });
     });
+
+    it('400s when passed invalid platform', done => {
+      const fields = {
+        platform: 'windows',
+      };
+
+      chai.request(server)
+        .post(`/apps/${appId}/users`)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });    
   });
 
   /*

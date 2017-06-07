@@ -12,6 +12,10 @@ class DataSource extends Component {
       options: Joi.array().items(Joi.object().type(Option)).optional(),
     }));
   }
+
+  handleReceivedData(request, response, next) {
+    throw new Error('handleRequest must be overriden.');
+  }
 }
 
 module.exports = DataSource;

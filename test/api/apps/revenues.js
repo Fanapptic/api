@@ -36,6 +36,6 @@ describe('App Revenues', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/revenues');
-    helpers.it401sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/revenues');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/revenues');
   });
 });

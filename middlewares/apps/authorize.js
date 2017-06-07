@@ -18,7 +18,7 @@ module.exports = (request, response, next) => {
     limit: 1,
   }).then(app => {
     if (!app) {
-      return response.respond(401, 'Insufficient application permissions.');
+      return response.respond(403, 'Insufficient app permissions.');
     }
 
     request.app = app;

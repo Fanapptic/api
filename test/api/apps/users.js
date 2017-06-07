@@ -71,6 +71,6 @@ describe('App Users', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/users');
-    helpers.it401sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/users');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/users');
   });
 });

@@ -51,6 +51,10 @@ class Module extends Component {
     this.styles.push(style);
   }
 
+  findDataSource(name) {
+    return this.dataSources.find(dataSource => dataSource.name === name);
+  }
+
   exportPackagedConfig() {
     return {
       name: this.name,

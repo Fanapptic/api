@@ -130,6 +130,6 @@ describe('App Sessions', () => {
     });
 
     helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/sessions');
-    helpers.it401sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/sessions');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/sessions');
   });
 });

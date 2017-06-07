@@ -44,19 +44,20 @@ router.post('/', appAuthorize);
 router.post('/', appModuleAuthorize);
 router.post('/', (request, response, next) => {
   const { appModule } = request;
-  const { dataSourceName } = request.query;
+  const { source, key } = request.query;
 
-  const module = appModules.initModule(appModule.name);
-
-  const dataSource = module.configurableDataSources.find(dataSource => {
-    return dataSource.name === dataSourceName;
-  });
-
-  if (!dataSource) {
-    throw new Error(`This module does not have a data source of "${dataSourceName}".`);
+  if (appModule.key !== key) {
+    response.response(403, 'Insufficient app module data permissions.');
   }
 
+  const module = appModules.initModule(appModule.moduleName, appModule.moduleConfig);
+  const dataSource = module.findDataSource(source);
 
+  if (!dataSource) {
+    throw new Error('Unsupported data source.');
+  }
+
+  dataSource.handleReceivedData(request, response, next);
 });
 
  /*

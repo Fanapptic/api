@@ -1,5 +1,5 @@
 const Component = require('./Component');
-const { StatusBar, TabBar, Module } = require('./components');
+const { Loading, StatusBar, TabBar, Module } = require('./components');
 
 class App extends Component {
   constructor() {
@@ -9,6 +9,7 @@ class App extends Component {
       description: 'Your application',
     });
 
+    this.loading = new Loading();
     this.statusBar = new StatusBar();
     this.tabBar = new TabBar();
     this.modules = [];

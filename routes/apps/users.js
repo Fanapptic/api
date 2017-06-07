@@ -40,8 +40,9 @@ router.get('/', (request, response, next) => {
 
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
+  const { platform } = request.body;
 
-  AppUserModel.create({ appId }).then(appUser => {
+  AppUserModel.create({ appId, platform }).then(appUser => {
     response.success(appUser);
   }).catch(next);
 });

@@ -22,6 +22,7 @@ global.testAppUser = {
   id: null,
   appId: null,
   uuid: null,
+  platform: 'ios',
 };
 
 global.testAppModule = {
@@ -86,7 +87,7 @@ before(done => {
       Object.assign(testUser, response.body);
       fatLog('Creating global test app user in DB...');
 
-      return chai.request(server).post('/apps/1/users');
+      return chai.request(server).post('/apps/1/users').send(testAppUser);
     }).then(response => {
       Object.assign(testAppUser, response.body);
       fatLog('Creating global test app module in DB...');
@@ -100,6 +101,8 @@ before(done => {
 
       fatLog('Starting tests...');
       done();
+    }).catch(error => {
+      console.log(error);
     });
   });
 });

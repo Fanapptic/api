@@ -1,4 +1,5 @@
 const App = rootRequire('/libs/App');
+const contentRatings = ['4+', '9+', '12+', '17+'];
 
 /*
  * Model Definition
@@ -64,10 +65,10 @@ const AppModel = database.define('apps', {
     },
   },
   contentRating: {
-    type: Sequelize.STRING,
+    type: Sequelize.ENUM(...contentRatings),
     validate: {
       isIn: {
-        args: [['4+', '9+', '12+', '17+']],
+        args: [contentRatings],
         msg: 'The content rating provided is invalid.',
       },
     },

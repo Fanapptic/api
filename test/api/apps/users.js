@@ -7,8 +7,13 @@ describe('App Users', () => {
 
   describe('POST /apps/{appId}/users', () => {
     it('200s with created app user object owned by app', done => {
+      const fields = {
+        platform: 'android',
+      };
+
       chai.request(server)
         .post(`/apps/${appId}/users`)
+        .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');

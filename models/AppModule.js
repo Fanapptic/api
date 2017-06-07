@@ -21,6 +21,15 @@ const AppModuleModel = database.define('appModules', {
   moduleName: {
     type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      isValid(value) {
+        if (!appModules.moduleClasses[value]) {
+          throw new Error('The module name provided is invalid.');
+        }
+
+        return true;
+      },
+    },
   },
   moduleConfig: {
     type: Sequelize.JSON,

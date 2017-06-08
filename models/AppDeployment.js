@@ -1,3 +1,5 @@
+const AppModel = rootRequire('/models/App');
+
 /*
  * Model Definition
  */
@@ -11,6 +13,19 @@ const AppDeploymentModel = database.define('appDeployments', {
   appId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
+  },
+  snapshot: {
+    type: Sequelize.JSON,
+    allowNull: false,
+    validate: {
+      isValid(value) {
+        if (!(value instanceof AppModel)) {
+          throw new Error('Snapshot must be an instance of AppModel.');
+        }
+
+        return true;
+      },
+    },
   },
 });
 

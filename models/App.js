@@ -101,8 +101,15 @@ const AppModel = database.define('apps', {
     },
     defaultValue: '',
   },
-  deployedVersion: {
-    type: Sequelize.STRING,
+}, {
+  getterMethods: {
+    app() {
+      const app = new App();
+
+      app.import(this.getDataValue('config'));
+
+      return app;
+    },
   },
 });
 

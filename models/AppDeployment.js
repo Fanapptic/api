@@ -1,3 +1,4 @@
+const Snapshot = rootRequire('/libs/App/Snapshot');
 const deploymentTypes = ['hard', 'soft'];
 
 /*
@@ -28,7 +29,9 @@ const AppDeploymentModel = database.define('appDeployments', {
     allowNull: false,
     validate: {
       isValid(value) {
-        // TODO: Validate somehow against app.generateSnapshot, maybe a helper class in libs?
+        if (!(value instanceof Snapshot)) {
+          throw new Error('Snapshot must be an instance of Snapshot.');
+        }
 
         return true;
       },

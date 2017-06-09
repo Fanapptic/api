@@ -1,5 +1,6 @@
 const App = rootRequire('/libs/App');
 const AppModuleModel = rootRequire('/models/AppModule');
+const Snapshot = rootRequire('/libs/App/Snapshot');
 const contentRatings = ['4+', '9+', '12+', '17+'];
 
 /*
@@ -125,7 +126,7 @@ AppModel.prototype.generateSnapshot = function() {
       app.addModule(appModule.generateModuleObject());
     });
 
-    return {
+    return new Snapshot({
       bundleId: this.bundleId,
       name: this.name,
       displayName: this.displayName,
@@ -136,7 +137,7 @@ AppModel.prototype.generateSnapshot = function() {
       website: this.website,
       contentRating: this.contentRating,
       packagedConfig: app.exportPackagedConfig(),
-    };
+    });
   });
 };
 

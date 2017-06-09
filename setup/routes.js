@@ -1,7 +1,9 @@
 const appsRouter = rootRequire('/routes/apps');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
+const appFieldsRouter = rootRequire('/routes/apps/fields');
 const appModulesRouter = rootRequire('/routes/apps/modules');
 const appModulesDataRouter = rootRequire('/routes/apps/modules/data');
+const appModulesFieldsRouter = rootRequire('/routes/apps/modules/fields');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
 const appUsersRouter = rootRequire('/routes/apps/users');
@@ -12,8 +14,10 @@ const usersRouter = rootRequire('/routes/users');
 module.exports = app => {
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
+  app.use('/apps/:appId/fields', appFieldsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
   app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModulesDataRouter);
+  app.use('/apps/:appId/modules/:appModuleId/fields', appModulesFieldsRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);

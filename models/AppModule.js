@@ -51,16 +51,15 @@ const AppModuleModel = database.define('appModules', {
   position: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
-}, {
-  getterMethods: {
-    module() {
-      const moduleName = this.getDataValue('moduleName');
-      const moduleConfig = this.getDataValue('moduleConfig');
-
-      return appModules.initModule(moduleName, moduleConfig);
-    },
-  },
 });
+
+/*
+ * Instance Methods / Overrides
+ */
+
+AppModuleModel.prototype.generateModuleObject = function() {
+  return appModules.initModule(this.moduleName, this.moduleConfig);
+};
 
 /*
  * Export

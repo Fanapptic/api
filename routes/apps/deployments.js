@@ -37,7 +37,48 @@ router.get('/', (request, response, next) => {
 router.post('/', authorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
-  // TODO: Write this logic for deployments, submitting queue data, etc.
+  const appId = request.app.id;
+  const DEPLOYMENT_TYPE_HARD = 'hard';
+  const DEPLOYMENT_TYPE_SOFT = 'soft';
+
+  let snapshot = null;
+  let appDeployment = null;
+
+  request.app.generateSnapshot().then(generatedSnapshot => {
+    snapshot = generatedSnapshot;
+
+    return AppDeploymentModel.find({
+      where: { appId },
+      order: [['createdAt', 'DESC']],
+    });
+  }).then(newestAppDeployment => {
+    if (!newestAppDeployment || newestAppDeployment.shouldHardDeploy(snapshot)) {
+      return DEPLOYMENT_TYPE_HARD;
+    }
+
+    if (newestAppDeployment.shouldSoftDeploy(snapshot)) {
+      return DEPLOYMENT_TYPE_SOFT;
+    }
+
+    return false;
+  }).then(deploymentType => {
+    if (!deploymentType) {
+      throw new Error('No changes have been made since your most recent deployment.');
+    }
+
+    return database.transaction(transaction => {
+      AppDeploymentModel.create({
+        appId,
+        deploymentType,
+        snapshot,
+      }, { transaction }).then(appDeploymentInstance => {
+        appDeployment = appDeploymentInstance;
+        appDeployment.deploy();
+      });
+    });
+  }).then(() => {
+    response.success(appDeployment);
+  }).catch(next);
 });
 
 /*

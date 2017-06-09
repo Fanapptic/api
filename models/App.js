@@ -1,4 +1,5 @@
 const App = rootRequire('/libs/App');
+const AppModuleModel = rootRequire('/models/AppModule');
 const contentRatings = ['4+', '9+', '12+', '17+'];
 
 /*
@@ -101,17 +102,43 @@ const AppModel = database.define('apps', {
     },
     defaultValue: '',
   },
-}, {
-  getterMethods: {
-    app() {
-      const app = new App();
-
-      app.import(this.getDataValue('config'));
-
-      return app;
-    },
-  },
 });
+
+/*
+ * Instance Methods / Overrides
+ */
+
+AppModel.prototype.generateAppObject = function() {
+  const app = new App();
+
+  app.import(this.config);
+
+  return app;
+};
+
+AppModel.prototype.generateSnapshot = function() {
+  const id = this.id;
+  const app = this.generateAppObject();
+
+  return AppModuleModel.findAll({ where: { appId: id } }).then(appModules => {
+    appModules.forEach(appModule => {
+      app.addModule(appModule.generateModuleObject());
+    });
+
+    return {
+      bundleId: this.bundleId,
+      name: this.name,
+      displayName: this.displayName,
+      shortDescription: this.shortDescription,
+      fullDescription: this.fullDescription,
+      keywords: this.keywords,
+      iconUrl: this.iconUrl,
+      website: this.website,
+      contentRating: this.contentRating,
+      packagedConfig: app.exportPackagedConfig(),
+    };
+  });
+};
 
 /*
  * Export

@@ -30,7 +30,7 @@ const AppDeploymentModel = database.define('appDeployments', {
     validate: {
       isValid(value) {
         if (!(value instanceof Snapshot)) {
-          throw new Error('Snapshot must be an instance of Snapshot.');
+          throw new Error('snapshot must be an instance of Snapshot.');
         }
 
         return true;
@@ -41,28 +41,6 @@ const AppDeploymentModel = database.define('appDeployments', {
     type: Sequelize.DATE,
   },
 });
-
-/*
- * Instance Methods / Overrides
- */
-
-AppDeploymentModel.shouldHardDeploy = function(againstSnapshot) {
-  for (let key in againstSnapshot) {
-    if (this.snapshot[key] != againstSnapshot[key] && againstSnapshot[key] !== 'object') {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-AppDeploymentModel.shouldSoftDeploy = function(againstSnapshot) {
-
-};
-
-AppDeploymentModel.deploy = function() {
-
-};
 
 /*
  * Export

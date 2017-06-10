@@ -1,4 +1,5 @@
 const App = rootRequire('/libs/App');
+const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppModuleModel = rootRequire('/models/AppModule');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const contentRatings = ['4+', '9+', '12+', '17+'];
@@ -117,7 +118,44 @@ AppModel.prototype.generateAppObject = function() {
   return app;
 };
 
-AppModel.prototype.generateSnapshot = function() {
+AppModel.prototype.deploy = function(previousDeployment) {
+  const DEPLOYMENT_TYPE_HARD = 'hard';
+  const DEPLOYMENT_TYPE_SOFT = 'soft';
+
+  let snapshot = null;
+
+  return this._generateSnapshot().then(generatedSnapshot => {
+    snapshot = generatedSnapshot;
+
+    if (this._shouldHardDeploy(previousDeployment, snapshot)) {
+      return DEPLOYMENT_TYPE_HARD;
+    }
+
+    if (this._shouldSoftDeploy(previousDeployment, snapshot)) {
+      return DEPLOYMENT_TYPE_SOFT;
+    }
+
+    throw new Error('No changes have been made since your most recent deployment.');
+  }).then(deploymentType => {
+    return database.transaction(transaction => {
+      return AppDeploymentModel.create({
+        appId: this.id,
+        deploymentType,
+        snapshot,
+      }, { transaction }).then(appDeployment => {
+        this._softDeploy(snapshot); // always soft deploy regardless of deployment type.
+
+        if (deploymentType === 'hard') {
+          this._hardDeploy(snapshot);
+        }
+
+        return appDeployment;
+      });
+    });
+  });
+};
+
+AppModel.prototype._generateSnapshot = function() {
   const id = this.id;
   const app = this.generateAppObject();
 
@@ -139,6 +177,24 @@ AppModel.prototype.generateSnapshot = function() {
       packagedConfig: app.exportPackagedConfig(),
     });
   });
+};
+
+AppModel.prototype._shouldHardDeploy = function(previousDeployment, snapshot) {
+  return true;
+};
+
+AppModel.prototype._shouldSoftDeploy = function(previousDeployment, snapshot) {
+  return true;
+};
+
+AppModel.prototype._hardDeploy = function(snapshot) {
+  console.log('hard deploy');
+  return true;
+};
+
+AppModel.prototype._softDeploy = function(snapshot) {
+  console.log('soft deploy');
+  return true;
 };
 
 /*

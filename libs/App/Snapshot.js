@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const _ = require('lodash');
 
 class Snapshot {
   static get DEPLOYMENT_TYPES() {
@@ -6,7 +7,7 @@ class Snapshot {
       HARD: 'hard',
       SOFT: 'soft',
     };
-  };
+  }
 
   constructor(initObject) {
     const schema = Joi.object({
@@ -38,25 +39,9 @@ class Snapshot {
   }
 
   requiresSoftDeploy(previousSnapshot) {
-    const recurse = (snapshotObject, previousSnapshotObject) => {
-      for (let key in snapshotObject) {
-        if (typeof snapshotObject[key] === 'object') {
-          if (typeof previousSnapshotObject[key] !== 'object') {
-            return true;
-          }
-
-          if (recurse(snapshotObject[key], previousSnapshotObject[key])) {
-            return true;
-          }
-        } else if (snapshotObject[key] != previousSnapshotObject[key]) {
-          return true;
-        }
-      }
-
-      return false;
-    };
-
-    return recurse(this, previousSnapshot);
+    // We have to stringify "this" and parse otherwise isEqual
+    // will always return false since "this" is not a generic object.
+    return !_.isEqual(JSON.parse(JSON.stringify(this)), previousSnapshot);
   }
 
   softDeploy() {

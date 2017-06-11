@@ -24,6 +24,7 @@ const AppModel = database.define('apps', {
   },
   name: {
     type: Sequelize.STRING,
+    defaultValue: 'My App',
   },
   displayName: {
     type: Sequelize.STRING,
@@ -33,6 +34,7 @@ const AppModel = database.define('apps', {
         msg: 'Display name cannot exceed a total of 11 characters.',
       },
     },
+    defaultValue: 'My App',
   },
   shortDescription: {
     type: Sequelize.STRING(80),

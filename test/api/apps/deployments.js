@@ -1,0 +1,97 @@
+const helpers = require('../../helpers');
+
+describe('App Deployments', () => {
+  /*
+   * POST
+   */
+
+  describe('POST /apps/{appId}/deployments', () => {
+    it('200s with created hard app deployment object owned by app for first deployment', done => {
+      chai.request(server)
+        .post(`/apps/${appId}/deployments`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.appId.should.equal(appId);
+          response.body.deploymentType.should.equal('hard');
+          done();
+        });
+    });
+
+    it('400s when no changes have occurred since previous deployment', done => {
+      chai.request(server)
+        .post(`/apps/${appId}/deployments`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
+    it('200s with created soft app deployment object owned by app when config changes', done => {
+      chai.request(server)
+        .patch(`/apps/${appId}`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send({
+          config: {
+            tabBar: {
+              backgroundGradient: '#CCCCCC, #111111',
+            },
+          },
+        })
+      .then(() => {
+        chai.request(server)
+          .post(`/apps/${appId}/deployments`)
+          .set('X-Access-Token', testUser.accessToken)
+          .end((error, response) => {
+            response.should.have.status(200);
+            response.body.should.be.an('object');
+            response.body.appId.should.equal(appId);
+            response.body.deploymentType.should.equal('soft');
+            done();
+          });
+      });
+    });
+
+    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/deployments');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/deployments');
+  });
+
+  /*
+   * GET
+   */
+
+  describe('GET /apps/{appId}/deployments', () => {
+    it('200s with array of app deployment objects owned by app', done => {
+      chai.request(server)
+        .get(`/apps/${appId}/deployments`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body.length.should.be.at.least(1);
+          response.body.forEach(appDeploymentObject => {
+            appDeploymentObject.should.be.an('object');
+            appDeploymentObject.appId.should.equal(appId);
+          });
+          done();
+        });
+    });
+
+    it('200s with app deployment object owned by app when passed app deployment id', done => {
+      chai.request(server)
+        .get(`/apps/${appId}/deployments/1`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.appId.should.equal(appId);
+          done();
+        });
+    });
+
+    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/deployments');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/deployments');
+  });
+});

@@ -83,6 +83,20 @@ before(done => {
       return chai.request(server).post('/users').send(testUser);
     }).then(response => {
       Object.assign(testUser, response.body);
+      fatLog('Updating global test app...');
+
+      return chai.request(server)
+        .patch(`/apps/${appId}`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send({
+          shortDescription: 'a shorter descriptioner',
+          fullDescription: 'a longer descrtipion',
+          keywords: 'some,great,keywords',
+          iconUrl: 'http://www.someiconurl.com/icon.png',
+          website: 'http://www.mysite.com/',
+          contentRating: '9+',
+        });
+    }).then(() => {
       fatLog('Creating global test app user in DB...');
 
       return chai.request(server).post('/apps/1/users').send(testAppUser);

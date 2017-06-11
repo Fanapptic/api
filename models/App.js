@@ -126,7 +126,7 @@ AppModel.prototype.deploy = function(previousDeployment) {
   return this.generateSnapshot().then(generatedSnapshot => {
     snapshot = generatedSnapshot;
 
-    if (snapshot.requiresHardDeploy(previousDeployment.snapshot)) {
+    if (!previousDeployment || snapshot.requiresHardDeploy(previousDeployment.snapshot)) {
       return Snapshot.DEPLOYMENT_TYPES.HARD;
     }
 

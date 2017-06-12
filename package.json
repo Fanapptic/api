@@ -35,6 +35,7 @@
     "lodash": "^4.17.4",
     "mysql2": "^1.2.0",
     "phone": "^1.0.10",
-    "sequelize": "git+https://github.com/sequelize/sequelize.git"
+    "sequelize": "git+https://github.com/sequelize/sequelize.git",
+    "uuid": "^3.0.1"
   }
 }

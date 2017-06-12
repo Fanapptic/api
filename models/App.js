@@ -1,3 +1,4 @@
+const uuidV1 = require('uuid/v1');
 const App = rootRequire('/libs/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppModuleModel = rootRequire('/models/AppModule');
@@ -21,6 +22,10 @@ const AppModel = database.define('apps', {
   bundleId: {
     type: Sequelize.STRING,
     unique: true,
+    allowNull: false,
+    defaultValue() {
+      return `com.fanapptic.${uuidV1().split('-').join('')}`;
+    },
   },
   name: {
     type: Sequelize.STRING,

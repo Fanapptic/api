@@ -8,4 +8,16 @@ module.exports = class extends DataSource {
       description: 'Connect Facebook page content.',
     });
   }
+
+  connect() {
+    return true;
+  }
+
+  disconnect() {
+    return true;
+  }
+
+  handleReceivedData(request, response, next) {
+
+  }
 };

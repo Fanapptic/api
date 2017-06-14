@@ -81,7 +81,8 @@ class Component {
         key = (Array.isArray(object)) ? objectValue.name : key;
         const dataValue = data[key];
 
-        if (!objectValue || dataValue === null || dataValue === undefined) {
+        // TODO: commend conditional here is temp to test disconnect flow of dataSources.
+        if (!objectValue || /*dataValue === null ||*/ dataValue === undefined) {
           return;
         }
 

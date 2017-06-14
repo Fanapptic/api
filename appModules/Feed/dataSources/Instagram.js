@@ -8,4 +8,17 @@ module.exports = class extends DataSource {
       description: 'Display Instagram profile content.',
     });
   }
+
+  connect() {
+    return true;
+  }
+
+  disconnect() {
+    console.log('disconnect fired?');
+    return true;
+  }
+
+  handleReceivedData(request, response, next) {
+
+  }
 };

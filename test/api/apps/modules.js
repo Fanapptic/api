@@ -28,9 +28,7 @@ describe('App Modules', () => {
         },
         dataSources: {
           youtube: {
-            options: {
-              channel: 'solomondron',
-            },
+            authorization: 'abcdefegaw',
           },
         },
       },

@@ -1,5 +1,7 @@
 const Joi = require('joi');
 const _ = require('lodash');
+const aws = require('aws-sdk');
+const awsConfig = rootRequire('/config/aws');
 
 class Snapshot {
   static get DEPLOYMENT_TYPES() {
@@ -45,11 +47,28 @@ class Snapshot {
   }
 
   softDeploy() {
-    // TODO: upload to s3
+    const s3 = new aws.S3();
+
+    return s3.upload({
+      ACL: 'public-read',
+      Body: JSON.stringify(this.packagedConfig),
+      Bucket: awsConfig.s3AppConfigsBucket,
+      ContentType: 'application/json',
+      Key: `${this.bundleId}.json`,
+    }).promise();
   }
 
-  hardDeploy(){
-    // TODO: offload to queue
+  hardDeploy() {
+    const sqs = new aws.SQS();
+
+    let message = Object.assign({}, this);
+    delete message.packagedConfig;
+
+    return sqs.sendMessage({
+      MessageBody: JSON.stringify(message),
+      MessageGroupId: 'deploy',
+      QueueUrl: awsConfig.sqsAppDeploymentsQueue,
+    }).promise();
   }
 }
 

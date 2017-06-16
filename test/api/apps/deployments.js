@@ -14,7 +14,7 @@ describe('App Deployments', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId);
-          response.body.deploymentType.should.equal('hard');
+          response.body.type.should.equal('hard');
           done();
         });
     });
@@ -48,7 +48,7 @@ describe('App Deployments', () => {
             response.should.have.status(200);
             response.body.should.be.an('object');
             response.body.appId.should.equal(appId);
-            response.body.deploymentType.should.equal('soft');
+            response.body.type.should.equal('soft');
             done();
           });
       });

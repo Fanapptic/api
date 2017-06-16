@@ -142,18 +142,24 @@ AppModel.prototype.deploy = function(previousDeployment) {
     throw new Error('No changes have been made since your most recent deployment.');
   }).then(deploymentType => {
     return database.transaction(transaction => {
+      let appDeployment = null;
+
       return AppDeploymentModel.create({
         appId: this.id,
-        deploymentType,
+        type: deploymentType,
         snapshot,
-      }, { transaction }).then(appDeployment => {
-        snapshot.softDeploy(); // always soft deploy regardless of deployment type.
+      }, { transaction }).then(appDeploymentInstance => {
+        appDeployment = appDeploymentInstance;
 
+        return snapshot.softDeploy();
+      }).then(() => {
         if (deploymentType === 'hard') {
-          snapshot.hardDeploy();
+          return snapshot.hardDeploy();
         }
-
+      }).then(() => {
         return appDeployment;
+      }).catch(error => {
+        throw error;
       });
     });
   });

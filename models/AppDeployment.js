@@ -1,5 +1,6 @@
 const Snapshot = rootRequire('/libs/App/Snapshot');
-const deploymentTypes = ['hard', 'soft'];
+const types = ['hard', 'soft'];
+const statuses = ['pending', 'complete', 'failed'];
 
 /*
  * Model Definition
@@ -15,14 +16,24 @@ const AppDeploymentModel = database.define('appDeployments', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  deploymentType: {
-    type: Sequelize.ENUM(...deploymentTypes),
+  type: {
+    type: Sequelize.ENUM(...types),
     validate: {
       isIn: {
-        args: [deploymentTypes],
-        msg: 'The deployment type provided is invalid.',
+        args: [types],
+        msg: 'The type provided is invalid.',
       },
     },
+  },
+  status: { // TODO: Implement Deployment Status
+    type: Sequelize.ENUM(...statuses),
+    validate: {
+      isIn: {
+        args: [statuses],
+        msg: 'The status provided is invalid.',
+      },
+    },
+    defaultValue: 'pending',
   },
   snapshot: {
     type: Sequelize.JSON,

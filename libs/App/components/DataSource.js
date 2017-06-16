@@ -21,7 +21,7 @@ class DataSource extends Component {
   }
 
   connect() {
-    throw new Error('connectAndValidate must be overriden.');
+    throw new Error('connect must be overriden.');
   }
 
   disconnect() {

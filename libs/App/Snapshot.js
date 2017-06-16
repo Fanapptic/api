@@ -52,7 +52,7 @@ class Snapshot {
     return s3.upload({
       ACL: 'public-read',
       Body: JSON.stringify(this.packagedConfig),
-      Bucket: awsConfig.s3AppConfigsBucket,
+      Bucket: awsConfig.s3.appConfigsBucket,
       ContentType: 'application/json',
       Key: `${this.bundleId}.json`,
     }).promise();
@@ -67,7 +67,7 @@ class Snapshot {
     return sqs.sendMessage({
       MessageBody: JSON.stringify(message),
       MessageGroupId: 'deploy',
-      QueueUrl: awsConfig.sqsAppDeploymentsQueue,
+      QueueUrl: awsConfig.sqs.appDeploymentsQueue,
     }).promise();
   }
 }

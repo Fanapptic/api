@@ -18,6 +18,14 @@ const AppDeploymentModel = database.define('appDeployments', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  version: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  build: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
+  },
   type: {
     type: Sequelize.ENUM(...types),
     validate: {

@@ -1,7 +1,5 @@
 const Joi = require('joi');
 const _ = require('lodash');
-const aws = require('aws-sdk');
-const awsConfig = rootRequire('/config/aws');
 
 class Snapshot {
   static get DEPLOYMENT_TYPES() {
@@ -14,6 +12,10 @@ class Snapshot {
   constructor(initObject) {
     const schema = Joi.object({
       bundleId: Joi.string().required(),
+//      appleTeamId: Joi.string().required(),
+//      appleTeamName: Joi.string().required(),
+//      version: Joi.string().required(),
+//      build: Joi.number().required(),
       name: Joi.string().required(),
       displayName: Joi.string().required(),
       shortDescription: Joi.string().required(),
@@ -44,31 +46,6 @@ class Snapshot {
     // We have to stringify "this" and parse otherwise isEqual
     // will always return false since "this" is not a generic object.
     return !_.isEqual(JSON.parse(JSON.stringify(this)), previousSnapshot);
-  }
-
-  softDeploy() {
-    const s3 = new aws.S3();
-
-    return s3.upload({
-      ACL: 'public-read',
-      Body: JSON.stringify(this.packagedConfig),
-      Bucket: awsConfig.s3AppConfigsBucket,
-      ContentType: 'application/json',
-      Key: `${this.bundleId}.json`,
-    }).promise();
-  }
-
-  hardDeploy() {
-    const sqs = new aws.SQS();
-
-    let message = Object.assign({}, this);
-    delete message.packagedConfig;
-
-    return sqs.sendMessage({
-      MessageBody: JSON.stringify(message),
-      MessageGroupId: 'deploy',
-      QueueUrl: awsConfig.sqsAppDeploymentsQueue,
-    }).promise();
   }
 }
 

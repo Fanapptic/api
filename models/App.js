@@ -151,10 +151,10 @@ AppModel.prototype.deploy = function(previousDeployment) {
       }, { transaction }).then(appDeploymentInstance => {
         appDeployment = appDeploymentInstance;
 
-        return snapshot.softDeploy();
+        return appDeployment.softDeploy();
       }).then(() => {
-        if (deploymentType === 'hard') {
-          return snapshot.hardDeploy();
+        if (deploymentType === Snapshot.DEPLOYMENT_TYPES.HARD) {
+          return appDeployment.hardDeploy();
         }
       }).then(() => {
         return appDeployment;

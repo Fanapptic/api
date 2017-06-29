@@ -1,3 +1,5 @@
+const aws = require('aws-sdk');
+const awsConfig = rootRequire('/config/aws');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const types = ['hard', 'soft'];
 const statuses = ['pending', 'complete', 'failed'];
@@ -52,6 +54,32 @@ const AppDeploymentModel = database.define('appDeployments', {
     type: Sequelize.DATE,
   },
 });
+
+/*
+ * Instance Methods / Overrides
+ */
+
+AppDeploymentModel.prototype.hardDeploy = function() {
+  const sqs = new aws.SQS();
+
+  return sqs.sendMessage({
+    MessageBody: JSON.stringify(this),
+    MessageGroupId: 'deploy',
+    QueueUrl: awsConfig.sqsAppDeploymentsQueue,
+  }).promise();
+};
+
+AppDeploymentModel.prototype.softDeploy = function() {
+  const s3 = new aws.S3();
+
+  return s3.upload({
+    ACL: 'public-read',
+    Body: JSON.stringify(this.snapshot.packagedConfig),
+    Bucket: awsConfig.s3AppConfigsBucket,
+    ContentType: 'application/json',
+    Key: `${this.snapshot.bundleId}.json`,
+  }).promise();
+};
 
 /*
  * Export

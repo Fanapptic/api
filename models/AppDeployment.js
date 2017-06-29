@@ -21,10 +21,12 @@ const AppDeploymentModel = database.define('appDeployments', {
   version: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: '1.0.0',
   },
   build: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
+    defaultValue: 1,
   },
   type: {
     type: Sequelize.ENUM(...types),

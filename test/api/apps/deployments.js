@@ -59,6 +59,43 @@ describe('App Deployments', () => {
   });
 
   /*
+   * PATCH
+   */
+
+  describe('PATCH /apps/{appId}/deployments', () => {
+    const fields = {
+      status: 'complete',
+    };
+
+    it('200s with updated deployment object owned by app', done => {
+      chai.request(server)
+        .patch(`/apps/${appId}/deployments/1`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.appId.should.equal(appId);
+          response.body.status.should.equal(fields.status);
+          done();
+        });
+    });
+
+    it('400s when passed invalid app deployment id', done => {
+      chai.request(server)
+        .patch(`/apps/${appId}/deployments/12512`)
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
+    helpers.it401sWhenAuthorizationIsInvalid('patch', '/apps/1/deployments');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('patch', '/apps/2411/deployments');
+  });
+
+  /*
    * GET
    */
 

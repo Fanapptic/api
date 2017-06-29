@@ -51,13 +51,26 @@ router.post('/', (request, response, next) => {
 });
 
 /*
- * DELETE
+ * PATCH
  */
 
-router.delete('/', authorize);
-router.delete('/', appAuthorize);
-router.delete('/', (request, response, next) => {
- // TODO: Write the pending deployment rollback logic.
+router.patch('/', authorize);
+router.patch('/', appAuthorize);
+router.patch('/', (request, response, next) => {
+  const { appId, appDeploymentId } = request.params;
+  const { status } = request.body;
+
+  AppDeploymentModel.find({ where: { id: appDeploymentId, appId } }).then(appDeployment => {
+    if (!appDeployment) {
+      throw new Error('The app deployment does not exist.');
+    }
+
+    appDeployment.status = status || appDeployment.status;
+
+    return appDeployment.save();
+  }).then(appDeployment => {
+    response.success(appDeployment);
+  }).catch(next);
 });
 
 /*

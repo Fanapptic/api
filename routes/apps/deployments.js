@@ -38,14 +38,8 @@ router.post('/', authorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { app } = request;
-  const appId = app.id;
 
-  AppDeploymentModel.find({
-    where: { appId },
-    order: [['createdAt', 'DESC']],
-  }).then(previousDeployment => {
-    return app.deploy(previousDeployment);
-  }).then(appDeployment => {
+  return app.deploy().then(appDeployment => {
     response.success(appDeployment);
   }).catch(next);
 });

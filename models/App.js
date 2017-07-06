@@ -125,10 +125,18 @@ AppModel.prototype.generateAppObject = function() {
   return app;
 };
 
-AppModel.prototype.deploy = function(previousDeployment) {
+AppModel.prototype.deploy = function() {
+  let previousDeployment = null;
   let snapshot = null;
 
-  return this.generateSnapshot().then(generatedSnapshot => {
+  return AppDeploymentModel.find({
+    where: { appId: this.id },
+    order: [['createdAt', 'DESC']],
+  }).then(previousDeploymentInstance => {
+    previousDeployment = previousDeploymentInstance;
+
+    return this._generateSnapshot();
+  }).then(generatedSnapshot => {
     snapshot = generatedSnapshot;
 
     if (!previousDeployment || snapshot.requiresHardDeploy(previousDeployment.snapshot)) {
@@ -165,7 +173,7 @@ AppModel.prototype.deploy = function(previousDeployment) {
   });
 };
 
-AppModel.prototype.generateSnapshot = function() {
+AppModel.prototype._generateSnapshot = function() {
   const id = this.id;
   const app = this.generateAppObject();
 

@@ -37,7 +37,7 @@ const AppDeploymentModel = database.define('appDeployments', {
       },
     },
   },
-  status: { // TODO: Implement Deployment Status
+  status: {
     type: Sequelize.ENUM(...statuses),
     validate: {
       isIn: {

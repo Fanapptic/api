@@ -5,7 +5,7 @@ describe('App Module Data', () => {
    * POST
    */
 
-  describe('POST /apps/{appId}/modules/{moduleId}/data', () => {
+  describe('POST /apps/{appId}/modules/{appModuleId}/data', () => {
     // TODO:
   });
 
@@ -13,7 +13,7 @@ describe('App Module Data', () => {
    * GET
    */
 
-  describe('GET /apps/{appId}/modules/{moduleId}/data', () => {
+  describe('GET /apps/{appId}/modules/{appModuleId}/data', () => {
     it('200s with an array of app module data objects owned by app module', done => {
       chai.request(server)
         .get(`/apps/${appId}/modules/1/data`)

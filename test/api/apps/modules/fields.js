@@ -5,7 +5,7 @@ describe('App Module Fields', () => {
    * GET
    */
 
-  describe('GET /apps/{appId}/modules/{moduleId}/fields', () => {
+  describe('GET /apps/{appId}/modules/{appModuleId}/fields', () => {
     it('200s with an object containing module fields.', done => {
       chai.request(server)
         .get(`/apps/${appId}/modules/1/fields`)

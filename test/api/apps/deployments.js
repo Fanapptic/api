@@ -6,7 +6,7 @@ describe('App Deployments', () => {
    */
 
   describe('POST /apps/{appId}/deployments', () => {
-    it('200s with created hard app deployment object owned by app for first deployment', done => {
+    it('200s with created soft app deployment object and the initial testAppDeployment is a hard deployment', done => {
       chai.request(server)
         .post(`/apps/${appId}/deployments`)
         .set('X-Access-Token', testUser.accessToken)
@@ -14,7 +14,8 @@ describe('App Deployments', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId);
-          response.body.type.should.equal('hard');
+          response.body.type.should.equal('soft');
+          testAppDeployment.type.should.equal('hard');
           done();
         });
     });

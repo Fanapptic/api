@@ -1,5 +1,6 @@
 const AppModel = rootRequire('/models/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
+const AppDeploymentStepModel = rootRequire('/models/AppDeploymentStep');
 const AppRevenueModel = rootRequire('/models/AppRevenue');
 const AppModuleModel = rootRequire('/models/AppModule');
 const AppModuleDataModel = rootRequire('/models/AppModuleData');
@@ -16,6 +17,7 @@ AppModel.hasMany(AppPushNotificationModel);
 AppModel.hasMany(AppRevenueModel);
 AppModel.hasMany(AppSessionModel);
 AppModel.hasMany(AppUserModel);
+AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppUserModel.hasMany(AppSessionModel);
 

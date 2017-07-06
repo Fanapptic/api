@@ -25,6 +25,11 @@ global.testAppUser = {
   platform: 'ios',
 };
 
+global.testAppDeployment = {
+  id: null,
+  appId: null,
+};
+
 global.testAppModule = {
   id: null,
   appId: appId,
@@ -102,6 +107,14 @@ before(done => {
       return chai.request(server).post('/apps/1/users').send(testAppUser);
     }).then(response => {
       Object.assign(testAppUser, response.body);
+      fatLog('Creating global test app deployment in DB...');
+
+      return chai.request(server)
+        .post('/apps/1/deployments')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(testAppDeployment);
+    }).then(response => {
+      Object.assign(testAppDeployment, response.body);
       fatLog('Creating global test app module in DB...');
 
       return chai.request(server)

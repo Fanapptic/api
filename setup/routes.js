@@ -1,5 +1,6 @@
 const appsRouter = rootRequire('/routes/apps');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
+const appDeploymentStepsRouter = rootRequire('/routes/apps/deployments/steps');
 const appFieldsRouter = rootRequire('/routes/apps/fields');
 const appModulesRouter = rootRequire('/routes/apps/modules');
 const appModulesDataRouter = rootRequire('/routes/apps/modules/data');
@@ -14,6 +15,7 @@ const usersRouter = rootRequire('/routes/users');
 module.exports = app => {
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
+  app.use('/apps/:appId/deployments/:appDeploymentId/steps/:appDeploymentStepId?', appDeploymentStepsRouter);
   app.use('/apps/:appId/fields', appFieldsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
   app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModulesDataRouter);
@@ -26,13 +28,13 @@ module.exports = app => {
   app.use('/users', usersRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.
-    /*console.log('===========================');
+    console.log('===========================');
     console.log(request.method, request.path);
     console.log('===========================');
     console.log(error);
     for (let i = 0; i < 10; i++) {
       console.log('');
-    }*/
+    }
 
     response.error(error.message);
   });

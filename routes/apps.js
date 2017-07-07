@@ -2,6 +2,7 @@
  * Route: /apps/:appId?
  */
 
+const fileUpload = require('express-fileupload');
 const AppModel = rootRequire('/models/App');
 const authorize = rootRequire('/middlewares/authorize');
 
@@ -38,6 +39,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.patch('/', authorize);
+router.patch('/', fileUpload());
 router.patch('/', (request, response, next) => {
   const userId = request.user.id;
   const { appId } = request.params;
@@ -51,12 +53,15 @@ router.patch('/', (request, response, next) => {
     app.shortDescription = request.body.shortDescription || app.shortDescription;
     app.fullDescription = request.body.fullDescription || app.fullDescription;
     app.keywords = request.body.keywords || app.keywords;
-    app.iconUrl = request.body.iconUrl || app.iconUrl;
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;
     app.config = request.body.config || app.config;
 
-    return app.save();
+    if (request.files && request.files.icon) {
+      return app.processIconUploadAndSave(request.files.icon.data);
+    } else {
+      return app.save();
+    }
   }).then(app => {
     response.success(app);
   }).catch(next);

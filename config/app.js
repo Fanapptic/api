@@ -16,5 +16,6 @@ module.exports = {
     'Icon-512x512.png': { size: 512 },
     'Icon-1024x1024.png': { size: 1024 },
   },
+  iconContentType: 'image/png',
   moduleLimit: 5,
 };

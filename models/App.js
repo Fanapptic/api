@@ -1,8 +1,13 @@
+const Joi = require('joi');
 const uuidV1 = require('uuid/v1');
+const sharp = require('sharp');
+const aws = require('aws-sdk');
 const App = rootRequire('/libs/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppModuleModel = rootRequire('/models/AppModule');
 const Snapshot = rootRequire('/libs/App/Snapshot');
+const awsConfig = rootRequire('/config/aws');
+const appConfig = rootRequire('/config/app');
 const contentRatings = ['4+', '9+', '12+', '17+'];
 
 /*
@@ -68,11 +73,17 @@ const AppModel = database.define('apps', {
       },
     },
   },
-  iconUrl: {
-    type: Sequelize.STRING,
+  icons: {
+    type: Sequelize.JSON,
     validate: {
-      isUrl: {
-        msg: 'The icon url provided is invalid.',
+      isValid(value) {
+        for (const icon of value) {
+          if (!icon.name || !icon.url || !icon.size) {
+            return false;
+          }
+        }
+
+        return true;
       },
     },
   },
@@ -123,6 +134,44 @@ AppModel.prototype.generateAppObject = function() {
   app.import(this.config);
 
   return app;
+};
+
+AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
+  Joi.assert(iconImageBuffer, Joi.binary());
+
+  const s3 = new aws.S3();
+  const requiredIcons = appConfig.requiredIcons;
+
+  let promises = [];
+  let icons = [];
+
+  for (const iconName in requiredIcons) {
+    const size = requiredIcons[iconName].size;
+
+    promises.push(
+      sharp(this.iconImageBuffer).resize(size).toBuffer().then(buffer => {
+        return s3.upload({
+          ACL: 'public-read',
+          Body: buffer,
+          Bucket: awsConfig.s3AppsBucket,
+          ContentType: appConfig.iconContentType,
+          Key: `${this.bundleId}/${iconName}`,
+        }).promise().then(result => {
+          icons.push({
+            name: iconName,
+            url: result.Location,
+            size,
+          });
+        });
+      })
+    );
+  }
+
+  return Promise.all(promises).then(() => {
+    this.icons = icons;
+
+    return this.save();
+  });
 };
 
 AppModel.prototype.deploy = function() {
@@ -189,7 +238,7 @@ AppModel.prototype._generateSnapshot = function() {
       shortDescription: this.shortDescription,
       fullDescription: this.fullDescription,
       keywords: this.keywords,
-      iconUrl: this.iconUrl,
+      icons: this.icons,
       website: this.website,
       contentRating: this.contentRating,
       launchConfig: app.exportLaunchConfig(),

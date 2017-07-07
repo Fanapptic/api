@@ -97,7 +97,6 @@ before(done => {
           shortDescription: 'a shorter descriptioner',
           fullDescription: 'a longer descrtipion',
           keywords: 'some,great,keywords',
-          iconUrl: 'http://www.someiconurl.com/icon.png',
           website: 'http://www.mysite.com/',
           contentRating: '9+',
         });

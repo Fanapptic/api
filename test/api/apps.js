@@ -1,3 +1,4 @@
+const fs = require('fs');
 const helpers = require('../helpers');
 
 describe('Apps', () => {
@@ -12,7 +13,6 @@ describe('Apps', () => {
         shortDescription: 'A really awesome app.',
         fullDescription: 'A really awesome app. With a longer description.',
         keywords: 'some,really,great,keywords',
-        iconUrl: 'http://www.some.icon.domain/icon.png',
         website: 'http://www.website.com/',
         contentRating: '4+',
         config: {
@@ -50,12 +50,31 @@ describe('Apps', () => {
           response.body.shortDescription.should.equal(fields.shortDescription);
           response.body.fullDescription.should.equal(fields.fullDescription);
           response.body.keywords.should.equal(fields.keywords);
-          response.body.iconUrl.should.equal(fields.iconUrl);
           response.body.website.should.equal(fields.website);
           response.body.contentRating.should.equal(fields.contentRating);
           response.body.config.statusBar.should.deep.equal(fields.config.statusBar);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);
           response.body.config.should.not.have.property('badField');
+          done();
+        });
+    });
+
+    it('200s with updated app object when passed icon file and form data', done => {
+      const name = 'changed name';
+
+      // TODO: Known issue, if you pass config with an icon in
+      // multi-part/form-data, the config will not update due to it being JSON.
+
+      chai.request(server)
+        .patch('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .field('name', name)
+        .attach('icon', fs.readFileSync('./test/icon.png'), 'icon.png')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.name.should.equal(name);
+          response.body.icons.should.be.an('array');
           done();
         });
     });

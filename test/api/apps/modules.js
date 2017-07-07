@@ -210,7 +210,6 @@ describe('App Modules', () => {
         .delete(`/apps/${appId}/modules/1`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
-          console.log(response.body);
           response.should.have.status(200);
           done();
         });

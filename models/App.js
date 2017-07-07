@@ -149,7 +149,7 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
     const size = requiredIcons[iconName].size;
 
     promises.push(
-      sharp(this.iconImageBuffer).resize(size).toBuffer().then(buffer => {
+      sharp(iconImageBuffer).resize(size).toBuffer().then(buffer => {
         return s3.upload({
           ACL: 'public-read',
           Body: buffer,

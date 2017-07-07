@@ -8,7 +8,7 @@ module.exports.region = 'us-west-2';
  * S3
  */
 
-module.exports.s3AppConfigsBucket = 'testing-fanapptic-app-configs';
+module.exports.s3AppsBucket = 'testing-fanapptic-apps';
 
 /*
  * SQS

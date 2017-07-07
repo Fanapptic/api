@@ -85,9 +85,9 @@ AppDeploymentModel.prototype.softDeploy = function() {
   return s3.upload({
     ACL: 'public-read',
     Body: JSON.stringify(this.snapshot.packagedConfig),
-    Bucket: awsConfig.s3AppConfigsBucket,
+    Bucket: awsConfig.s3AppsBucket,
     ContentType: 'application/json',
-    Key: `${this.snapshot.bundleId}.json`,
+    Key: `${this.snapshot.bundleId}/runtimeConfig.json`,
   }).promise();
 };
 

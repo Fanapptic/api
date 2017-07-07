@@ -32,11 +32,13 @@
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "express": "^4.15.2",
+    "express-fileupload": "^0.1.4",
     "joi": "^10.4.2",
     "lodash": "^4.17.4",
     "mysql2": "^1.2.0",
     "phone": "^1.0.10",
     "sequelize": "git+https://github.com/sequelize/sequelize.git",
+    "sharp": "^0.18.2",
     "uuid": "^3.0.1"
   }
 }

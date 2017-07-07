@@ -192,6 +192,7 @@ AppModel.prototype._generateSnapshot = function() {
       iconUrl: this.iconUrl,
       website: this.website,
       contentRating: this.contentRating,
+      launchConfig: app.exportLaunchConfig(),
       packagedConfig: app.exportPackagedConfig(),
     });
   });

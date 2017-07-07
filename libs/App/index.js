@@ -32,6 +32,12 @@ class App extends Component {
     return result;
   }
 
+  exportLaunchConfig() {
+    return {
+      loading: this.loading,
+    };
+  }
+
   exportPackagedConfig() {
     return {
       statusBar: this.statusBar.exportPackagedConfig(),

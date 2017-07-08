@@ -1,5 +1,6 @@
 const aws = require('aws-sdk');
 const awsConfig = rootRequire('/config/aws');
+const appConfig = rootRequire('/config/app');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const types = ['hard', 'soft'];
 const statuses = ['pending', 'complete', 'failed'];
@@ -21,12 +22,7 @@ const AppDeploymentModel = database.define('appDeployments', {
   version: {
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: '1.0.0',
-  },
-  build: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
-    allowNull: false,
-    defaultValue: 1,
+    defaultValue: appConfig.version,
   },
   type: {
     type: Sequelize.ENUM(...types),

@@ -18,4 +18,5 @@ module.exports = {
   },
   iconContentType: 'image/png',
   moduleLimit: 5,
+  version: '1.0.0',
 };

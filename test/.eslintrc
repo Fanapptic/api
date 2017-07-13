@@ -2,7 +2,6 @@
     "globals": {
       "it": true,
       "before": true,
-      "beforeEach": true,
       "describe": true,
       "chai": true,
       "chaiHttp": true,

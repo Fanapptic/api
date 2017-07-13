@@ -44,6 +44,7 @@ chai.use(chaiHttp);
  * Test Connection
  * Truncate DB
  * Create Global Test User + App In DB
+ * Create Global Test App Deployment In DB
  * Create Global Test App User In DB
  * Create Global Test App Module In DB
  * Start Tests

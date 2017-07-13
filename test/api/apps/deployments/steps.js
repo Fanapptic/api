@@ -7,7 +7,6 @@ describe('App Deployment Steps', () => {
 
   describe('POST /apps/{appId}/deployments/{appDeploymentId}/steps', () => {
     const fields = {
-      appDeploymentId: 1,
       platform: 'ios',
       name: 'Provision',
       message: 'This application was successfully provisioned.',

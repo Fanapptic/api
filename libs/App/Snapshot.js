@@ -21,7 +21,7 @@ class Snapshot {
       shortDescription: Joi.string().required(),
       fullDescription: Joi.string().required(),
       keywords: Joi.string().required(),
-      icons: Joi.array().items(Joi.string()).allow(null).optional(),
+      icons: Joi.array().items(Joi.string()).allow(null).required(),
       website: Joi.string().optional(),
       contentRating: Joi.string().required(),
       packagedConfig: Joi.object().required(),

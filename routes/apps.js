@@ -50,8 +50,8 @@ router.patch('/', (request, response, next) => {
     }
 
     app.name = request.body.name || app.name;
-    app.shortDescription = request.body.shortDescription || app.shortDescription;
-    app.fullDescription = request.body.fullDescription || app.fullDescription;
+    app.subtitle = request.body.subtitle || app.subtitle;
+    app.description = request.body.description || app.description;
     app.keywords = request.body.keywords || app.keywords;
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;

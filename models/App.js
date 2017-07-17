@@ -46,21 +46,21 @@ const AppModel = database.define('apps', {
     },
     defaultValue: 'My App',
   },
-  shortDescription: {
+  subtitle: {
     type: Sequelize.STRING(80),
     validate: {
       max: {
         args: 80,
-        msg: 'Short description cannot exceed a total of 80 characters.',
+        msg: 'Subtitle cannot exceed a total of 80 characters.',
       },
     },
   },
-  fullDescription: {
+  description: {
     type: Sequelize.STRING(4000),
     validate: {
       max: {
         args: 4000,
-        msg: 'Full description cannot exceed a total of 4,000 characters.',
+        msg: 'Description cannot exceed a total of 4,000 characters.',
       },
     },
   },
@@ -235,8 +235,8 @@ AppModel.prototype._generateSnapshot = function() {
       bundleId: this.bundleId,
       name: this.name,
       displayName: this.displayName,
-      shortDescription: this.shortDescription,
-      fullDescription: this.fullDescription,
+      subtitle: this.subtitle,
+      description: this.description,
       keywords: this.keywords,
       icons: this.icons,
       website: this.website,

@@ -95,8 +95,8 @@ before(done => {
         .patch(`/apps/${appId}`)
         .set('X-Access-Token', testUser.accessToken)
         .send({
-          shortDescription: 'a shorter descriptioner',
-          fullDescription: 'a longer descrtipion',
+          subtitle: 'a subtitle',
+          description: 'a long descrtipion',
           keywords: 'some,great,keywords',
           website: 'http://www.mysite.com/',
           contentRating: '9+',

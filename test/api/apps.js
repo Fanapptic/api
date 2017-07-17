@@ -10,8 +10,8 @@ describe('Apps', () => {
     it('200s with updated app object and ignores properties not in config schema when passed config', done => {
       const fields = {
         name: 'My cool app',
-        shortDescription: 'A really awesome app.',
-        fullDescription: 'A really awesome app. With a longer description.',
+        subtitle: 'A really awesome app.',
+        description: 'A really awesome app. With a longer description.',
         keywords: 'some,really,great,keywords',
         website: 'http://www.website.com/',
         contentRating: '4+',
@@ -47,8 +47,8 @@ describe('Apps', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.name.should.equal(fields.name);
-          response.body.shortDescription.should.equal(fields.shortDescription);
-          response.body.fullDescription.should.equal(fields.fullDescription);
+          response.body.subtitle.should.equal(fields.subtitle);
+          response.body.description.should.equal(fields.description);
           response.body.keywords.should.equal(fields.keywords);
           response.body.website.should.equal(fields.website);
           response.body.contentRating.should.equal(fields.contentRating);

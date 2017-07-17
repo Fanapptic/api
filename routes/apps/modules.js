@@ -4,7 +4,7 @@
 
 const AppModuleModel = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
-const authorize = rootRequire('/middlewares/authorize');
+const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -15,7 +15,7 @@ const router = express.Router({
  * GET
  */
 
-router.get('/', authorize);
+router.get('/', userAuthorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
@@ -39,7 +39,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
-router.post('/', authorize);
+router.post('/', userAuthorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
@@ -60,7 +60,7 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
-router.patch('/', authorize);
+router.patch('/', userAuthorize);
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
@@ -84,7 +84,7 @@ router.patch('/', (request, response, next) => {
  * DELETE
  */
 
-router.delete('/', authorize);
+router.delete('/', userAuthorize);
 router.delete('/', appAuthorize);
 router.delete('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;

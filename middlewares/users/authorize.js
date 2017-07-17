@@ -1,5 +1,5 @@
 /*
- * Ownership Authorization For Matching Routes
+ * User Authorization For Matching Routes
  * Possible Route Usage: /*
  */
 

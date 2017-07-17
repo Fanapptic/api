@@ -3,7 +3,7 @@
  */
 
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
-const authorize = rootRequire('/middlewares/authorize');
+const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
 const router = express.Router({
@@ -14,7 +14,7 @@ const router = express.Router({
  * GET
  */
 
-router.get('/', authorize);
+router.get('/', userAuthorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   const { appId, appDeploymentId } = request.params;
@@ -34,7 +34,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
-router.post('/', authorize);
+router.post('/', userAuthorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { app } = request;
@@ -48,7 +48,7 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
-router.patch('/', authorize);
+router.patch('/', userAuthorize);
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
   const { appId, appDeploymentId } = request.params;

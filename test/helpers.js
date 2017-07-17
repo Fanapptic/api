@@ -36,7 +36,7 @@ module.exports.it403sWhenPassedAppModuleIdNotOwnedByApp = (method, route) => {
 };
 
 module.exports.it403sWhenPassedAppDeploymentIdNotOwnedByApp = (method, route) => {
-  it('403s when passed app dpeloyment id not owned by app', done => {
+  it('403s when passed app deployment id not owned by app', done => {
     chai.request(server)[method](route)
       .set('X-Access-Token', testUser.accessToken)
       .end((error, response) => {

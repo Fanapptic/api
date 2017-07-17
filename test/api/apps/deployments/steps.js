@@ -16,12 +16,12 @@ describe('App Deployment Steps', () => {
     it('200s with created app deployment step objected owned by app deployment', done => {
       chai.request(server)
         .post(`/apps/${appId}/deployments/1/steps`)
-        .set('X-Access-Token', testUser.accessToken)
+        .set('X-Internal-Token', internalToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.appDeploymentId.should.equal(1);
+          response.body.appDeploymentId.should.equal('1');
           response.body.platform.should.equal(fields.platform);
           response.body.name.should.equal(fields.name);
           response.body.message.should.equal(fields.message);

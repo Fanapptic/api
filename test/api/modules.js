@@ -38,6 +38,6 @@ describe('Modules', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/modules');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/modules');
   });
 });

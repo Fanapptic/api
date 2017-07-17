@@ -90,7 +90,7 @@ describe('Users', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('patch', '/users');
+    helpers.it401sWhenUserAuthorizationIsInvalid('patch', '/users');
   });
 
   /*

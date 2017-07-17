@@ -82,7 +82,7 @@ describe('App Modules', () => {
       });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('post', '/apps/1/modules');
+    helpers.it401sWhenUserAuthorizationIsInvalid('post', '/apps/1/modules');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('post', '/apps/1241/modules');
   });
 
@@ -147,7 +147,7 @@ describe('App Modules', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('patch', '/apps/1/modules');
+    helpers.it401sWhenUserAuthorizationIsInvalid('patch', '/apps/1/modules');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('patch', '/apps/1241/modules');
   });
 
@@ -196,7 +196,7 @@ describe('App Modules', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/modules');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/modules');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/modules');
   });
 

@@ -17,7 +17,7 @@ describe('App Module Fields', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/modules/1/fields');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/modules/1/fields');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1/modules/1251/fields');
     helpers.it403sWhenPassedAppModuleIdNotOwnedByApp('get', '/apps/1/modules/4124/fields');
   });

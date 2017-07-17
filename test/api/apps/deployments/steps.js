@@ -34,9 +34,7 @@ describe('App Deployment Steps', () => {
     //  done();
     //});
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/deployments/1/steps');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1421/deployments/1/steps');
-    helpers.it403sWhenPassedAppDeploymentIdNotOwnedByApp('get', '/apps/1/deployments/1241/steps');
+    helpers.it401sWhenInternalAuthorizationIsInvalid('post', '/apps/1/deployments/1/steps');
   });
 
   /*
@@ -82,8 +80,8 @@ describe('App Deployment Steps', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('post', '/apps/1/deployments/1/steps');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('post', '/apps/1321/deployments/1/steps');
-    helpers.it403sWhenPassedAppDeploymentIdNotOwnedByApp('post', '/apps/1/deployments/1241/steps');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/deployments/1/steps');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1321/deployments/1/steps');
+    helpers.it403sWhenPassedAppDeploymentIdNotOwnedByApp('get', '/apps/1/deployments/1241/steps');
   });
 });

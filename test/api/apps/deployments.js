@@ -55,7 +55,7 @@ describe('App Deployments', () => {
       });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/deployments');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/deployments');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/deployments');
   });
 
@@ -92,7 +92,7 @@ describe('App Deployments', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('patch', '/apps/1/deployments');
+    helpers.it401sWhenUserAuthorizationIsInvalid('patch', '/apps/1/deployments');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('patch', '/apps/2411/deployments');
   });
 
@@ -129,7 +129,7 @@ describe('App Deployments', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps/1/deployments');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/deployments');
     helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/deployments');
   });
 });

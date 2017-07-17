@@ -108,7 +108,7 @@ describe('Apps', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('patch', '/apps');
+    helpers.it401sWhenUserAuthorizationIsInvalid('patch', '/apps');
   });
 
   /*
@@ -154,6 +154,6 @@ describe('Apps', () => {
         });
     });
 
-    helpers.it401sWhenAuthorizationIsInvalid('get', '/apps');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps');
   });
 });

@@ -17,31 +17,42 @@ const router = express.Router({
  */
 
 router.get('/', (request, response, next) => {
+  const accessToken = request.get('X-Access-Token');
   const authCredentials = auth(request) || {};
   const email = authCredentials.name;
   const password = authCredentials.pass;
 
-  if (!email || !password) {
-    throw new Error('Authentication credentials were not provided.');
+  if (accessToken) {
+    UserModel.findOne({ where: { accessToken } }).then(user => {
+      if (!user) {
+        return response.respond(401, 'Invalid access token.');
+      }
+
+      response.success(user);
+    });
+  } else {
+    if (!email || !password) {
+      throw new Error('Authentication credentials were not provided.');
+    }
+
+    let user = null;
+
+    UserModel.findOne({ where: { email } }).then(userInstance => {
+      user = userInstance;
+
+      if (!user) {
+        throw new Error(`User with email ${email} does not exist.`);
+      }
+
+      return user.comparePassword(password);
+    }).then(authorized => {
+      if (!authorized) {
+        throw new Error('The password you provided is incorrect.');
+      }
+
+      response.success(user);
+    }).catch(next);
   }
-
-  let user = null;
-
-  UserModel.findOne({ where: { email } }).then(userInstance => {
-    user = userInstance;
-
-    if (!user) {
-      throw new Error(`User with email ${email} does not exist.`);
-    }
-
-    return user.comparePassword(password);
-  }).then(authorized => {
-    if (!authorized) {
-      throw new Error('The password you provided is incorrect.');
-    }
-
-    response.success(user);
-  }).catch(next);
 });
 
 /*

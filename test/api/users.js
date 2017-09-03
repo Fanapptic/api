@@ -98,10 +98,21 @@ describe('Users', () => {
    */
 
   describe('GET /users', () => {
-    it('200s with authenticated user object', done => {
+    it('200s with authenticated user object when passed valid basic auth', done => {
       chai.request(server)
         .get('/users')
         .auth(testUser.email, testUser.password)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          done();
+        });
+    });
+
+    it('200s with authorized user object when passed valid access token', done => {
+      chai.request(server)
+        .get('/users')
+        .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
@@ -118,5 +129,7 @@ describe('Users', () => {
           done();
         });
     });
+
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/users');
   });
 });

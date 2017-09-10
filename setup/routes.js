@@ -36,6 +36,24 @@ module.exports = app => {
       console.log('');
     }
 
+    // Handle Sequelize Errors
+    if (error instanceof Sequelize.ValidationError) {
+      const errors = error.errors.map(validationErrorItem => {
+        return {
+          field: validationErrorItem.path,
+          message: validationErrorItem.message,
+        };
+      });
+
+      return response.error(errors);
+    }
+
+    // Handle JOI errors
+    if (0) {
+      // TODO:
+    }
+
+    // Handle Generic Errors
     response.error(error.message);
   });
 

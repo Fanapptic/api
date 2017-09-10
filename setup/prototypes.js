@@ -6,6 +6,6 @@ express.response.success = function(data) {
   this.respond(200, data);
 };
 
-express.response.error = function(errorMessage) {
-  this.respond(400, errorMessage);
+express.response.error = function(data) {
+  this.respond(400, data);
 };

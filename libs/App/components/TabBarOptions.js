@@ -1,6 +1,6 @@
 const Component = require('../Component');
 const Configurable = require('../Configurable');
-const { Option, Style } = require('../configurables');
+const { Option } = require('../configurables');
 
 class TabBarOptions extends Component {
   constructor() {
@@ -33,18 +33,6 @@ class TabBarOptions extends Component {
       field: Configurable.FIELDS.SWITCH(),
       defaultValue: true,
     });
-
-    this.style = [
-      new Style({
-        name: 'backgroundColor',
-        displayName: 'Background Color',
-        description: 'The background color of the tab bar.',
-        field: Configurable.FIELDS.COLOR(),
-        cssSelector: '*',
-        cssProperty: 'backgroundColor',
-        defaultValue: 'rgba(0, 0, 0, 0)',
-      }),
-    ];
   }
 }
 

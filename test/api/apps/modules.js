@@ -10,13 +10,8 @@ describe('App Modules', () => {
       moduleName: 'feed',
       moduleConfig: {
         navigator: {
-          backgroundGradient: '#333333, #CCCCCC',
           navigationOptions: {
             title: 'Feed',
-            headerTintColor: '#FFFFFF',
-            headerStyle: {
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-            },
           },
         },
         tab: {
@@ -96,13 +91,8 @@ describe('App Modules', () => {
         moduleName: 'shouldnotchange',
         moduleConfig: {
           navigator: {
-            backgroundGradient: '#3A3A3A, #C1C1C1',
             navigationOptions: {
               title: 'Feed Yo',
-              headerTintColor: '#AAAAAA',
-              headerStyle: {
-                backgroundColor: 'rgba(1, 1, 1, 1)',
-              },
             },
           },
           tab: {

@@ -28,9 +28,6 @@ describe('Apps', () => {
               activeTintColor: '#000000',
               inactiveTintColor: '#CCCCCC',
               showLabel: true,
-              style: {
-                backgroundColor: '#FFFFFF',
-              },
             },
           },
           badField: {

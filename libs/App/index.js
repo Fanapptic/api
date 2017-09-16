@@ -1,5 +1,5 @@
 const Component = require('./Component');
-const { Loading, StatusBar, Header, Content, TabBar, Module } = require('./components');
+const { Global, Loading, StatusBar, Header, Content, TabBar, Module } = require('./components');
 
 class App extends Component {
   constructor() {
@@ -9,6 +9,7 @@ class App extends Component {
       description: 'Your application',
     });
 
+    this.global = new Global();
     this.loading = new Loading();
     this.statusBar = new StatusBar();
     this.header = new Header();

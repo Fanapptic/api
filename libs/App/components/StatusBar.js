@@ -31,17 +31,14 @@ class StatusBar extends Component {
             value: 'dark-content',
             tooltip: 'Dark colored status bar text.',
           },
+          {
+            name: 'Hidden',
+            value: 'hidden',
+            tooltip: 'Hide the status bar.',
+          },
         ],
       }),
       defaultValue: 'default',
-    });
-
-    this.hidden = new Option({
-      name: 'hidden',
-      displayName: 'Hidden',
-      description: 'Hides the top status bar.',
-      field: Configurable.FIELDS.SWITCH(),
-      defaultValue: false,
     });
   }
 }

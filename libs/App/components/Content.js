@@ -10,20 +10,20 @@ class Content extends Component {
       description: 'The content configuration of the application.',
     });
 
+    this.backgroundGradient = new Option({
+      name: 'backgroundGradient',
+      displayName: 'Background Gradient',
+      description: 'The background gradient of module content.',
+      field: Configurable.FIELDS.GRADIENT(),
+      defaultValue: '#000000,#FFFFFF',
+    });
+
     this.textColor = new Option({
       name: 'textColor',
       displayName: 'Text Color',
       description: 'The color of module text.',
       field: Configurable.FIELDS.COLOR(),
       defaultValue: '#999333',
-    });
-
-    this.fontFamily = new Option({
-      name: 'fontFamily',
-      displayName: 'Font Family',
-      description: 'The font family used by the application.',
-      field: Configurable.FIELDS.FONT(),
-      defaultValue: 'Arial',
     });
 
     this.fontSize = new Option({

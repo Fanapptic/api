@@ -34,7 +34,7 @@ class Configurable {
   }
 
   export() {
-    return this.value || this.defaultValue;
+    return (this.value !== null) ? this.value : this.defaultValue;
   }
 
   exportPackagedConfig() {

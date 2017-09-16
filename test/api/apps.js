@@ -16,18 +16,29 @@ describe('Apps', () => {
         website: 'http://www.website.com/',
         contentRating: '4+',
         config: {
+          global: {
+            fontFamily: 'Verdana',
+          },
           statusBar: {
             barStyle: 'default',
-            hidden: true,
+          },
+          header: {
+            tintColor: '#AAAAAA',
+            backgroundGradient: '#BBBBBB,#000000',
+          },
+          content: {
+            fontSize: '14px',
+            textColor: '#000000',
+            backgroundGradient: '#CCCCCC,#222222',
           },
           tabBar: {
             swipeEnabled: true,
-            animationEnabled: true,
+            animationEnabled: false,
             backgroundGradient: '#FFFFFF, #000000',
             tabBarOptions: {
               activeTintColor: '#000000',
               inactiveTintColor: '#CCCCCC',
-              showLabel: true,
+              showLabel: false,
             },
           },
           badField: {
@@ -49,7 +60,10 @@ describe('Apps', () => {
           response.body.keywords.should.equal(fields.keywords);
           response.body.website.should.equal(fields.website);
           response.body.contentRating.should.equal(fields.contentRating);
+          response.body.config.global.should.deep.equal(fields.config.global);
           response.body.config.statusBar.should.deep.equal(fields.config.statusBar);
+          response.body.config.header.should.deep.equal(fields.config.header);
+          response.body.config.content.should.deep.equal(fields.config.content);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);
           response.body.config.should.not.have.property('badField');
           done();

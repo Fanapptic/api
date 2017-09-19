@@ -2,6 +2,22 @@ const Component = require('./Component');
 const { Global, Loading, StatusBar, Header, Content, TabBar, Module } = require('./components');
 
 class App extends Component {
+  static mergeConfigs(originalConfig, newConfig) {
+    const recurse = (target, source) => {
+      Object.keys(source).forEach(key => {
+        if (target[key] && typeof source[key] === 'object') {
+          return recurse(target[key], source[key]);
+        }
+
+        target[key] = source[key];
+      });
+
+      return target;
+    };
+
+    return recurse(originalConfig, newConfig);
+  }
+
   constructor() {
     super({
       name: 'app',
@@ -43,7 +59,10 @@ class App extends Component {
 
   exportPackagedConfig() {
     return {
+      global: this.global.exportPackagedConfig(),
       statusBar: this.statusBar.exportPackagedConfig(),
+      header: this.header.exportPackagedConfig(),
+      content: this.content.exportPackagedConfig(),
       tabBar: this.tabBar.exportPackagedConfig(),
       modules: this.modules.map(module => module.exportPackagedConfig()),
     };

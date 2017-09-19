@@ -3,6 +3,7 @@
  */
 
 const fileUpload = require('express-fileupload');
+const App = rootRequire('/libs/App');
 const AppModel = rootRequire('/models/App');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
@@ -55,7 +56,10 @@ router.patch('/', (request, response, next) => {
     app.keywords = request.body.keywords || app.keywords;
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;
-    app.config = request.body.config || app.config;
+
+    if (request.body.config) {
+      app.config = App.mergeConfigs(app.config, request.body.config);
+    }
 
     if (request.files && request.files.icon) {
       return app.processIconUploadAndSave(request.files.icon.data);

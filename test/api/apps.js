@@ -7,6 +7,11 @@ describe('Apps', () => {
    */
 
   describe('PATCH /apps', () => {
+    const persistentHeader = {
+      tintColor: '#AAAAAA',
+      backgroundGradient: '#BBBBBB,#000000',
+    };
+
     it('200s with updated app object and ignores properties not in config schema when passed config', done => {
       const fields = {
         name: 'My cool app',
@@ -22,10 +27,7 @@ describe('Apps', () => {
           statusBar: {
             barStyle: 'default',
           },
-          header: {
-            tintColor: '#AAAAAA',
-            backgroundGradient: '#BBBBBB,#000000',
-          },
+          header: persistentHeader,
           content: {
             fontSize: '14px',
             textColor: '#000000',
@@ -66,6 +68,28 @@ describe('Apps', () => {
           response.body.config.content.should.deep.equal(fields.config.content);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);
           response.body.config.should.not.have.property('badField');
+          done();
+        });
+    });
+
+    it('200s with a partially updated app object when passed partial fields', done => {
+      const fields = {
+        config: {
+          global: {
+            fontFamily: 'Helvetica',
+          },
+        },
+      };
+
+      chai.request(server)
+        .patch('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.config.global.fontFamily.should.equal(fields.config.global.fontFamily);
+          response.body.config.header.should.deep.equal(persistentHeader);
           done();
         });
     });

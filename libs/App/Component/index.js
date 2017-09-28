@@ -23,21 +23,25 @@ class Component {
   }
 
   export(target = this) {
+    const excludeKeys = ['name', 'description', 'displayName'];
+
     const recurse = object => {
       return Object.keys(object).reduce((result, key) => {
+        if (excludeKeys.includes(key)) {
+          return result;
+        }
+
         const value = object[key];
 
         if (Array.isArray(value) && value.length) {
           result[key] = recurse(value);
-        }
-
-        if (value instanceof Component) {
+        } else if (value instanceof Component) {
           key = (Array.isArray(object)) ? value.name : key;
           result[key] = recurse(value);
-        }
-
-        if (value instanceof Configurable) {
+        } else if (value instanceof Configurable) {
           result[value.name] = value.export();
+        } else {
+          result[key] = value;
         }
 
         return result;
@@ -48,14 +52,8 @@ class Component {
   }
 
   exportPackagedConfig() {
-    const excludeKeys = [ 'name', 'displayName', 'description'];
-
     const recurse = object => {
       return Object.keys(object).reduce((result, key) => {
-        if (excludeKeys.includes(key)) {
-          return result;
-        }
-
         const value = object[key];
 
         if (Array.isArray(value)) {

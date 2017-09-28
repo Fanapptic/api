@@ -17,8 +17,8 @@ describe('App Modules', () => {
         tab: {
           title: 'Feed',
           icon: {
-            name: 'ion-icons',
-            set: 'feed',
+            name: 'ion-paper-airplane',
+            set: 'ionicons',
           },
         },
         dataSources: {

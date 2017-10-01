@@ -23,7 +23,6 @@ router.get('/', (request, response) => {
     let modulesArray = [];
 
     Object.keys(appModules.moduleClasses).forEach(moduleName => {
-      // throws if initModule can't find module with moduleName.
       modulesArray.push(appModules.initModule(moduleName));
     });
 

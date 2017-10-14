@@ -29,7 +29,10 @@ router.get('/', (request, response, next) => {
       response.success(appModule);
     }).catch(next);
   } else {
-    return AppModuleModel.findAll({ where: { appId } }).then(appModules => {
+    return AppModuleModel.findAll({
+      where: { appId },
+      order: [['position', 'ASC']], 
+    }).then(appModules => {
       response.success(appModules);
     }).catch(next);
   }

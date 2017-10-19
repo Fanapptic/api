@@ -195,12 +195,12 @@ describe('App Modules', () => {
    */
 
   describe('DELETE /apps/{appId}/modules', () => {
-    it('200s with a 200 response code when passed app module id', done => {
+    it('204s when passed app module id', done => {
       chai.request(server)
         .delete(`/apps/${appId}/modules/1`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
-          response.should.have.status(200);
+          response.should.have.status(204);
           done();
         });
     });

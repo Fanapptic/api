@@ -3,7 +3,9 @@ express.response.respond = function(httpCode, data) {
 };
 
 express.response.success = function(data) {
-  this.respond(200, data);
+  const status = (data) ? 200 : 204;
+
+  this.respond(status, data);
 };
 
 express.response.error = function(data) {

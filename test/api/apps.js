@@ -94,6 +94,35 @@ describe('Apps', () => {
         });
     });
 
+    it('200s with updated app object', done => {
+      const fields = {
+        name: 'Some APp Name',
+        displayName: 'appyo',
+        subtitle: 'some subtitle',
+        description: 'some description',
+        keywords: 'really,great,keywords',
+        website: 'https://www.fanapptic.com/',
+        contentRating: '4+',
+      };
+
+      chai.request(server)
+        .patch('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.name.should.equal(fields.name);
+          response.body.displayName.should.equal(fields.displayName);
+          response.body.subtitle.should.equal(fields.subtitle);
+          response.body.description.should.equal(fields.description);
+          response.body.keywords.should.equal(fields.keywords);
+          response.body.website.should.equal(fields.website);
+          response.body.contentRating.should.equal(fields.contentRating);
+          done();
+        });
+    });
+
     it('200s with updated app object when passed icon file and form data', done => {
       const name = 'changed name';
 

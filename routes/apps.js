@@ -51,6 +51,7 @@ router.patch('/', (request, response, next) => {
     }
 
     app.name = request.body.name || app.name;
+    app.displayName = request.body.displayName || app.displayName;
     app.subtitle = request.body.subtitle || app.subtitle;
     app.description = request.body.description || app.description;
     app.keywords = request.body.keywords || app.keywords;

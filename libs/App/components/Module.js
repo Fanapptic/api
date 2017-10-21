@@ -16,6 +16,10 @@ class Module extends Component {
     }
 
     super(initObject, Joi.object({
+      defaultIcon: Joi.object({
+        name: Joi.string(),
+        set: Joi.string(),
+      }).required(),
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),
       navigator: Joi.object().type(Navigator).required(),

@@ -17,8 +17,12 @@ class Feed extends Module {
       name: Feed.moduleName,
       displayName: 'Feed',
       description: 'Display an aggregate feed of your content from multiple sources.',
-      moduleUrl: 'https://fanapptic.s3.aws.amazon.com/feed',
-      injectedJavaScript: 'js',
+      defaultIcon: {
+        name: 'ion-ios-list-outline',
+        set: 'ion',
+      },
+      moduleUrl: 'https://www.getbootstrap.com/',
+      injectedJavaScript: '$("button").click()',
       navigator: new Navigator(),
       tab: new Tab(),
     });

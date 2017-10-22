@@ -2,7 +2,7 @@
  * Module: Feed
  */
 
-const { Module, Navigator, Tab } = rootRequire('/libs/App/components');
+const { Module, ConfigurableGrouping } = rootRequire('/libs/App/components');
 const dataSources = require('./dataSources');
 const options = require('./options');
 const styles = require('./styles');
@@ -23,13 +23,28 @@ class Feed extends Module {
       },
       moduleUrl: 'https://www.getbootstrap.com/',
       injectedJavaScript: '$("button").click()',
-      navigator: new Navigator(),
-      tab: new Tab(),
     });
 
     /*
-     * Data Sources
+     * Feed Sources
      */
+
+    const feedSourcesGrouping = new ConfigurableGrouping({
+      name: 'feedSources',
+      displayName: 'Feed Source',
+      description: 'Something about how these are the feed sources you connect.',
+    });
+
+    feedSourcesGrouping.addConfigurable(new dataSources.Facebook());
+    feedSourcesGrouping.addConfigurable(new dataSources.Instagram());
+    feedSourcesGrouping.addConfigurable(new dataSources.YouTube());
+
+    this.addConfigurableGrouping(feedSourcesGrouping);
+
+    /*
+    /*
+     * Data Sources
+
 
     this.addDataSource(new dataSources.Facebook());
     this.addDataSource(new dataSources.Instagram());
@@ -37,15 +52,15 @@ class Feed extends Module {
 
     /*
      * Options
-     */
+
 
     this.addOption(new options.FeedStyle());
 
     /*
      * Styles
-     */
 
-    this.addStyle(new styles.Font());
+
+    this.addStyle(new styles.Font());*/
   }
 }
 

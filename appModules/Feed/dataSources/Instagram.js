@@ -1,4 +1,4 @@
-const { DataSource } = rootRequire('/libs/App/components');
+const { DataSource } = rootRequire('/libs/App/configurables');
 
 module.exports = class extends DataSource {
   constructor() {

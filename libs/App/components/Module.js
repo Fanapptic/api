@@ -1,9 +1,8 @@
 const Joi = require('joi');
 const Component = require('../Component');
-const DataSource = require('./DataSource');
 const Navigator = require('./Navigator');
 const Tab = require('./Tab');
-const configurables = require('../configurables');
+const ConfigurableGrouping = require('./ConfigurableGrouping');
 
 class Module extends Component {
   static get moduleName() {
@@ -22,41 +21,25 @@ class Module extends Component {
       }).required(),
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),
-      navigator: Joi.object().type(Navigator).required(),
-      tab: Joi.object().type(Tab).required(),
     }));
 
-    this.dataSources = [];
-    this.options = [];
-    this.styles = [];
+    this.navigator = new Navigator();
+    this.tab = new Tab();
+
+    this.configurableGroupings = [];
   }
 
-  addDataSource(dataSource) {
-    if (!(dataSource instanceof DataSource)) {
-      throw new Error('A DataSource instance must be provided.');
+  addConfigurableGrouping(configurableGrouping) {
+    if (!(configurableGrouping instanceof ConfigurableGrouping)) {
+      throw new Error('A ConfigurableGrouping instance must be provided.');
     }
 
-    this.dataSources.push(dataSource);
-  }
-
-  addOption(option) {
-    if (!(option instanceof configurables.Option)) {
-      throw new Error('A Option instance must be provided.');
-    }
-
-    this.options.push(option);
-  }
-
-  addStyle(style) {
-    if (!(style instanceof configurables.Style)) {
-      throw new Error('A Style instance must be provided.');
-    }
-
-    this.styles.push(style);
+    this.configurableGroupings.push(configurableGrouping);
   }
 
   findDataSource(name) {
-    return this.dataSources.find(dataSource => dataSource.name === name);
+    // TODO: Recurse the configurableGroupings and find the data source.
+    //return this.dataSources.find(dataSource => dataSource.name === name);
   }
 
   exportPackagedConfig() {

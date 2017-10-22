@@ -1,23 +1,16 @@
-const Component = require('../Component');
 const Configurable = require('../Configurable');
-const { Option } = require('../configurables');
 
-class DataSource extends Component {
+class DataSource extends Configurable {
   constructor(initObject) {
-    if (new.target === Component) {
+    if (new.target === DataSource) {
       throw new TypeError('Cannot construct DataSource instances directly.');
     }
 
+    initObject.field = Configurable.FIELDS.AUTHORIZE();
+
     super(initObject);
 
-    this.authorization = new Option({
-      name: 'authorization',
-      displayName: 'Authorization',
-      description: 'Data source authorization',
-      field: Configurable.FIELDS.AUTHORIZE({
-        validate: this._validateAuthorization.bind(this),
-      }),
-    });
+    initObject.field.validate = this._validateAuthorization.bind(this);
   }
 
   connect() {
@@ -29,7 +22,7 @@ class DataSource extends Component {
   }
 
   handleReceivedData(request, response, next) {
-    throw new Error('handleRequest must be overriden.');
+    throw new Error('handleReceivedData must be overriden.');
   }
 
   _validateAuthorization(value) {

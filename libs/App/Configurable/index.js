@@ -13,6 +13,7 @@ class Configurable {
 
     let schema = Joi.object({
       name: Joi.string().required(),
+      type: Joi.string().required(),
       displayName: Joi.string().required(),
       description: Joi.string().required(),
       field: fields.schema,

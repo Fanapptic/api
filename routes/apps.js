@@ -59,7 +59,7 @@ router.patch('/', (request, response, next) => {
     app.contentRating = request.body.contentRating || app.contentRating;
 
     if (request.body.config) {
-      app.config = App.mergeConfigs(app.config, request.body.config);
+      app.config = App.mergeImportable(app.config, request.body.config);
     }
 
     if (request.files && request.files.icon) {

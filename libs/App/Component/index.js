@@ -2,6 +2,22 @@ const Joi = require('joi');
 const Configurable = require('../Configurable');
 
 class Component {
+  static mergeImportable(targetImportable, sourceImportable) {
+    const recurse = (target, source) => {
+      Object.keys(source).forEach(key => {
+        if (target[key] && typeof source[key] === 'object') {
+          return recurse(target[key], source[key]);
+        }
+
+        target[key] = source[key];
+      });
+
+      return target;
+    };
+
+    return recurse(targetImportable, sourceImportable);
+  }
+
   constructor(initObject = {}, overrideSchema = null) {
     if (new.target === Component) {
       throw new TypeError('Cannot construct Component instances directly.');

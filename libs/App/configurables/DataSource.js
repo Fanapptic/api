@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const Configurable = require('../Configurable');
 
 class DataSource extends Configurable {
@@ -6,9 +7,12 @@ class DataSource extends Configurable {
       throw new TypeError('Cannot construct DataSource instances directly.');
     }
 
+    initObject.type = 'dataSource';
     initObject.field = Configurable.FIELDS.AUTHORIZE();
 
-    super(initObject);
+    super(initObject, Joi.object({
+      platform: Joi.string().required(),
+    }));
 
     initObject.field.validate = this._validateAuthorization.bind(this);
   }

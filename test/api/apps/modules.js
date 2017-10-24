@@ -21,9 +21,11 @@ describe('App Modules', () => {
             set: 'ionicons',
           },
         },
-        dataSources: {
-          youtube: {
-            authorization: 'abcdefegaw',
+        configurableGroupings: {
+          feedSources: {
+            configurables: {
+              youtube: 'abcdefegaw',
+            },
           },
         },
       },
@@ -42,7 +44,7 @@ describe('App Modules', () => {
           response.body.moduleName.should.equal(fields.moduleName);
           response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
           response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
-          response.body.moduleConfig.dataSources.should.deep.include(fields.moduleConfig.dataSources);
+          response.body.moduleConfig.configurableGroupings.should.deep.include(fields.moduleConfig.configurableGroupings);
           response.body.position.should.equal(fields.position);
           done();
         });
@@ -120,7 +122,7 @@ describe('App Modules', () => {
           response.body.moduleName.should.not.equal(fields.moduleName);
           response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
           response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
-          response.body.moduleConfig.dataSources.should.be.an('object');
+          response.body.moduleConfig.configurableGroupings.should.be.an('object');
           response.body.moduleConfig.should.not.have.property('pointlessConfig');
           response.body.position.should.equal(fields.position);
           done();

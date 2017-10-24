@@ -6,6 +6,7 @@ module.exports = class extends DataSource {
       name: 'youtube',
       displayName: 'YouTube',
       description: 'Display YouTube video feed content.',
+      platform: 'youtube',
     });
   }
 

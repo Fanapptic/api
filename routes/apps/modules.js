@@ -2,6 +2,7 @@
  * Route: /apps/:appId/modules/:appModuleId?
  */
 
+const Module = rootRequire('/libs/App/components/Module');
 const AppModuleModel = rootRequire('/models/AppModule');
 const appConfig = rootRequire('/config/app');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
@@ -31,7 +32,7 @@ router.get('/', (request, response, next) => {
   } else {
     return AppModuleModel.findAll({
       where: { appId },
-      order: [['position', 'ASC']], 
+      order: [['position', 'ASC']],
     }).then(appModules => {
       response.success(appModules);
     }).catch(next);
@@ -74,8 +75,11 @@ router.patch('/', (request, response, next) => {
       throw new Error('The app module does not exist.');
     }
 
-    appModule.moduleConfig = moduleConfig || appModule.moduleConfig;
     appModule.position = position || appModule.position;
+
+    if (moduleConfig) {
+      appModule.moduleConfig = Module.mergeImportable(appModule.moduleConfig, moduleConfig);
+    }
 
     return appModule.save();
   }).then(appModule => {

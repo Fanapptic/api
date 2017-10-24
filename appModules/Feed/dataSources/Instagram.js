@@ -6,6 +6,7 @@ module.exports = class extends DataSource {
       name: 'instagram',
       displayName: 'Instagram',
       description: 'Display Instagram profile content.',
+      platform: 'instagram',
     });
   }
 

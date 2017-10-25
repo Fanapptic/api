@@ -88,6 +88,14 @@ describe('App Modules', () => {
    */
 
   describe('PATCH /apps/{appId}/modules', () => {
+    const persistentTab = {
+      title: 'Muh Cool Feed',
+      icon: {
+        name: 'fontawesome',
+        set: 'rocket',
+      },
+    };
+
     it('200s with updated module object owned by app and ignores properties not in config schema when passed config', done => {
       const fields = {
         moduleName: 'shouldnotchange',
@@ -97,13 +105,7 @@ describe('App Modules', () => {
               title: 'Feed Yo',
             },
           },
-          tab: {
-            title: 'Muh Cool Feed',
-            icon: {
-              name: 'fontawesome',
-              set: 'rocket',
-            },
-          },
+          tab: persistentTab,
           pointlessConfig: {
             someIgnoredItem: true,
           },
@@ -125,6 +127,30 @@ describe('App Modules', () => {
           response.body.moduleConfig.configurableGroupings.should.be.an('object');
           response.body.moduleConfig.should.not.have.property('pointlessConfig');
           response.body.position.should.equal(fields.position);
+          done();
+        });
+    });
+
+    it('200s with partially updated module object when passed partial fields', done => {
+      const fields = {
+        moduleConfig: {
+          navigator: {
+            navigationOptions: {
+              title: 'Feed!!',
+            },
+          },
+        },
+      };
+
+      chai.request(server)
+        .patch(`/apps/${appId}/modules/1`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.moduleConfig.navigator.navigationOptions.title.should.equal(fields.moduleConfig.navigator.navigationOptions.title);
+          response.body.moduleConfig.tab.should.deep.equal(persistentTab);
           done();
         });
     });

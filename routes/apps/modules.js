@@ -51,7 +51,7 @@ router.post('/', (request, response, next) => {
 
   AppModuleModel.count({ where: { appId } }).then(appModulesCount => {
     if (appModulesCount >= appConfig.moduleLimit) {
-      throw new Error(`Your application already has a maximum of ${appConfig.activeModuleLimit} active modules.`);
+      throw new Error(`Your application already has a maximum of ${appConfig.moduleLimit} active modules.`);
     }
 
     return AppModuleModel.create({ appId, moduleName, moduleConfig, position });

@@ -68,6 +68,10 @@ const UserModel = database.define('users', {
       },
     },
   },
+  admin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 /*

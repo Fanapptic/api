@@ -8,6 +8,7 @@ const AppPushNotificationModel = rootRequire('/models/AppPushNotification');
 const AppSessionModel = rootRequire('/models/AppSession');
 const AppUserModel = rootRequire('/models/AppUser');
 
+const ArticleModel = rootRequire('/models/Article');
 const CurrencyModel = rootRequire('/models/Currency');
 const UserModel = rootRequire('/models/User');
 

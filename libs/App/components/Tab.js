@@ -15,7 +15,7 @@ class Tab extends Component {
       displayName: 'Title',
       description: 'The title shown under the tab icon.',
       field: Configurable.FIELDS.TEXT(),
-      defaultValue: 'Item',
+      defaultValue: 'Tab Title',
     });
 
     this.icon = new Option({
@@ -24,7 +24,7 @@ class Tab extends Component {
       description: 'The icon shown for the tab.',
       field: Configurable.FIELDS.ICON(),
       defaultValue: {
-        name: 'question',
+        name: 'ion-help',
         set: 'ion-icons',
       },
     });

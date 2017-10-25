@@ -24,7 +24,10 @@ class Module extends Component {
     }));
 
     this.navigator = new Navigator();
+
     this.tab = new Tab();
+    this.tab.title.defaultValue = this.displayName;
+    this.tab.icon.defaultValue = this.defaultIcon;
 
     this.configurableGroupings = [];
   }

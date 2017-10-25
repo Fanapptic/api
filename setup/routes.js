@@ -8,6 +8,7 @@ const appModulesFieldsRouter = rootRequire('/routes/apps/modules/fields');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
 const appUsersRouter = rootRequire('/routes/apps/users');
+const articlesRouter = rootRequire('/routes/articles');
 const healthRouter = rootRequire('/routes/health');
 const modulesRouter = rootRequire('/routes/modules');
 const usersRouter = rootRequire('/routes/users');
@@ -23,6 +24,7 @@ module.exports = app => {
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
+  app.use('/articles/:articleId?', articlesRouter);
   app.use('/health', healthRouter);
   app.use('/modules/:moduleName?', modulesRouter);
   app.use('/users', usersRouter);

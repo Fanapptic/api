@@ -29,10 +29,10 @@ const ArticleModel = database.define('articles', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
-  draft: {
+  published: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: true,
+    defaultValue: false,
   },
   news: {
     type: Sequelize.BOOLEAN,

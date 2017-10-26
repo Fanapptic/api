@@ -40,7 +40,7 @@ router.get('/', (request, response, next) => {
 router.post('/', userAuthorize);
 router.post('/', adminAuthorize);
 router.post('/', (request, response, next) => { // TODO: Secure this.
-  const { author, icon, title, commentary, content, draft, news } = request.body;
+  const { author, icon, title, commentary, content, published, news } = request.body;
 
   ArticleModel.create({
     author,
@@ -48,7 +48,7 @@ router.post('/', (request, response, next) => { // TODO: Secure this.
     title,
     commentary,
     content,
-    draft,
+    published,
     news,
   }).then(article => {
     response.success(article);
@@ -63,7 +63,7 @@ router.patch('/', userAuthorize);
 router.patch('/', adminAuthorize);
 router.patch('/', (request, response, next) => { // TODO: Secure this.
   const { articleId } = request.params;
-  const { author, icon, title, commentary, content, draft, news } = request.body;
+  const { author, icon, title, commentary, content, published, news } = request.body;
 
   ArticleModel.find({ where: { id: articleId } }).then(article => {
     if (!article) {
@@ -75,8 +75,8 @@ router.patch('/', (request, response, next) => { // TODO: Secure this.
     article.title = title || article.title;
     article.commentary = commentary || article.commentary;
     article.content = content || article.content;
-    article.draft = draft || article.draft;
-    article.news = news || article.news;
+    article.published = (published !== undefined) ? published : article.published;
+    article.news = (news !== undefined) ? news : article.news;
 
     return article.save();
   }).then(article => {

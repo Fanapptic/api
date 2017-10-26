@@ -90,7 +90,16 @@ before(done => {
 
       return chai.request(server).post('/users').send(testUser);
     }).then(response => {
+      fatLog('Making global test user an admin...');
+
       Object.assign(testUser, response.body);
+
+      return sequelize.query(`
+        UPDATE users
+        SET admin = 1
+        WHERE id = ${testUser.id}
+      `);
+    }).then(() => {
       fatLog('Updating global test app...');
 
       return chai.request(server)

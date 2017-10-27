@@ -51,7 +51,7 @@ describe('Articles', () => {
         commentary: 'Some new commentary',
         content: 'Some new content',
         published: false,
-        news: false,
+        news: true,
       };
 
       chai.request(server)
@@ -83,6 +83,21 @@ describe('Articles', () => {
     it('200s with an array or article objects', done => {
       chai.request(server)
         .get('/articles')
+        .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body.length.should.be.at.least(1);
+          response.body.forEach(articleObject => {
+            articleObject.should.be.an('object');
+          });
+          done();
+        });
+    });
+
+    it('200s with article objects when passed query parameters', done => {
+      chai.request(server)
+        .get('/articles?news=true')
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);

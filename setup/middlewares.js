@@ -1,5 +1,6 @@
 const compression = require('compression');
 const bodyParser = require('body-parser');
+const queryBooleanParser = require('express-query-boolean');
 const serverConfig = rootRequire('/config/server');
 
 module.exports = app => {
@@ -11,4 +12,5 @@ module.exports = app => {
     extended: false,
     limit: serverConfig.maxRequestBodySize,
   }));
+  app.use(queryBooleanParser());
 };

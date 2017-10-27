@@ -17,6 +17,7 @@ const router = express.Router({
 router.get('/', userAuthorize);
 router.get('/', (request, response, next) => {
   const { articleId } = request.params;
+  const { published, news } = request.query;
 
   if (articleId) {
     ArticleModel.find({ where: { id: articleId } }).then(article => {
@@ -27,7 +28,7 @@ router.get('/', (request, response, next) => {
       response.success(article);
     });
   } else {
-    ArticleModel.findAll().then(articles => {
+    ArticleModel.findAll({ where: request.query }).then(articles => {
       response.success(articles);
     }).catch(next);
   }

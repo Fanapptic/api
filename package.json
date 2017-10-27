@@ -33,6 +33,7 @@
     "compression": "^1.6.2",
     "express": "^4.15.2",
     "express-fileupload": "^0.1.4",
+    "express-query-boolean": "^1.0.0",
     "joi": "^10.4.2",
     "lodash": "^4.17.4",
     "mysql2": "^1.2.0",

@@ -42,7 +42,7 @@ router.post('/', (request, response, next) => {
   app.generateChecklist().then(checklist => {
     checklist.forEach(item => {
       if (!item.completed) {
-        throw new Error('You must complete all checklist items before releasing your app.');
+        throw new Error(`You must "${item.title}" before releasing your app.`);
       }
     });
 

@@ -18,6 +18,7 @@ global.testUser = {
   firstName: 'Fanapptic',
   lastName: 'Man',
   phoneNumber: '+12535452412',
+  paypalEmail: 'testemail@gmail.com',
 };
 
 global.testAppUser = {
@@ -106,12 +107,29 @@ before(done => {
         .patch(`/apps/${appId}`)
         .set('X-Access-Token', testUser.accessToken)
         .send({
+          name: 'test name',
+          displayName: 'cool app',
           subtitle: 'a subtitle',
-          description: 'a long descrtipion',
+          description: 'a long description',
           keywords: 'some,great,keywords',
           website: 'http://www.mysite.com/',
           contentRating: '9+',
         });
+    }).then(() => {
+      fatLog('Adding initial modules to global test app...');
+
+      let promises = [];
+
+      for (let i = 0; i < 2; i++) {
+        promises.push(
+          chai.request(server)
+            .post(`/apps/${appId}/modules`)
+            .set('X-Access-Token', testUser.accessToken)
+            .send({ moduleName: 'feed' })
+        );
+      }
+
+      return Promise.all(promises);
     }).then(() => {
       fatLog('Creating global test app user in DB...');
 

@@ -39,8 +39,16 @@ router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { app } = request;
 
-  return app.deploy().then(appDeployment => {
-    response.success(appDeployment);
+  app.generateChecklist().then(checklist => {
+    checklist.forEach(item => {
+      if (!item.completed) {
+        throw new Error('You must complete all checklist items before releasing your app.');
+      }
+    });
+
+    return app.deploy().then(appDeployment => {
+      response.success(appDeployment);
+    });
   }).catch(next);
 });
 

@@ -19,4 +19,22 @@ module.exports = {
   iconContentType: 'image/png',
   moduleLimit: 5,
   version: '1.0.0',
+  checklist: {
+    brandingMarketing: {
+      title: 'Add Your Branding & Marketing',
+      description: 'For your app to be listed on the store, we require you provide the branding & marketing details you want used in your app store listing.',
+    },
+    payout: {
+      title: 'Setup Your Payout Settings',
+      description: "Before you can earn money from the minimal ads in your app, you're required to setup where we'll send the money you earn.",
+    },
+    releaseAgreement: {
+      title: 'E-Sign The Release Agreement',
+      description: 'To release your app, Fanapptic is legally required to have signed permission to launch an app with your content on your behalf.',
+    },
+    tabs: {
+      title: 'Add At Least 2 Tabs',
+      description: 'Your app needs to do something useful. We require you add at least 2 tabs to your app for your users to enjoy.',
+    },
+  },
 };

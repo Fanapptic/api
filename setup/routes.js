@@ -1,5 +1,6 @@
 const appsRouter = rootRequire('/routes/apps');
 const appAnalyticsRouter = rootRequire('/routes/apps/analytics');
+const appChecklistsRouter = rootRequire('/routes/apps/checklists');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
 const appDeploymentStepsRouter = rootRequire('/routes/apps/deployments/steps');
 const appFieldsRouter = rootRequire('/routes/apps/fields');
@@ -17,6 +18,7 @@ const usersRouter = rootRequire('/routes/users');
 module.exports = app => {
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/analytics', appAnalyticsRouter);
+  app.use('/apps/:appId/checklists', appChecklistsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId/steps/:appDeploymentStepId?', appDeploymentStepsRouter);
   app.use('/apps/:appId/fields', appFieldsRouter);

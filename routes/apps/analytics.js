@@ -21,20 +21,20 @@ router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
   response.success({
     downloads: {
-      weekly: 0,
-      total: 0,
+      weekly: '12,631',
+      total: '182,513',
     },
     activeUsers: {
-      daily: 0,
-      weekly: 0,
+      daily: '23,631',
+      weekly: '74,421',
     },
     usage: {
-      daily: 0,
-      total: 0,
+      daily: '67,421',
+      total: '361,214',
     },
     adRevenue: {
-      daily: 0,
-      monthly: 0,
+      daily: '$1,741.42',
+      monthly: '$34,631.53',
     },
   });
 });

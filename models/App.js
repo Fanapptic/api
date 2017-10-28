@@ -5,6 +5,7 @@ const aws = require('aws-sdk');
 const App = rootRequire('/libs/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppModuleModel = rootRequire('/models/AppModule');
+const UserModel = rootRequire('/models/User');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
@@ -134,6 +135,45 @@ AppModel.prototype.generateAppObject = function() {
   app.import(this.config);
 
   return app;
+};
+
+AppModel.prototype.generateChecklist = function() {
+  let brandingMarketing = Object.assign({ completed: false }, appConfig.checklist.brandingMarketing);
+  let payout = Object.assign({ completed: false }, appConfig.checklist.payout);
+  let releaseAgreement = Object.assign({ completed: false }, appConfig.checklist.releaseAgreement);
+  let tabs = Object.assign({ completed: false }, appConfig.checklist.tabs);
+
+  let promises = [];
+  let checklist = [ brandingMarketing, payout, releaseAgreement, tabs ];
+
+  // Branding & Marketing
+  if (this.name && this.displayName && this.subtitle &&
+      this.description && this.keywords && this.icons &&
+      this.website && this.contentRating && this.config) {
+    brandingMarketing.completed = true;
+  }
+
+  // Payout Settings
+  promises.push(UserModel.find({ where: { id: this.userId } }).then(user => {
+    if (user.paypalEmail) {
+      payout.completed = true;
+    }
+  }));
+
+  // Release Agreement Signature
+  releaseAgreement.completed = true; // TODO
+
+  // At Least 2 Tabs
+  promises.push(AppModuleModel.count({ where: { appId: this.id } }).then(count => {
+    if (count >= 2) {
+      tabs.completed = true;
+    }
+  }));
+
+  // Return Checklist
+  return Promise.all(promises).then(() => {
+    return checklist;
+  });
 };
 
 AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {

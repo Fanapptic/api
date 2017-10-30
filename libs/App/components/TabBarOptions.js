@@ -23,7 +23,7 @@ class TabBarOptions extends Component {
       displayName: 'Inactive Tint Color',
       description: 'The color of the inactive tab items.',
       field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#606060',
+      defaultValue: '#838383',
     });
 
     this.showLabel = new Option({

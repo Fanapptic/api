@@ -54,11 +54,12 @@ describe('App Modules', () => {
       let promises = [];
 
       // module limit in /config/app.js is 5.
+      // Initialization of the test app adds 2 modules.
       // The previous POST test counts for 1.
-      // This loop adds 4 more modules.
+      // This loop adds 2 more modules.
       // The 6th should fail.
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 2; i++) {
         promises.push(
           chai.request(server)
             .post(`/apps/${appId}/modules`)

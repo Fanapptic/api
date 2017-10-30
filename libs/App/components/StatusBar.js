@@ -38,7 +38,7 @@ class StatusBar extends Component {
           },
         ],
       }),
-      defaultValue: 'default',
+      defaultValue: 'dark-content',
     });
   }
 }

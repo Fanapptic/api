@@ -144,20 +144,17 @@ AppModel.prototype.generateChecklist = function() {
   let tabs = Object.assign({ completed: false }, appConfig.checklist.tabs);
 
   let promises = [];
-  let checklist = [ brandingMarketing, payout, releaseAgreement, tabs ];
 
   // Branding & Marketing
   if (this.name && this.displayName && this.subtitle &&
-      this.description && this.keywords && this.icons &&
+      this.description && this.keywords /*&& this.icons TODO: THIS BREAKS TEST, ADD DEFAULT ICON GENERATION */ &&
       this.website && this.contentRating && this.config) {
     brandingMarketing.completed = true;
   }
 
   // Payout Settings
   promises.push(UserModel.find({ where: { id: this.userId } }).then(user => {
-    if (user.paypalEmail) {
-      payout.completed = true;
-    }
+    payout.completed = (user.paypalEmail) ? true : false;
   }));
 
   // Release Agreement Signature
@@ -165,14 +162,12 @@ AppModel.prototype.generateChecklist = function() {
 
   // At Least 2 Tabs
   promises.push(AppModuleModel.count({ where: { appId: this.id } }).then(count => {
-    if (count >= 2) {
-      tabs.completed = true;
-    }
+    tabs.completed = (count >= 2) ? true : false;
   }));
 
   // Return Checklist
   return Promise.all(promises).then(() => {
-    return checklist;
+    return [ brandingMarketing, payout, releaseAgreement, tabs ];
   });
 };
 

@@ -13,7 +13,7 @@ describe('OAuth Twitter Authorizations', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.authorizationUrl.should.be.a('string');
+          response.body.url.should.be.a('string');
           done();
         });
     });

@@ -38,7 +38,7 @@ router.get('/', (request, response) => {
     }
 
     response.success({
-      authorizationUrl: `https://twitter.com/oauth/authorize?oauth_token=${requestToken}`,
+      url: `https://twitter.com/oauth/authorize?oauth_token=${requestToken}`,
     });
   });
 });

@@ -14,9 +14,9 @@ const router = express.Router({
  * GET
  */
 
-router.get('/', userAuthorize);
-router.get('/', (request, response) => {
-  const redirectUrl = request.query.redirectUrl;
+//router.get('/', userAuthorize);
+router.get('/', (request, response, next) => {
+  const { redirectUrl } = request.query;
 
   if (!redirectUrl) {
     throw new Error('redirectUrl must be provided.');
@@ -34,11 +34,11 @@ router.get('/', (request, response) => {
 
   twitterOauth.getOAuthRequestToken((error, requestToken) => {
     if (error) {
-      throw new Error(error);
+      return next(new Error(error.data));
     }
 
     response.success({
-      url: `https://twitter.com/oauth/authorize?oauth_token=${requestToken}`,
+      url: `${oauthConfig.twitter.authorizeUrl}?oauth_token=${requestToken}`,
     });
   });
 });

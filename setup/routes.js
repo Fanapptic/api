@@ -14,7 +14,7 @@ const articlesRouter = rootRequire('/routes/articles');
 const healthRouter = rootRequire('/routes/health');
 const modulesRouter = rootRequire('/routes/modules');
 const oauthTwitterAuthorizationsRouter = rootRequire('/routes/oauth/twitter/authorizations');
-const oauthTwitterTokensRouter = rootRequire('/routes/oauth/twitter/tokens');
+const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
 const usersRouter = rootRequire('/routes/users');
 
 module.exports = app => {
@@ -34,7 +34,7 @@ module.exports = app => {
   app.use('/health', healthRouter);
   app.use('/modules/:moduleName?', modulesRouter);
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);
-  app.use('/oauth/twitter/tokens', oauthTwitterTokensRouter);
+  app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
   app.use('/users', usersRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.

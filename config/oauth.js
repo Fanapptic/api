@@ -9,4 +9,11 @@ module.exports = {
     version: '1.0',
     signatureMethod: 'HMAC-SHA1',
   },
+  youtube: {
+    apiUrl: 'https://www.googleapis.com',
+    accessTokenPath: '/oauth2/v4/token',
+    usersUrl: 'https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true',
+    clientId: '643806121748-0fsie6jbn04v5hun7p8r3c9jkksap8po.apps.googleusercontent.com',
+    clientSecret: 'nu3NKm3IX1wrShcL5-AasgLH',
+  },
 };

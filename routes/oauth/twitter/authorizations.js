@@ -14,7 +14,7 @@ const router = express.Router({
  * GET
  */
 
-//router.get('/', userAuthorize);
+router.get('/', userAuthorize);
 router.get('/', (request, response, next) => {
   const { redirectUrl } = request.query;
 

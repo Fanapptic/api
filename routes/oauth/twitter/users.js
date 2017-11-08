@@ -39,7 +39,7 @@ router.post('/', (request, response, next) => {
 
     twitterOauth.get(oauthConfig.twitter.userUrl, accessToken, accessTokenSecret, (error, user) => {
       if (error) {
-        return next (new Error(error.data));
+        return next(new Error(error.data));
       }
 
       user = JSON.parse(user);

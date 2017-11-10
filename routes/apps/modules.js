@@ -22,7 +22,7 @@ router.get('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
 
   if (appModuleId) {
-    return AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
+    AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
       if (!appModule) {
         throw new Error('The app module does not exist.');
       }
@@ -30,7 +30,7 @@ router.get('/', (request, response, next) => {
       response.success(appModule);
     }).catch(next);
   } else {
-    return AppModuleModel.findAll({
+    AppModuleModel.findAll({
       where: { appId },
       order: [['position', 'ASC']],
     }).then(appModules => {

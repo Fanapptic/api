@@ -13,24 +13,28 @@ class DataSource extends Configurable {
     super(initObject, Joi.object({
       platform: Joi.string().required(),
     }));
-
-    initObject.field.validate = this._validateAuthorization.bind(this);
   }
 
-  connect() {
+  import(data) {
+    /*
+     * Due to the nature of a DataSource, they do not accept the assignment
+     * of any value. To create, modify or delete a DataSource Provider, API
+     * requests should be made to /apps/{appId}/modules/{appModuleId}/providers
+     */
+
+    return;
+  }
+
+  connect(appModuleProvider) {
     throw new Error('connect must be overriden.');
   }
 
-  disconnect() {
+  disconnect(appModuleProvider) {
     throw new Error('disconnect must be overriden.');
   }
 
   handleReceivedData(request, response, next) {
     throw new Error('handleReceivedData must be overriden.');
-  }
-
-  _validateAuthorization(value) {
-    return (value) ? this.connect() : this.disconnect();
   }
 }
 

@@ -38,8 +38,9 @@
     "joi": "^10.4.2",
     "lodash": "^4.17.4",
     "mysql2": "^1.4.2",
-    "oauth": "^0.9.15",
     "phone": "^1.0.12",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "sequelize": "git+https://github.com/sequelize/sequelize.git",
     "sharp": "^0.18.4",
     "uuid": "^3.0.1"

@@ -40,6 +40,17 @@ global.testAppModule = {
   position: 0,
 };
 
+global.testAppModuleProvider = {
+  source: 'instagram',
+  avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/s150x150/23161741_371295803327277_1672749771627954176_n.jpg',
+  accountId: '6323900411',
+  accountName: 'fanapptic',
+  accountUrl: 'https://www.instagram.com/fanapptic',
+  accessToken: '6323900411.20d8092.0e030ca81339459daea5d3edadd78fde',
+  accessTokenSecret: null,
+  refreshToken: null,
+};
+
 chai.should();
 chai.use(chaiHttp);
 
@@ -152,6 +163,14 @@ before(done => {
         .send(testAppModule);
     }).then(response => {
       Object.assign(testAppModule, response.body);
+      fatLog('Creating global test app module provider in DB...');
+
+      return chai.request(server)
+        .post('/apps/1/modules/1/providers')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(testAppModuleProvider);
+    }).then(response => {
+      Object.assign(testAppModuleProvider, response.body);
 
       fatLog('Starting tests...');
       done();

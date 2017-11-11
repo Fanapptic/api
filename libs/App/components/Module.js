@@ -3,6 +3,7 @@ const Component = require('../Component');
 const Navigator = require('./Navigator');
 const Tab = require('./Tab');
 const ConfigurableGrouping = require('./ConfigurableGrouping');
+const DataSource = require('../configurables/DataSource');
 
 class Module extends Component {
   static get moduleName() {
@@ -40,9 +41,12 @@ class Module extends Component {
     this.configurableGroupings.push(configurableGrouping);
   }
 
-  findDataSource(name) {
-    // TODO: Recurse the configurableGroupings and find the data source.
-    //return this.dataSources.find(dataSource => dataSource.name === name);
+  getDataSource(name) {
+    return this.configurableGroupings.reduce((result, configurableGrouping) => {
+      return result || configurableGrouping.configurables.find(configurable => {
+        return (configurable instanceof DataSource && configurable.name === name);
+      });
+    }, undefined);
   }
 
   exportPackagedConfig() {

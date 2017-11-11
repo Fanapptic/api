@@ -2,7 +2,7 @@
  * Route: /oauth/youtube/users
  */
 
-const oauth = require('oauth');
+const requestPromise = require('request-promise');
 const oauthConfig = rootRequire('/config/oauth');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
@@ -17,49 +17,44 @@ const router = express.Router({
 router.post('/', userAuthorize);
 router.post('/', (request, response, next) => {
   const { code, redirectUrl } = request.body;
+  let accessToken, refreshToken = null;
 
   if (!code) {
     throw new Error('An auth code must be provided.');
   }
 
-  const youtubeOauth = new oauth.OAuth2(
-    oauthConfig.youtube.clientId,
-    oauthConfig.youtube.clientSecret,
-    oauthConfig.youtube.apiUrl,
-    null,
-    oauthConfig.youtube.accessTokenPath,
-    null
-  );
+  requestPromise.post({
+    url: oauthConfig.youtube.accessTokenUrl,
+    form: {
+      code,
+      client_id: oauthConfig.youtube.clientId,
+      client_secret: oauthConfig.youtube.clientSecret,
+      redirect_uri: redirectUrl,
+      grant_type: 'authorization_code',
+    },
+    json: true,
+  }).then(result => {
+    accessToken = result.access_token;
+    refreshToken = result.refresh_token;
 
-  const params = {
-    grant_type: 'authorization_code',
-    redirect_uri: redirectUrl,
-  };
-
-  youtubeOauth.getOAuthAccessToken(code, params, (error, accessToken, refreshToken) => {
-    if (error) {
-      return next(new Error(error.data));
-    }
-
-    youtubeOauth.get(oauthConfig.youtube.usersUrl, accessToken, (error, users) => {
-      if (error) {
-        return next(new Error(error.data));
-      }
-
-      users = JSON.parse(users);
-
-      const user = users.items[0];
-
-      response.success({
-        id: user.id,
-        name: user.snippet.title,
-        avatarUrl: user.snippet.thumbnails.high.url,
-        accountUrl: 'https://www.youtube.com/channel/' + user.id,
-        accessToken,
-        refreshToken,
-      });
+    return requestPromise.get({
+      url: oauthConfig.youtube.userUrl,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  });
+  }).then(result => {
+    result = JSON.parse(result).items[0];
+
+    response.success({
+      id: result.id,
+      name: result.snippet.title,
+      avatarUrl: result.snippet.thumbnails.high.url,
+      accountUrl: 'https://www.youtube.com/channel/' + result.id,
+      accessToken,
+      refreshToken,
+    });
+  }).catch(next);
 });
 
 /*

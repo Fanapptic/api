@@ -3,8 +3,8 @@ module.exports = (overrides = {}) => {
 
   return {
     name: 'authorize',
-    validate: validate || (input => {
-      return (input) ? true : false;
+    validate: validate || (() => {
+      return true;
     }),
   };
 };

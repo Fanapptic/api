@@ -10,12 +10,12 @@ module.exports = class extends DataSource {
     });
   }
 
-  connect() {
+  connect(appModuleProvider) {
     console.log('connect fired?');
     return true;
   }
 
-  disconnect() {
+  disconnect(appModuleProvider) {
     console.log('disconnect fired?');
     return true;
   }

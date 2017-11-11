@@ -101,7 +101,7 @@ describe('App Deployments', () => {
    */
 
   describe('GET /apps/{appId}/deployments', () => {
-    it('200s with array of app deployment objects owned by app', done => {
+    it('200s with an array of app deployment objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/deployments`)
         .set('X-Access-Token', testUser.accessToken)

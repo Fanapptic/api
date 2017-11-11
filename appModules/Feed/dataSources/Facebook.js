@@ -10,11 +10,11 @@ module.exports = class extends DataSource {
     });
   }
 
-  connect() {
+  connect(appModuleProvider) {
     return true;
   }
 
-  disconnect() {
+  disconnect(appModuleProvider) {
     return true;
   }
 

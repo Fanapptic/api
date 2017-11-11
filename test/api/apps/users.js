@@ -43,7 +43,7 @@ describe('App Users', () => {
           response.should.have.status(400);
           done();
         });
-    });    
+    });
   });
 
   /*
@@ -51,7 +51,7 @@ describe('App Users', () => {
    */
 
   describe('GET /apps/{appId}/users', () => {
-    it('200s with array of app user objects owned by app', done => {
+    it('200s with an array of app user objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/users`)
         .set('X-Access-Token', testUser.accessToken)

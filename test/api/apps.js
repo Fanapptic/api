@@ -180,7 +180,7 @@ describe('Apps', () => {
    */
 
   describe('GET /apps', () => {
-    it('200s with array of app objects owned by user', done => {
+    it('200s with an array of app objects owned by user', done => {
       chai.request(server)
         .get('/apps')
         .set('X-Access-Token', testUser.accessToken)

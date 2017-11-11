@@ -12,5 +12,6 @@
       "testAppUser": true,
       "testAppDeployment": true,
       "testAppModule": true,
+      "testAppModuleProvider": true,
     },
 }

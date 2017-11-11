@@ -64,7 +64,7 @@ router.post('/', (request, response, next) => {
 
   let user = null;
 
-  return database.transaction(transaction => {
+  database.transaction(transaction => {
     return UserModel.create({
       email,
       password,

@@ -22,11 +22,11 @@ describe('App Modules', () => {
           },
         },
         configurableGroupings: {
-          feedSources: {
+          /*feedSources: {
             configurables: {
               youtube: 'abcdefegaw',
             },
-          },
+          }, // Feed sources no longer directly configurable, rewrite this */
         },
       },
       position: 0,
@@ -243,5 +243,7 @@ describe('App Modules', () => {
           done();
         });
     });
+
+    helpers.it401sWhenUserAuthorizationIsInvalid('delete', '/apps/1/modules');
   });
 });

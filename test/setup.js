@@ -42,11 +42,11 @@ global.testAppModule = {
 
 global.testAppModuleProvider = {
   source: 'instagram',
-  avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/s150x150/23161741_371295803327277_1672749771627954176_n.jpg',
-  accountId: '6323900411',
-  accountName: 'fanapptic',
-  accountUrl: 'https://www.instagram.com/fanapptic',
-  accessToken: '6323900411.20d8092.0e030ca81339459daea5d3edadd78fde',
+  avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/11809603_737295259710174_813805448_a.jpg',
+  accountId: '417616778',
+  accountName: 'braydo25',
+  accountUrl: 'https://www.instagram.com/braydo25',
+  accessToken: '417616778.20d8092.7c0160e2b09c4f598bb54f2e0274c3fc',
   accessTokenSecret: null,
   refreshToken: null,
 };

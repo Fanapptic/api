@@ -1,4 +1,8 @@
+const requestPromise = require('request-promise');
+
+const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
 const { DataSource } = rootRequire('/libs/App/configurables');
+const instagramConfig = rootRequire('/config/dataSources/instagram');
 
 module.exports = class extends DataSource {
   constructor() {
@@ -11,12 +15,29 @@ module.exports = class extends DataSource {
   }
 
   connect(appModuleProvider) {
-    return true;
+    return requestPromise.get({
+      url: `${instagramConfig.postsUrl}?access_token=${appModuleProvider.accessToken}`,
+      json: true,
+    }).then(posts => {
+      let bulkData = [];
+
+      posts.data.forEach(function(post) {
+        bulkData.push({
+          appModuleProviderId: appModuleProvider.id,
+          data: post, // we need to determine a standard data structure later...
+        });
+      });
+
+      AppModuleProviderDataModel.bulkCreate(bulkData);
+    });
   }
 
   disconnect(appModuleProvider) {
-    console.log('disconnect fired?');
-    return true;
+    return AppModuleProviderDataModel.destroy({
+      where: {
+        appModuleProviderId: appModuleProvider.id,
+      },
+    });
   }
 
   handleReceivedData(request, response, next) {

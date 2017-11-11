@@ -4,7 +4,7 @@
 
 const querystring = require('querystring');
 const requestPromise = require('request-promise');
-const oauthConfig = rootRequire('/config/oauth');
+const twitterConfig = rootRequire('/config/dataSources/twitter');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
 const router = express.Router({
@@ -25,27 +25,27 @@ router.post('/', (request, response, next) => {
   }
 
   requestPromise.post({
-    url: oauthConfig.twitter.accessTokenUrl,
+    url: twitterConfig.accessTokenUrl,
     oauth: {
       token,
       verifier,
       token_secret: tokenSecret,
-      consumer_key: oauthConfig.twitter.apiKey,
-      consumer_secret: oauthConfig.twitter.apiSecret,
+      consumer_key: twitterConfig.consumerKey,
+      consumer_secret: twitterConfig.consumerSecret,
     },
-  }).then(result => {
-    result = querystring.parse(result);
+  }).then(user => {
+    user = querystring.parse(user);
 
-    accessToken = result.oauth_token;
-    accessTokenSecret = result.oauth_token_secret;
+    accessToken = user.oauth_token;
+    accessTokenSecret = user.oauth_token_secret;
 
     return requestPromise.get({
-      url: oauthConfig.twitter.verifyUrl,
+      url: twitterConfig.verifyUrl,
       oauth: {
-        token: result.oauth_token,
-        token_secret: result.oauth_token_secret,
-        consumer_key: oauthConfig.twitter.apiKey,
-        consumer_secret: oauthConfig.twitter.apiSecret,
+        token: user.oauth_token,
+        token_secret: user.oauth_token_secret,
+        consumer_key: twitterConfig.consumerKey,
+        consumer_secret: twitterConfig.consumerSecret,
       },
       json: true,
     });

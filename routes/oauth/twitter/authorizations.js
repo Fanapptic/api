@@ -3,7 +3,7 @@
  */
 
 const requestPromise = require('request-promise');
-const oauthConfig = rootRequire('/config/oauth');
+const twitterConfig = rootRequire('/config/dataSources/twitter');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
 const router = express.Router({
@@ -23,15 +23,15 @@ router.get('/', (request, response, next) => {
   }
 
   requestPromise.post({
-    url: oauthConfig.twitter.requestTokenUrl,
+    url: twitterConfig.requestTokenUrl,
     oauth: {
       callback: redirectUrl,
-      consumer_key: oauthConfig.twitter.apiKey,
-      consumer_secret: oauthConfig.twitter.apiSecret,
+      consumer_key: twitterConfig.consumerKey,
+      consumer_secret: twitterConfig.consumerSecret,
     },
-  }).then(result => {
+  }).then(authorizeQuerystring => {
     response.success({
-      url: `${oauthConfig.twitter.authorizeUrl}?${result}`,
+      url: `${twitterConfig.authorizeUrl}?${authorizeQuerystring}`,
     });
   }).catch(next);
 });

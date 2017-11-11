@@ -15,7 +15,7 @@ describe('App Module Provider Data', () => {
           response.body.length.should.be.at.least(1);
           response.body.forEach(appModuleProviderDataObject => {
             appModuleProviderDataObject.should.be.an('object');
-            appModuleProviderDataObject.appModuleProviderId.should.equal('1');
+            appModuleProviderDataObject.appModuleProviderId.should.equal(1);
           });
           done();
         });
@@ -27,8 +27,8 @@ describe('App Module Provider Data', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.appModuleProviderId.should.equal('1');
-          response.body.accessToken.should.be.a('string');
+          response.body.appModuleProviderId.should.equal(1);
+          response.body.data.should.be.an('object');
           done();
         });
     });

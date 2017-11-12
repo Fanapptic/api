@@ -24,6 +24,16 @@ module.exports.it401sWhenInternalAuthorizationIsInvalid = (method, route) => {
   });
 };
 
+module.exports.it401sWhenPassedInvalidWebhookToken = (method, route) => {
+  it('401s when passed invalid webhook token', done => {
+    chai.request(server)[method](route)
+      .end((error, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+};
+
 module.exports.it403sWhenPassedAppIdNotOwnedByUser = (method, route) => {
   it('403s when passed app id not owned by user', done => {
     chai.request(server)[method](route)

@@ -21,7 +21,7 @@ router.get('/', (request, response) => {
   const verifyToken = request.query['hub.verify_token'];
 
   if (!dataSource) {
-    throw new Error('dataSource parameter must be provided.');
+    throw new Error('dataSource must be provided.');
   }
 
   if (!mode || !challenge || !verifyToken) {
@@ -39,17 +39,21 @@ router.post('/', webhookAuthorize);
 router.post('/', (request, response) => {
   const { dataSource } = request.query;
   const { moduleClasses } = appModules;
-
-  console.log(request.body);
+  let validDataSource = false;
 
   Object.keys(moduleClasses).forEach(moduleName => {
     const module = new moduleClasses[moduleName]();
     const dataSourceInstance = module.getDataSource(dataSource);
 
     if (dataSourceInstance) {
+      validDataSource = true;
       dataSourceInstance.handleWebhookRequest(request);
     }
   });
+
+  if (!validDataSource) {
+    throw new Error('dataSource is invalid.');
+  }
 
   response.success();
 });

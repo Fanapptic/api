@@ -7,6 +7,7 @@ const appFieldsRouter = rootRequire('/routes/apps/fields');
 const appModulesRouter = rootRequire('/routes/apps/modules');
 const appModuleProvidersRouter = rootRequire('/routes/apps/modules/providers');
 const appModuleProviderDataRouter = rootRequire('/routes/apps/modules/providers/data');
+const appModuleProviderWebhooksRouter = rootRequire('/routes/apps/modules/providers/webhooks');
 const appModulesFieldsRouter = rootRequire('/routes/apps/modules/fields');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
@@ -29,6 +30,7 @@ module.exports = app => {
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId?', appModuleProvidersRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/data/:appModuleProviderDataId?', appModuleProviderDataRouter);
+  app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);
   app.use('/apps/:appId/modules/:appModuleId/fields', appModulesFieldsRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);

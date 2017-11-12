@@ -33,7 +33,7 @@ class DataSource extends Configurable {
     throw new Error('disconnect must be overriden.');
   }
 
-  handleReceivedData(request, response, next) {
+  handleWebhookRequest(request) {
     throw new Error('handleReceivedData must be overriden.');
   }
 }

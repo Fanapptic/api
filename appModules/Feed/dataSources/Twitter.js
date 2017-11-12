@@ -20,7 +20,7 @@ module.exports = class extends DataSource {
     return true;
   }
 
-  handleReceivedData(request, response, next) {
+  handleWebhookRequest(request) {
 
   }
 };

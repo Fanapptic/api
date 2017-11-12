@@ -12,7 +12,7 @@ const AppModuleProviderModel = database.define('appModuleProviders', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  source: {
+  dataSource: {
     type: Sequelize.STRING,
     allowNull: false,
   },

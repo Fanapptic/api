@@ -7,7 +7,7 @@ describe('App Module Providers', () => {
 
   describe('POST /apps/{appId}/modules/{appModuleId}/providers', () => {
     const fields = {
-      source: 'instagram',
+      dataSource: 'instagram',
       avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/11809603_737295259710174_813805448_a.jpg',
       accountId: '417616778',
       accountName: 'braydo25',
@@ -26,7 +26,7 @@ describe('App Module Providers', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appModuleId.should.equal('1');
-          response.body.source.should.equal(fields.source);
+          response.body.dataSource.should.equal(fields.dataSource);
           response.body.avatarUrl.should.equal(fields.avatarUrl);
           response.body.accountId.should.equal(fields.accountId);
           response.body.accountName.should.equal(fields.accountName);
@@ -40,7 +40,7 @@ describe('App Module Providers', () => {
 
     it('400s when passed invalid data source', done => {
       const invalidFields = Object.assign({}, fields, {
-        source: 'badsource',
+        dataSource: 'badsource',
       });
 
       chai.request(server)
@@ -102,7 +102,7 @@ describe('App Module Providers', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appModuleId.should.equal(1);
-          response.body.source.should.be.a('string');
+          response.body.dataSource.should.be.a('string');
           done();
         });
     });

@@ -41,7 +41,7 @@ global.testAppModule = {
 };
 
 global.testAppModuleProvider = {
-  source: 'instagram',
+  dataSource: 'instagram',
   avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/11809603_737295259710174_813805448_a.jpg',
   accountId: '417616778',
   accountName: 'braydo25',

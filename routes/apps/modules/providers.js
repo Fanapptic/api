@@ -47,10 +47,10 @@ router.post('/', appModuleAuthorize);
 router.post('/', (request, response, next) => {
   const { appModule } = request;
   const { appModuleId } = request.params;
-  const { source, avatarUrl, accountId, accountName, accountUrl, accessToken, accessTokenSecret, refreshToken } = request.body;
+  const { dataSource, avatarUrl, accountId, accountName, accountUrl, accessToken, accessTokenSecret, refreshToken } = request.body;
 
   const module = appModules.initModule(appModule.moduleName, appModule.moduleConfig);
-  const dataSource = module.getDataSource(source);
+  const dataSourceInstance = module.getDataSource(dataSource);
 
   let appModuleProvider = null;
 
@@ -61,7 +61,7 @@ router.post('/', (request, response, next) => {
   database.transaction(transaction => {
     return AppModuleProviderModel.create({
       appModuleId,
-      source,
+      dataSource,
       avatarUrl,
       accountId,
       accountName,
@@ -72,7 +72,7 @@ router.post('/', (request, response, next) => {
     }, { transaction }).then(appModuleProviderInstance => {
       appModuleProvider = appModuleProviderInstance;
 
-      return dataSource.connect(appModuleProvider);
+      return dataSourceInstance.connect(appModuleProvider);
     }).then(() => {
       response.success(appModuleProvider);
     });
@@ -105,7 +105,7 @@ router.delete('/', (request, response, next) => {
 
       return appModuleProvider.destroy();
     }).then(() => {
-      return module.getDataSource(appModuleProvider.source).disconnect(appModuleProvider);
+      return module.getDataSource(appModuleProvider.dataSource).disconnect(appModuleProvider);
     }).then(() => {
       response.success();
     });

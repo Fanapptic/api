@@ -101,6 +101,10 @@ router.delete('/', (request, response, next) => {
         appModuleId,
       },
     }, { transaction }).then(appModuleProviderInstance => {
+      if (!appModuleProviderInstance) {
+        throw new Error('The app module provider does not exist.');
+      }
+
       appModuleProvider = appModuleProviderInstance;
 
       return appModuleProvider.destroy();

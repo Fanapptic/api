@@ -16,7 +16,10 @@ module.exports = class extends DataSource {
 
   connect(appModuleProvider) {
     return requestPromise.get({
-      url: `${twitterConfig.tweetsUrl}?include_rts=true&count=200`,
+      url: `${twitterConfig.tweetsUrl}?` +
+           'include_rts=true' +
+           '&trim_user=true' +
+           '&count=200',
       oauth: {
         token: appModuleProvider.accessToken,
         token_secret: appModuleProvider.accessTokenSecret,
@@ -25,16 +28,12 @@ module.exports = class extends DataSource {
       },
       json: true,
     }).then(tweets => {
-      let bulkData = [];
-
-      tweets.forEach(tweet => {
-        bulkData.push({
+      AppModuleProviderDataModel.bulkCreate(tweets.map(tweet => {
+        return {
           appModuleProviderId: appModuleProvider.id,
-          data: tweet, // we meed tp determine a standard data structure later...
-        });
-      });
-
-      AppModuleProviderDataModel.bulkCreate(bulkData);
+          data: tweet,
+        };
+      }));
 
       // queue for polling new tweets? - no available api for subbing to new tweets.
     });

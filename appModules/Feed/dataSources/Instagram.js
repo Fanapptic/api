@@ -16,19 +16,16 @@ module.exports = class extends DataSource {
 
   connect(appModuleProvider) {
     return requestPromise.get({
-      url: `${instagramConfig.postsUrl}?access_token=${appModuleProvider.accessToken}`,
+      url: `${instagramConfig.postsUrl}?` +
+           `access_token=${appModuleProvider.accessToken}`,
       json: true,
     }).then(posts => {
-      let bulkData = [];
-
-      posts.data.forEach(post => {
-        bulkData.push({
+      AppModuleProviderDataModel.bulkCreate(posts.data.map(post => {
+        return {
           appModuleProviderId: appModuleProvider.id,
-          data: post, // we need to determine a standard data structure later...
-        });
-      });
-
-      AppModuleProviderDataModel.bulkCreate(bulkData);
+          data: post,
+        };
+      }));
 
       // new posts are automatically sent via pubsubhubbub to webhook endpoint.
     });

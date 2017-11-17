@@ -1,4 +1,8 @@
+const requestPromise = require('request-promise');
+
+const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
 const { DataSource } = rootRequire('/libs/App/configurables');
+const twitterConfig = rootRequire('/config/dataSources/twitter');
 
 module.exports = class extends DataSource {
   constructor() {
@@ -11,16 +15,40 @@ module.exports = class extends DataSource {
   }
 
   connect(appModuleProvider) {
-    console.log('connect fired?');
-    return true;
+    return requestPromise.get({
+      url: `${twitterConfig.tweetsUrl}?include_rts=true&count=200`,
+      oauth: {
+        token: appModuleProvider.accessToken,
+        token_secret: appModuleProvider.accessTokenSecret,
+        consumer_key: twitterConfig.consumerKey,
+        consumer_secret: twitterConfig.consumerSecret,
+      },
+      json: true,
+    }).then(tweets => {
+      let bulkData = [];
+
+      tweets.forEach(tweet => {
+        bulkData.push({
+          appModuleProviderId: appModuleProvider.id,
+          data: tweet, // we meed tp determine a standard data structure later...
+        });
+      });
+
+      AppModuleProviderDataModel.bulkCreate(bulkData);
+
+      // queue for polling new tweets? - no available api for subbing to new tweets.
+    });
   }
 
   disconnect(appModuleProvider) {
-    console.log('disconnect fired?');
-    return true;
+    return AppModuleProviderDataModel.destroy({
+      where: {
+        appModuleProviderId: appModuleProvider.id,
+      },
+    });
   }
 
   handleWebhookRequest(request) {
-
+    console.log(request.body);
   }
 };

@@ -21,7 +21,7 @@ module.exports = class extends DataSource {
     }).then(posts => {
       let bulkData = [];
 
-      posts.data.forEach(function(post) {
+      posts.data.forEach(post => {
         bulkData.push({
           appModuleProviderId: appModuleProvider.id,
           data: post, // we need to determine a standard data structure later...
@@ -29,6 +29,8 @@ module.exports = class extends DataSource {
       });
 
       AppModuleProviderDataModel.bulkCreate(bulkData);
+
+      // new posts are automatically sent via pubsubhubbub to webhook endpoint.
     });
   }
 

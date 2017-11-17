@@ -5,4 +5,5 @@ module.exports = {
   authorizeUrl: 'https://api.twitter.com/oauth/authorize',
   accessTokenUrl: 'https://api.twitter.com/oauth/access_token',
   verifyUrl: 'https://api.twitter.com/1.1/account/verify_credentials.json',
+  tweetsUrl: 'https://api.twitter.com/1.1/statuses/user_timeline.json',
 };

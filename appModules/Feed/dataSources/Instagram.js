@@ -24,6 +24,7 @@ module.exports = class extends DataSource {
         return {
           appModuleProviderId: appModuleProvider.id,
           data: post,
+          publishedAt: new Date(post.created_time * 1000),
         };
       }));
 

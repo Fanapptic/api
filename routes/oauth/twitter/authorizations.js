@@ -23,7 +23,7 @@ router.get('/', (request, response, next) => {
   }
 
   requestPromise.post({
-    url: twitterConfig.requestTokenUrl,
+    url: twitterConfig.requestTokensUrl,
     oauth: {
       callback: redirectUrl,
       consumer_key: twitterConfig.consumerKey,

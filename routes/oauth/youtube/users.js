@@ -24,7 +24,7 @@ router.post('/', (request, response, next) => {
   }
 
   requestPromise.post({
-    url: youtubeConfig.accessTokenUrl,
+    url: youtubeConfig.accessTokensUrl,
     form: {
       code,
       client_id: youtubeConfig.clientId,
@@ -38,19 +38,22 @@ router.post('/', (request, response, next) => {
     refreshToken = tokens.refresh_token;
 
     return requestPromise.get({
-      url: youtubeConfig.userUrl,
+      url: `${youtubeConfig.channelsUrl}?` +
+           'part=snippet' +
+           '&mine=true',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      json: true,
     });
-  }).then(user => {
-    user = JSON.parse(user).items[0];
+  }).then(channels => {
+    const channel = channels.items[0];
 
     response.success({
-      id: user.id,
-      name: user.snippet.title,
-      avatarUrl: user.snippet.thumbnails.high.url,
-      accountUrl: 'https://www.youtube.com/channel/' + user.id,
+      id: channel.id,
+      name: channel.snippet.title,
+      avatarUrl: channel.snippet.thumbnails.high.url,
+      accountUrl: 'https://www.youtube.com/channel/' + channel.id,
       accessToken,
       refreshToken,
     });

@@ -32,6 +32,7 @@ module.exports = class extends DataSource {
         return {
           appModuleProviderId: appModuleProvider.id,
           data: tweet,
+          publishedAt: new Date(tweet.created_at),
         };
       }));
 

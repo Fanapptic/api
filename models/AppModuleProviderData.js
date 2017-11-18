@@ -16,6 +16,10 @@ const AppModuleProviderDataModel = database.define('appModuleProviderData', {
     type: Sequelize.JSON,
     allowNull: false,
   },
+  publishedAt: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
 });
 
 /*

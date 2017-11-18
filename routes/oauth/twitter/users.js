@@ -25,7 +25,7 @@ router.post('/', (request, response, next) => {
   }
 
   requestPromise.post({
-    url: twitterConfig.accessTokenUrl,
+    url: twitterConfig.accessTokensUrl,
     oauth: {
       token,
       verifier,

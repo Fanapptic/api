@@ -1,4 +1,8 @@
+const requestPromise = require('request-promise');
+
+const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
 const { DataSource } = rootRequire('/libs/App/configurables');
+const youtubeConfig = rootRequire('/config/dataSources/youtube');
 
 module.exports = class extends DataSource {
   constructor() {
@@ -11,16 +15,47 @@ module.exports = class extends DataSource {
   }
 
   connect(appModuleProvider) {
-    console.log('connect fired?');
-    return true;
+    return requestPromise.get({
+      url: `${youtubeConfig.channelsUrl}?` +
+           'part=contentDetails' +
+           '&mine=true',
+      headers: {
+        Authorization: `Bearer ${appModuleProvider.accessToken}`,
+      },
+      json: true,
+    }).then(channels => {
+      const uploadsPlaylistId = channels.items[0].contentDetails.relatedPlaylists.uploads;
+
+      return requestPromise.get({
+        url: `${youtubeConfig.playlistItemsUrl}?` +
+             `playlistId=${uploadsPlaylistId}` +
+             '&part=snippet' +
+             '&maxResults=50',
+        headers: {
+          Authorization: `Bearer ${appModuleProvider.accessToken}`,
+        },
+        json: true,
+      });
+    }).then(playlistItems => {
+      AppModuleProviderDataModel.bulkCreate(playlistItems.items.map(playlistItem => {
+        return {
+          appModuleProviderId: appModuleProvider.id,
+          data: playlistItem,
+          publishedAt: playlistItem.snippet.publishedAt,
+        };
+      }));
+    });
   }
 
   disconnect(appModuleProvider) {
-    console.log('disconnect fired?');
-    return true;
+    return AppModuleProviderDataModel.destroy({
+      where: {
+        appModuleProviderId: appModuleProvider.id,
+      },
+    });
   }
 
   handleWebhookRequest(request) {
-
+    console.log(request.body);
   }
 };

@@ -16,8 +16,6 @@ const router = express.Router({
  * GET
  */
 
-router.get('/', userAuthorize);
-router.get('/', appAuthorize);
 router.get('/', appModuleAuthorize);
 router.get('/', (request, response, next) => {
   const { appModuleId, appModuleProviderId } = request.params;

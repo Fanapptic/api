@@ -43,6 +43,22 @@ const AppModuleProviderModel = database.define('appModuleProviders', {
 });
 
 /*
+ * Instance Methods / Overrides
+ */
+
+AppModuleProviderModel.prototype.toJSON = function() {
+  let appModuleProvider = this.get();
+
+  // We never want to return the appModule Provider's
+  // accessToken, accessTokenSecret and refreshToken
+  delete appModuleProvider.accessToken;
+  delete appModuleProvider.accessTokenSecret;
+  delete appModuleProvider.refreshToken;
+
+  return appModuleProvider;
+};
+
+/*
  * Export
  */
 

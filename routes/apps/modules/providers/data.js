@@ -20,7 +20,10 @@ router.get('/', (request, response, next) => {
   const { appModuleProviderId, appModuleProviderDataId } = request.params;
 
   if (appModuleProviderDataId) {
-    AppModuleProviderDataModel.find({ where: { id: appModuleProviderDataId, appModuleProviderId } }).then(appModuleProviderData => {
+    AppModuleProviderDataModel.find({
+      where: { id: appModuleProviderDataId, appModuleProviderId },
+      order: [['publishedAt', 'DESC']],
+    }).then(appModuleProviderData => {
       if (!appModuleProviderData) {
         throw new Error('The app module provider data does not exist.');
       }

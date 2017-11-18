@@ -29,6 +29,7 @@ describe('Users', () => {
           response.body.lastName.should.equal(scopedUser.lastName);
           response.body.phoneNumber.should.equal(scopedUser.phoneNumber);
           response.body.paypalEmail.should.equal(scopedUser.paypalEmail);
+          response.body.should.not.have.property('password');
 
           scopedUser.id = response.body.id;
           scopedUser.accessToken = response.body.accessToken;
@@ -75,6 +76,7 @@ describe('Users', () => {
           response.body.lastName.should.equal(fields.lastName);
           response.body.phoneNumber.should.equal(fields.phoneNumber);
           response.body.paypalEmail.should.equal(fields.paypalEmail);
+          response.body.should.not.have.property('password');
           done();
         });
     });
@@ -105,6 +107,7 @@ describe('Users', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
+          response.body.should.not.have.property('password');
           done();
         });
     });
@@ -116,6 +119,7 @@ describe('Users', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
+          response.body.should.not.have.property('password');
           done();
         });
     });

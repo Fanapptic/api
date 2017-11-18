@@ -31,9 +31,9 @@ describe('App Module Providers', () => {
           response.body.accountId.should.equal(fields.accountId);
           response.body.accountName.should.equal(fields.accountName);
           response.body.accountUrl.should.equal(fields.accountUrl);
-          response.body.accessToken.should.equal(fields.accessToken);
-          chai.should().equal(response.body.accessTokenSecret, null);
-          chai.should().equal(response.body.refreshToken, null);
+          response.body.should.not.have.property('accessToken');
+          response.body.should.not.have.property('accessTokenSecret');
+          response.body.should.not.have.property('refreshToken');
           done();
         });
     });
@@ -89,6 +89,9 @@ describe('App Module Providers', () => {
           response.body.forEach(appModuleProviderObject => {
             appModuleProviderObject.should.be.an('object');
             appModuleProviderObject.appModuleId.should.equal(1);
+            appModuleProviderObject.should.not.have.property('accessToken');
+            appModuleProviderObject.should.not.have.property('accessTokenSecret');
+            appModuleProviderObject.should.not.have.property('refreshToken');
           });
           done();
         });
@@ -103,6 +106,9 @@ describe('App Module Providers', () => {
           response.body.should.be.an('object');
           response.body.appModuleId.should.equal(1);
           response.body.dataSource.should.be.a('string');
+          response.body.should.not.have.property('accessToken');
+          response.body.should.not.have.property('accessTokenSecret');
+          response.body.should.not.have.property('refreshToken');
           done();
         });
     });
@@ -117,8 +123,6 @@ describe('App Module Providers', () => {
         });
     });
 
-    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/modules/1/providers');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1/modules/1251/providers');
     helpers.it403sWhenPassedAppModuleIdNotOwnedByApp('get', '/apps/1/modules/4124/providers');
   });
 

@@ -84,7 +84,9 @@ UserModel.prototype.comparePassword = function(password) {
 
 UserModel.prototype.toJSON = function() {
   let user = this.get();
-  delete user.password; // We never want to return the user's password.
+
+  // We never want to return the user's password.
+  delete user.password;
 
   return user;
 };

@@ -17,7 +17,8 @@ module.exports = class extends DataSource {
   connect(appModuleProvider) {
     return requestPromise.get({
       url: `${instagramConfig.postsUrl}?` +
-           `access_token=${appModuleProvider.accessToken}`,
+           `access_token=${appModuleProvider.accessToken}` +
+           '&count=100',
       json: true,
     }).then(posts => {
       AppModuleProviderDataModel.bulkCreate(posts.data.map(post => {

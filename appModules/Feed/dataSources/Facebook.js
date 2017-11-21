@@ -15,11 +15,10 @@ module.exports = class extends DataSource {
   }
 
   connect(appModuleProvider) {
-    // TODO: page posts url doesn't return much data? may have to request posts
-    // individually after pulling the list?
     return requestPromise.get({
       url: `${facebookConfig.baseUrl}/${appModuleProvider.accountId}/posts?` +
            `access_token=${appModuleProvider.accessToken}` +
+           '&fields=id,source,created_time' +
            '&limit=100',
       json: true,
     }).then(posts => {

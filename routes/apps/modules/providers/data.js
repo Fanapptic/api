@@ -18,11 +18,11 @@ router.get('/', appModuleAuthorize);
 router.get('/', appModuleProviderAuthorize);
 router.get('/', (request, response, next) => {
   const { appModuleProviderId, appModuleProviderDataId } = request.params;
+  const { maxPublishedAt } = request.query;
 
   if (appModuleProviderDataId) {
     AppModuleProviderDataModel.find({
       where: { id: appModuleProviderDataId, appModuleProviderId },
-      order: [['publishedAt', 'DESC']],
     }).then(appModuleProviderData => {
       if (!appModuleProviderData) {
         throw new Error('The app module provider data does not exist.');
@@ -31,7 +31,17 @@ router.get('/', (request, response, next) => {
       response.success(appModuleProviderData);
     }).catch(next);
   } else {
-    AppModuleProviderDataModel.findAll({ where: { appModuleProviderId } }).then(appModuleProviderData => {
+    let where = { appModuleProviderId };
+
+    if (maxPublishedAt) {
+      where.publishedAt = { $lt: new Date(maxPublishedAt) };
+    }
+
+    AppModuleProviderDataModel.findAll({
+      where,
+      order: [['publishedAt', 'DESC']],
+      limit: 20,
+    }).then(appModuleProviderData => {
       response.success(appModuleProviderData);
     }).catch(next);
   }

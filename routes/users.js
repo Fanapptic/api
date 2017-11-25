@@ -37,8 +37,8 @@ router.get('/', (request, response, next) => {
 
     let user = null;
 
-    UserModel.findOne({ where: { email } }).then(userInstance => {
-      user = userInstance;
+    UserModel.findOne({ where: { email } }).then(_user => {
+      user = _user;
 
       if (!user) {
         throw new Error(`User with email ${email} does not exist.`);
@@ -72,8 +72,8 @@ router.post('/', (request, response, next) => {
       lastName,
       phoneNumber,
       paypalEmail,
-    }, { transaction }).then(userInstance => {
-      user = userInstance;
+    }, { transaction }).then(_user => {
+      user = _user;
 
       return AppModel.create({ userId: user.id }, { transaction });
     }).then(() => {

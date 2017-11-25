@@ -67,8 +67,8 @@ router.post('/', (request, response, next) => {
       accessToken,
       accessTokenSecret,
       refreshToken,
-    }, { transaction }).then(appModuleProviderInstance => {
-      appModuleProvider = appModuleProviderInstance;
+    }, { transaction }).then(_appModuleProvider => {
+      appModuleProvider = _appModuleProvider;
 
       return dataSourceInstance.connect(appModuleProvider);
     }).then(() => {
@@ -98,12 +98,12 @@ router.delete('/', (request, response, next) => {
         id: appModuleProviderId,
         appModuleId,
       },
-    }, { transaction }).then(appModuleProviderInstance => {
-      if (!appModuleProviderInstance) {
+    }, { transaction }).then(_appModuleProvider => {
+      if (!_appModuleProvider) {
         throw new Error('The app module provider does not exist.');
       }
 
-      appModuleProvider = appModuleProviderInstance;
+      appModuleProvider = _appModuleProvider;
 
       return appModuleProvider.destroy();
     }).then(() => {

@@ -216,8 +216,8 @@ AppModel.prototype.deploy = function() {
   return AppDeploymentModel.find({
     where: { appId: this.id },
     order: [['createdAt', 'DESC']],
-  }).then(previousDeploymentInstance => {
-    previousDeployment = previousDeploymentInstance;
+  }).then(_previousDeployment => {
+    previousDeployment = _previousDeployment;
 
     return this._generateSnapshot();
   }).then(generatedSnapshot => {
@@ -240,8 +240,8 @@ AppModel.prototype.deploy = function() {
         appId: this.id,
         type: deploymentType,
         snapshot,
-      }, { transaction }).then(appDeploymentInstance => {
-        appDeployment = appDeploymentInstance;
+      }, { transaction }).then(_appDeployment => {
+        appDeployment = _appDeployment;
 
         return appDeployment.softDeploy();
       }).then(() => {

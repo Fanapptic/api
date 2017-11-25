@@ -40,7 +40,7 @@ router.get('/', (request, response, next) => {
     AppModuleProviderDataModel.findAll({
       where,
       order: [['publishedAt', 'DESC']],
-      limit: 20,
+      limit: 5,
     }).then(appModuleProviderData => {
       response.success(appModuleProviderData);
     }).catch(next);

@@ -10,6 +10,18 @@ class Style extends Configurable {
       cssProperty: Joi.string().required(),
     }));
   }
+
+  export() {
+    return {
+      cssSelector: this.cssSelector,
+      cssProperty: this.cssProperty,
+      value: super.export(),
+    };
+  }
+
+  import(data) {
+    super.import(data.value);
+  }
 }
 
 module.exports = Style;

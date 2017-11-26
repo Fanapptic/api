@@ -1,6 +1,6 @@
 const requestPromise = require('request-promise');
 
-const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const { DataSource } = rootRequire('/libs/App/configurables');
 const instagramConfig = rootRequire('/config/dataSources/instagram');
 
@@ -21,8 +21,9 @@ module.exports = class extends DataSource {
            '&count=100',
       json: true,
     }).then(posts => {
-      AppModuleProviderDataModel.bulkCreate(posts.data.map(post => {
+      AppModuleDataModel.bulkCreate(posts.data.map(post => {
         return {
+          appModuleId: appModuleProvider.appModuleId,
           appModuleProviderId: appModuleProvider.id,
           data: post,
           publishedAt: new Date(post.created_time * 1000),
@@ -34,7 +35,7 @@ module.exports = class extends DataSource {
   }
 
   disconnect(appModuleProvider) {
-    return AppModuleProviderDataModel.destroy({
+    return AppModuleDataModel.destroy({
       where: {
         appModuleProviderId: appModuleProvider.id,
       },

@@ -1,6 +1,6 @@
 const requestPromise = require('request-promise');
 
-const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const { DataSource } = rootRequire('/libs/App/configurables');
 const twitterConfig = rootRequire('/config/dataSources/twitter');
 
@@ -28,8 +28,9 @@ module.exports = class extends DataSource {
       },
       json: true,
     }).then(tweets => {
-      AppModuleProviderDataModel.bulkCreate(tweets.map(tweet => {
+      AppModuleDataModel.bulkCreate(tweets.map(tweet => {
         return {
+          appModuleId: appModuleProvider.appModuleId,
           appModuleProviderId: appModuleProvider.id,
           data: tweet,
           publishedAt: new Date(tweet.created_at),
@@ -41,7 +42,7 @@ module.exports = class extends DataSource {
   }
 
   disconnect(appModuleProvider) {
-    return AppModuleProviderDataModel.destroy({
+    return AppModuleDataModel.destroy({
       where: {
         appModuleProviderId: appModuleProvider.id,
       },

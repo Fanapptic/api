@@ -3,12 +3,10 @@ const appAnalyticsRouter = rootRequire('/routes/apps/analytics');
 const appChecklistsRouter = rootRequire('/routes/apps/checklists');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
 const appDeploymentStepsRouter = rootRequire('/routes/apps/deployments/steps');
-const appFieldsRouter = rootRequire('/routes/apps/fields');
 const appModulesRouter = rootRequire('/routes/apps/modules');
+const appModuleDataRouter = rootRequire('/routes/apps/modules/data');
 const appModuleProvidersRouter = rootRequire('/routes/apps/modules/providers');
-const appModuleProviderDataRouter = rootRequire('/routes/apps/modules/providers/data');
 const appModuleProviderWebhooksRouter = rootRequire('/routes/apps/modules/providers/webhooks');
-const appModulesFieldsRouter = rootRequire('/routes/apps/modules/fields');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
 const appUsersRouter = rootRequire('/routes/apps/users');
@@ -26,12 +24,10 @@ module.exports = app => {
   app.use('/apps/:appId/checklists', appChecklistsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId/steps/:appDeploymentStepId?', appDeploymentStepsRouter);
-  app.use('/apps/:appId/fields', appFieldsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
+  app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModuleDataRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId?', appModuleProvidersRouter);
-  app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/data/:appModuleProviderDataId?', appModuleProviderDataRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);
-  app.use('/apps/:appId/modules/:appModuleId/fields', appModulesFieldsRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
@@ -64,10 +60,7 @@ module.exports = app => {
       return response.error(errors);
     }
 
-    // Handle JOI errors
-    if (0) {
-      // TODO:
-    }
+    // TODO: Handle JOI errors
 
     // Handle Generic Errors
     response.error(error.message);

@@ -1,6 +1,6 @@
 const requestPromise = require('request-promise');
 
-const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const { DataSource } = rootRequire('/libs/App/configurables');
 const facebookConfig = rootRequire('/config/dataSources/facebook');
 
@@ -34,6 +34,7 @@ module.exports = class extends DataSource {
           post.attachments = postAttachments.data;
 
           bulkData.push({
+            appModuleId: appModuleProvider.appModuleId,
             appModuleProviderId: appModuleProvider.id,
             data: post,
             publishedAt: post.created_time,
@@ -42,13 +43,13 @@ module.exports = class extends DataSource {
       });
 
       Promise.all(attachmentRequests).then(() => {
-        AppModuleProviderDataModel.bulkCreate(bulkData);
+        AppModuleDataModel.bulkCreate(bulkData);
       });
     });
   }
 
   disconnect(appModuleProvider) {
-    return AppModuleProviderDataModel.destroy({
+    return AppModuleDataModel.destroy({
       where: {
         appModuleProviderId: appModuleProvider.id,
       },

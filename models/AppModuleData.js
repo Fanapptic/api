@@ -2,11 +2,15 @@
  * Model Definition
  */
 
-const AppModuleProviderDataModel = database.define('appModuleProviderData', {
+const AppModuleDataModel = database.define('appModuleData', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
+  },
+  appModuleId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
   },
   appModuleProviderId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
@@ -26,4 +30,4 @@ const AppModuleProviderDataModel = database.define('appModuleProviderData', {
  * Export
  */
 
-module.exports = AppModuleProviderDataModel;
+module.exports = AppModuleDataModel;

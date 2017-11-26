@@ -56,17 +56,6 @@ module.exports.it403sWhenPassedAppModuleIdNotOwnedByApp = (method, route) => {
   });
 };
 
-module.exports.it403sWhenPassedAppModuleProviderIdNotOwnedByAppModule = (method, route) => {
-  it('403s when passed app module provider id not owned by app module', done => {
-    chai.request(server)[method](route)
-      .set('X-Access-Token', testUser.accessToken)
-      .end((error, response) => {
-        response.should.have.status(403);
-        done();
-      });
-  });
-};
-
 module.exports.it403sWhenPassedAppDeploymentIdNotOwnedByApp = (method, route) => {
   it('403s when passed app deployment id not owned by app', done => {
     chai.request(server)[method](route)

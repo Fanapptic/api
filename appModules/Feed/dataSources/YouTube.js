@@ -1,6 +1,6 @@
 const requestPromise = require('request-promise');
 
-const AppModuleProviderDataModel = rootRequire('/models/AppModuleProviderData');
+const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const { DataSource } = rootRequire('/libs/App/configurables');
 const youtubeConfig = rootRequire('/config/dataSources/youtube');
 
@@ -37,8 +37,9 @@ module.exports = class extends DataSource {
         json: true,
       });
     }).then(playlistItems => {
-      AppModuleProviderDataModel.bulkCreate(playlistItems.items.map(playlistItem => {
+      AppModuleDataModel.bulkCreate(playlistItems.items.map(playlistItem => {
         return {
+          appModuleId: appModuleProvider.appModuleId,
           appModuleProviderId: appModuleProvider.id,
           data: playlistItem,
           publishedAt: playlistItem.snippet.publishedAt,
@@ -48,7 +49,7 @@ module.exports = class extends DataSource {
   }
 
   disconnect(appModuleProvider) {
-    return AppModuleProviderDataModel.destroy({
+    return AppModuleDataModel.destroy({
       where: {
         appModuleProviderId: appModuleProvider.id,
       },

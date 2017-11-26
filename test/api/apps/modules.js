@@ -214,9 +214,6 @@ describe('App Modules', () => {
           done();
         });
     });
-
-    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/modules');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/modules');
   });
 
   /*

@@ -14,10 +14,6 @@ const AppModuleModel = database.define('appModules', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  key: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-  },
   moduleName: {
     type: Sequelize.STRING,
     allowNull: false,

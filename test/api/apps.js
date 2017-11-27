@@ -30,7 +30,7 @@ describe('Apps', () => {
           header: persistentHeader,
           content: {
             fontSize: '14px',
-            textColor: '#000000',
+            textColor: '#101010',
             backgroundGradient: '#CCCCCC,#222222',
           },
           tabBar: {
@@ -38,7 +38,7 @@ describe('Apps', () => {
             animationEnabled: false,
             backgroundGradient: '#FFFFFF, #000000',
             tabBarOptions: {
-              activeTintColor: '#000000',
+              activeTintColor: '#333333',
               inactiveTintColor: '#CCCCCC',
               showLabel: false,
             },

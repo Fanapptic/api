@@ -1,6 +1,6 @@
 const Component = require('../Component');
 const Configurable = require('../Configurable');
-const { Option } = require('../configurables');
+const { Style } = require('../configurables');
 
 class Content extends Component {
   constructor() {
@@ -10,26 +10,32 @@ class Content extends Component {
       description: 'The content configuration of the application.',
     });
 
-    this.backgroundGradient = new Option({
+    this.backgroundGradient = new Style({
       name: 'backgroundGradient',
       displayName: 'Background Gradient',
       description: 'The background gradient of module content.',
+      cssSelector: 'html,body',
+      cssProperty: 'background',
       field: Configurable.FIELDS.GRADIENT(),
       defaultValue: '#000000,#FFFFFF',
     });
 
-    this.textColor = new Option({
+    this.textColor = new Style({
       name: 'textColor',
       displayName: 'Text Color',
       description: 'The color of module text.',
+      cssSelector: 'p',
+      cssProperty: 'color',
       field: Configurable.FIELDS.COLOR(),
       defaultValue: '#999333',
     });
 
-    this.fontSize = new Option({
+    this.fontSize = new Style({
       name: 'fontSize',
       displayName: 'Font Size',
       description: 'The font size of module text.',
+      cssSelector: 'html,body',
+      cssProperty: 'font-size',
       field: Configurable.FIELDS.PIXEL(),
       defaultValue: '12px',
     });

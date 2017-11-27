@@ -20,7 +20,7 @@ class Style extends Configurable {
   }
 
   import(data) {
-    super.import(data.value);
+    super.import(data.value || data);
   }
 }
 

@@ -62,10 +62,12 @@ describe('Apps', () => {
           response.body.keywords.should.equal(fields.keywords);
           response.body.website.should.equal(fields.website);
           response.body.contentRating.should.equal(fields.contentRating);
-          response.body.config.global.should.deep.equal(fields.config.global);
+          response.body.config.global.fontFamily.value.should.equal(fields.config.global.fontFamily);
           response.body.config.statusBar.should.deep.equal(fields.config.statusBar);
           response.body.config.header.should.deep.equal(fields.config.header);
-          response.body.config.content.should.deep.equal(fields.config.content);
+          response.body.config.content.fontSize.value.should.equal(fields.config.content.fontSize);
+          response.body.config.content.textColor.value.should.equal(fields.config.content.textColor);
+          response.body.config.content.backgroundGradient.value.should.equal(fields.config.content.backgroundGradient);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);
           response.body.config.should.not.have.property('badField');
           done();
@@ -88,7 +90,7 @@ describe('Apps', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.config.global.fontFamily.should.equal(fields.config.global.fontFamily);
+          response.body.config.global.fontFamily.value.should.equal(fields.config.global.fontFamily);
           response.body.config.header.should.deep.equal(persistentHeader);
           done();
         });

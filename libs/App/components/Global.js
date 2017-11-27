@@ -1,6 +1,6 @@
 const Component = require('../Component');
 const Configurable = require('../Configurable');
-const { Option } = require('../configurables');
+const { Style } = require('../configurables');
 
 class Global extends Component {
   constructor() {
@@ -10,10 +10,12 @@ class Global extends Component {
       description: 'The content configuration of the application.',
     });
 
-    this.fontFamily = new Option({
+    this.fontFamily = new Style({
       name: 'fontFamily',
       displayName: 'Font Family',
       description: 'The font family used by the application.',
+      cssSelector: 'html,body',
+      cssProperty: 'font-family',
       field: Configurable.FIELDS.FONT(),
       defaultValue: 'Arial',
     });

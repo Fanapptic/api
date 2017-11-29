@@ -20,6 +20,7 @@ class Module extends Component {
         name: Joi.string(),
         set: Joi.string(),
       }).required(),
+      brandingColor: Joi.string().required(),
       moduleUrl: Joi.string().uri().required(),
       injectedJavaScript: Joi.string().optional(),
     }));

@@ -15,7 +15,8 @@ class SoundCloud extends Module {
     super({
       name: SoundCloud.moduleName,
       displayName: 'SoundCloud',
-      description: 'Display a SoundCloud player that your users can listen to.',
+      description: 'Import your soundcloud tracks to allow your fans to listen in.',
+      brandingColor: '#F84403',
       defaultIcon: {
         name: 'ion-cloud',
         set: 'ion',

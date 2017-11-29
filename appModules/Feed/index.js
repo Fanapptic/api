@@ -15,13 +15,14 @@ class Feed extends Module {
   constructor() {
     super({
       name: Feed.moduleName,
-      displayName: 'Feed',
-      description: 'Display an aggregate feed of your content from multiple sources.',
+      displayName: 'Social Feed',
+      description: 'Consolidate all of your social media accounts into a single feed.',
       defaultIcon: {
         name: 'ion-ios-list-outline',
         set: 'ion',
       },
-      moduleUrl: 'https://www.getbootstrap.com/',
+      brandingColor: '#387AA6',
+      moduleUrl: 'http://localhost:8484/feed/',
       injectedJavaScript: '$("button").click()',
     });
 

@@ -98,7 +98,7 @@ router.get('/', (request, response, next) => {
       },
     },
   }).then(result => {
-    dailyUsage = result.dataValues.usage || 0;
+    dailyUsage = parseInt(result.dataValues.usage) || 0; // .find returns string, convert to number
   }));
 
   // Total Usage - Sum
@@ -116,7 +116,7 @@ router.get('/', (request, response, next) => {
       },
     },
   }).then(result => {
-    totalUsage = result.dataValues.usage || 0;
+    totalUsage = parseInt(result.dataValues.usage) || 0; // .find returns string, convert to number
   }));
 
   // Daily Revenue - Sum

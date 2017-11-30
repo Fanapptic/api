@@ -41,8 +41,8 @@ router.post('/', (request, response) => {
   const { moduleClasses } = appModules;
   let validDataSource = false;
 
-  Object.keys(moduleClasses).forEach(moduleName => {
-    const module = new moduleClasses[moduleName]();
+  Object.keys(moduleClasses).forEach(name => {
+    const module = new moduleClasses[name]();
     const dataSourceInstance = module.getDataSource(dataSource);
 
     if (dataSourceInstance) {

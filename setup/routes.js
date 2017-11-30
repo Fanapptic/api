@@ -33,7 +33,7 @@ module.exports = app => {
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
   app.use('/articles/:articleId?', articlesRouter);
   app.use('/health', healthRouter);
-  app.use('/modules/:moduleName?', modulesRouter);
+  app.use('/modules/:name?', modulesRouter);
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
   app.use('/oauth/youtube/users', oauthYouTubeUsersRouter);

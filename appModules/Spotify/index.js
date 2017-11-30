@@ -5,13 +5,13 @@
 const { Module } = rootRequire('/libs/App/components');
 
 class Spotify extends Module {
-  static get moduleName() {
+  static get name() {
     return 'spotify';
   }
 
   constructor() {
     super({
-      name: Spotify.moduleName,
+      name: Spotify.name,
       displayName: 'Spotify',
       description: 'Let fans listen in on your public Spotify playlists and favorite artists.',
       brandingColor: '#141414',

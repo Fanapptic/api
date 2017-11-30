@@ -47,14 +47,14 @@ router.post('/', userAuthorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
-  const { moduleName, moduleConfig, position } = request.body;
+  const { name, config, position } = request.body;
 
   AppModuleModel.count({ where: { appId } }).then(appModulesCount => {
     if (appModulesCount >= appConfig.moduleLimit) {
       throw new Error(`Your application already has a maximum of ${appConfig.moduleLimit} active modules.`);
     }
 
-    return AppModuleModel.create({ appId, moduleName, moduleConfig, position });
+    return AppModuleModel.create({ appId, name, config, position });
   }).then(appModule => {
     response.success(appModule);
   }).catch(next);
@@ -68,7 +68,7 @@ router.patch('/', userAuthorize);
 router.patch('/', appAuthorize);
 router.patch('/', (request, response, next) => {
   const { appId, appModuleId } = request.params;
-  const { moduleConfig, position } = request.body;
+  const { config, position } = request.body;
 
   AppModuleModel.find({ where: { id: appModuleId, appId } }).then(appModule => {
     if (!appModule) {
@@ -77,8 +77,8 @@ router.patch('/', (request, response, next) => {
 
     appModule.position = position || appModule.position;
 
-    if (moduleConfig) {
-      appModule.moduleConfig = Module.mergeImportable(appModule.moduleConfig, moduleConfig);
+    if (config) {
+      appModule.config = Module.mergeImportable(appModule.config, config);
     }
 
     return appModule.save();

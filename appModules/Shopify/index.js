@@ -5,13 +5,13 @@
 const { Module } = rootRequire('/libs/App/components');
 
 class Shopify extends Module {
-  static get moduleName() {
+  static get name() {
     return 'shopify';
   }
 
   constructor() {
     super({
-      name: Shopify.moduleName,
+      name: Shopify.name,
       displayName: 'Shopify',
       description: 'Sell product and merchandise by integrating with your Shopify account.',
       brandingColor: '#609042',

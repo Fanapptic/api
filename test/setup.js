@@ -36,7 +36,7 @@ global.testAppDeployment = {
 global.testAppModule = {
   id: null,
   appId: appId,
-  moduleName: 'feed',
+  name: 'feed',
   position: 0,
 };
 
@@ -136,7 +136,7 @@ before(done => {
           chai.request(server)
             .post(`/apps/${appId}/modules`)
             .set('X-Access-Token', testUser.accessToken)
-            .send({ moduleName: 'feed' })
+            .send({ name: 'feed' })
         );
       }
 

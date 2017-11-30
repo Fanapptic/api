@@ -14,7 +14,7 @@ const AppModuleModel = database.define('appModules', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  moduleName: {
+  name: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -27,17 +27,17 @@ const AppModuleModel = database.define('appModules', {
       },
     },
   },
-  moduleConfig: {
+  config: {
     type: Sequelize.JSON,
     allowNull: false,
     validate: {
       isValid(value) {
         // initModule throws when passed an invalid config.
-        const moduleName = this.getDataValue('moduleName');
-        const module = appModules.initModule(moduleName, value);
+        const name = this.getDataValue('name');
+        const module = appModules.initModule(name, value);
 
         // export returns a sanitized config object.
-        this.setDataValue('moduleConfig', module.export());
+        this.setDataValue('config', module.export());
 
         return true;
       },
@@ -54,7 +54,7 @@ const AppModuleModel = database.define('appModules', {
  */
 
 AppModuleModel.prototype.generateModuleObject = function() {
-  return appModules.initModule(this.moduleName, this.moduleConfig);
+  return appModules.initModule(this.name, this.config);
 };
 
 /*

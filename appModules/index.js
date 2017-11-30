@@ -8,24 +8,24 @@ fs.readdirSync(__dirname).filter(directoryItem => {
 }).forEach(moduleDirectory => {
   const ModuleClass = require('./' + moduleDirectory);
 
-  moduleClasses[ModuleClass.moduleName] = ModuleClass;
+  moduleClasses[ModuleClass.name] = ModuleClass;
 });
 
 module.exports = {
   moduleClasses,
-  initModule: (moduleName, moduleConfig) => {
-    const ModuleClass = moduleClasses[moduleName];
+  initModule: (name, config) => {
+    const ModuleClass = moduleClasses[name];
 
     if (!ModuleClass) {
       throw new Error('The module name provided is invaid.');
     }
 
     const module = new ModuleClass();
-    module.import(moduleConfig);
+    module.import(config);
 
     return module;
   },
-  getModuleClass: moduleName => {
-    return moduleClasses[moduleName];
+  getModuleClass: name => {
+    return moduleClasses[name];
   },
 };

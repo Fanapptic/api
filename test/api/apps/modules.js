@@ -7,8 +7,8 @@ describe('App Modules', () => {
 
   describe('POST /apps/{appId}/modules', () => {
     const fields = {
-      moduleName: 'feed',
-      moduleConfig: {
+      name: 'feed',
+      config: {
         navigator: {
           navigationOptions: {
             title: 'Feed',
@@ -41,10 +41,10 @@ describe('App Modules', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId + '');
-          response.body.moduleName.should.equal(fields.moduleName);
-          response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
-          response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
-          response.body.moduleConfig.configurableGroupings.should.deep.include(fields.moduleConfig.configurableGroupings);
+          response.body.name.should.equal(fields.name);
+          response.body.config.navigator.should.deep.equal(fields.config.navigator);
+          response.body.config.tab.should.deep.equal(fields.config.tab);
+          response.body.config.configurableGroupings.should.deep.include(fields.config.configurableGroupings);
           response.body.position.should.equal(fields.position);
           done();
         });
@@ -99,8 +99,8 @@ describe('App Modules', () => {
 
     it('200s with updated module object owned by app and ignores properties not in config schema when passed config', done => {
       const fields = {
-        moduleName: 'shouldnotchange',
-        moduleConfig: {
+        name: 'shouldnotchange',
+        config: {
           navigator: {
             navigationOptions: {
               title: 'Feed Yo',
@@ -122,11 +122,11 @@ describe('App Modules', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId);
-          response.body.moduleName.should.not.equal(fields.moduleName);
-          response.body.moduleConfig.navigator.should.deep.equal(fields.moduleConfig.navigator);
-          response.body.moduleConfig.tab.should.deep.equal(fields.moduleConfig.tab);
-          response.body.moduleConfig.configurableGroupings.should.be.an('object');
-          response.body.moduleConfig.should.not.have.property('pointlessConfig');
+          response.body.name.should.not.equal(fields.name);
+          response.body.config.navigator.should.deep.equal(fields.config.navigator);
+          response.body.config.tab.should.deep.equal(fields.config.tab);
+          response.body.config.configurableGroupings.should.be.an('object');
+          response.body.config.should.not.have.property('pointlessConfig');
           response.body.position.should.equal(fields.position);
           done();
         });
@@ -134,7 +134,7 @@ describe('App Modules', () => {
 
     it('200s with partially updated module object when passed partial fields', done => {
       const fields = {
-        moduleConfig: {
+        config: {
           navigator: {
             navigationOptions: {
               title: 'Feed!!',
@@ -150,8 +150,8 @@ describe('App Modules', () => {
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.moduleConfig.navigator.navigationOptions.title.should.equal(fields.moduleConfig.navigator.navigationOptions.title);
-          response.body.moduleConfig.tab.should.deep.equal(persistentTab);
+          response.body.config.navigator.navigationOptions.title.should.equal(fields.config.navigator.navigationOptions.title);
+          response.body.config.tab.should.deep.equal(persistentTab);
           done();
         });
     });
@@ -199,8 +199,8 @@ describe('App Modules', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId);
-          response.body.moduleName.should.be.a('string');
-          response.body.moduleConfig.should.be.an('object');
+          response.body.name.should.be.a('string');
+          response.body.config.should.be.an('object');
           done();
         });
     });

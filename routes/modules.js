@@ -1,5 +1,5 @@
 /*
- * Route: /modules/:moduleName?
+ * Route: /modules/:name?
  */
 
 const appModules = rootRequire('/appModules');
@@ -15,15 +15,15 @@ const router = express.Router({
 
 router.get('/', userAuthorize);
 router.get('/', (request, response) => {
-  const { moduleName } = request.params;
+  const { name } = request.params;
 
-  if (moduleName) {
-    response.success(appModules.initModule(moduleName));
+  if (name) {
+    response.success(appModules.initModule(name));
   } else {
     let modulesArray = [];
 
-    Object.keys(appModules.moduleClasses).forEach(moduleName => {
-      modulesArray.push(appModules.initModule(moduleName));
+    Object.keys(appModules.moduleClasses).forEach(name => {
+      modulesArray.push(appModules.initModule(name));
     });
 
     response.success(modulesArray);

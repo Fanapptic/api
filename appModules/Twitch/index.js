@@ -5,13 +5,13 @@
 const { Module } = rootRequire('/libs/App/components');
 
 class Twitch extends Module {
-  static get moduleName() {
+  static get name() {
     return 'twitch';
   }
 
   constructor() {
     super({
-      name: Twitch.moduleName,
+      name: Twitch.name,
       displayName: 'Twitch Stream',
       description: 'Stream live video to fans by integrating Twitch TV into your app.',
       brandingColor: '#4D387D',

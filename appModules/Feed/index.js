@@ -8,13 +8,13 @@ const { Option, Style } = rootRequire('/libs/App/configurables');
 const dataSources = require('./dataSources');
 
 class Feed extends Module {
-  static get moduleName() {
+  static get name() {
     return 'feed';
   }
 
   constructor() {
     super({
-      name: Feed.moduleName,
+      name: Feed.name,
       displayName: 'Social Feed',
       description: 'Consolidate all of your social media accounts into a single feed.',
       defaultIcon: {

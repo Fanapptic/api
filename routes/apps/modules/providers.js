@@ -47,7 +47,7 @@ router.post('/', (request, response, next) => {
   const { appModuleId } = request.params;
   const { dataSource, avatarUrl, accountId, accountName, accountUrl, accessToken, accessTokenSecret, refreshToken } = request.body;
 
-  const module = appModules.initModule(appModule.moduleName, appModule.moduleConfig);
+  const module = appModules.initModule(appModule.name, appModule.config);
   const dataSourceInstance = module.getDataSource(dataSource);
 
   let appModuleProvider = null;
@@ -88,7 +88,7 @@ router.delete('/', (request, response, next) => {
   const { appModule } = request;
   const { appModuleId, appModuleProviderId } = request.params;
 
-  const module = appModules.initModule(appModule.moduleName, appModule.moduleConfig);
+  const module = appModules.initModule(appModule.name, appModule.config);
 
   let appModuleProvider = null;
 

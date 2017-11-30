@@ -6,8 +6,8 @@ const ConfigurableGrouping = require('./ConfigurableGrouping');
 const DataSource = require('../configurables/DataSource');
 
 class Module extends Component {
-  static get moduleName() {
-    throw new Error('Class must extend Module and override: static get moduleName()');
+  static get name() {
+    throw new Error('Class must extend Module and override: static get name()');
   }
 
   constructor(initObject) {

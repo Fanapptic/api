@@ -5,13 +5,13 @@
 const { Module } = rootRequire('/libs/App/components');
 
 class SoundCloud extends Module {
-  static get moduleName() {
+  static get name() {
     return 'soundCloud';
   }
 
   constructor() {
     super({
-      name: SoundCloud.moduleName,
+      name: SoundCloud.name,
       displayName: 'SoundCloud',
       description: 'Import your soundcloud tracks to allow your fans to listen in.',
       brandingColor: '#F84403',

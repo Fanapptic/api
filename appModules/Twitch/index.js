@@ -1,0 +1,27 @@
+/*
+ * Module: Twitch
+ */
+
+const { Module } = rootRequire('/libs/App/components');
+
+class Twitch extends Module {
+  static get moduleName() {
+    return 'twitch';
+  }
+
+  constructor() {
+    super({
+      name: Twitch.moduleName,
+      displayName: 'Twitch Stream',
+      description: 'Stream live video to fans by integrating Twitch TV into your app.',
+      brandingColor: '#4D387D',
+      defaultIcon: {
+        name: 'ion-social-twitch',
+        set: 'ion',
+      },
+      moduleUrl: 'https://player.twitch.tv/?channel=espnesports',
+    });
+  }
+}
+
+module.exports = Twitch;

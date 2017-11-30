@@ -2,9 +2,7 @@
  * Module: SoundCloud
  */
 
-const { Module, ConfigurableGrouping } = rootRequire('/libs/App/components');
-const Configurable = rootRequire('/libs/App/Configurable');
-const { Option, Style } = rootRequire('/libs/App/configurables');
+const { Module } = rootRequire('/libs/App/components');
 
 class SoundCloud extends Module {
   static get moduleName() {

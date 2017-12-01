@@ -12,7 +12,7 @@ class Twitch extends Module {
   constructor() {
     super({
       name: Twitch.name,
-      displayName: 'Twitch Stream',
+      displayName: 'Twitch',
       description: 'Stream live video to fans by integrating Twitch TV into your app.',
       brandingColor: '#4D387D',
       defaultIcon: {

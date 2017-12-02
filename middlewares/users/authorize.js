@@ -8,7 +8,7 @@ const UserModel = rootRequire('/models/User');
 module.exports = (request, response, next) => {
   const accessToken = request.get('X-Access-Token');
 
-  UserModel.findOne({ where: { accessToken } }).then(user => {
+  UserModel.find({ where: { accessToken } }).then(user => {
     if (!user) {
       return response.respond(401, 'Invalid access token.');
     }

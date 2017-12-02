@@ -12,6 +12,7 @@ const AppUserModel = rootRequire('/models/AppUser');
 const ArticleModel = rootRequire('/models/Article');
 const CurrencyModel = rootRequire('/models/Currency');
 const UserModel = rootRequire('/models/User');
+const UserAgreementModel = rootRequire('/models/UserAgreement');
 
 AppModel.hasMany(AppDeploymentModel);
 AppModel.hasMany(AppModuleModel);
@@ -27,6 +28,7 @@ AppUserModel.hasMany(AppSessionModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
 UserModel.hasMany(AppModel);
+UserModel.hasMany(UserAgreementModel);
 
 database.sync({
   //force: true,

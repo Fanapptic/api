@@ -23,7 +23,7 @@ router.get('/', (request, response, next) => {
   const password = authCredentials.pass;
 
   if (accessToken) {
-    UserModel.findOne({ where: { accessToken } }).then(user => {
+    UserModel.find({ where: { accessToken } }).then(user => {
       if (!user) {
         return response.respond(401, 'Invalid access token.');
       }
@@ -37,7 +37,7 @@ router.get('/', (request, response, next) => {
 
     let user = null;
 
-    UserModel.findOne({ where: { email } }).then(_user => {
+    UserModel.find({ where: { email } }).then(_user => {
       user = _user;
 
       if (!user) {

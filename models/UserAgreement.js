@@ -59,7 +59,7 @@ UserAgreementModel.prototype._sendSignatureRequest = function() {
   let response = null;
 
   return hellosign.signatureRequest.sendWithTemplate({
-    test_mode: 1,
+    test_mode: 1, // TODO: Add toggle for production vs development.
     template_id: agreementConfig.templateId,
     signers: [
       {

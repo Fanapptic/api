@@ -28,6 +28,11 @@ global.testAppUser = {
   platform: 'ios',
 };
 
+global.testAppUserAgreement = {
+  id: null,
+  userId: null,
+};
+
 global.testAppDeployment = {
   id: null,
   appId: null,
@@ -102,9 +107,17 @@ before(done => {
 
       return chai.request(server).post('/users').send(testUser);
     }).then(response => {
-      fatLog('Making global test user an admin...');
+      fatLog('Creating completed release agreement for global user...');
 
       Object.assign(testUser, response.body);
+
+      return sequelize.query(`
+        INSERT INTO userAgreements
+        (userId, agreement, email, signedAgreementUrl)
+        VALUES (${testUser.id}, 'release', '${testUser.email}', 'placeholder.com')
+      `);
+    }).then(() => {
+      fatLog('Making global test user an admin...');
 
       return sequelize.query(`
         UPDATE users

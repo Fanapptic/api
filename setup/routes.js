@@ -18,6 +18,7 @@ const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
 const oauthYouTubeUsersRouter = rootRequire('/routes/oauth/youtube/users');
 const usersRouter = rootRequire('/routes/users');
 const userAgreementsRouter = rootRequire('/routes/users/agreements');
+const userAgreementWebhooksRouter = rootRequire('/routes/users/agreements/webhooks');
 
 module.exports = app => {
   app.use('/apps/:appId?', appsRouter);
@@ -40,6 +41,7 @@ module.exports = app => {
   app.use('/oauth/youtube/users', oauthYouTubeUsersRouter);
   app.use('/users', usersRouter);
   app.use('/users/:userId/agreements/:userAgreementId?', userAgreementsRouter);
+  app.use('/users/:userId/agreements/:userAgreementId/webhooks', userAgreementWebhooksRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.
     console.log('===========================');

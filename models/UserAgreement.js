@@ -1,4 +1,6 @@
+const aws = require('aws-sdk');
 const hellosignSdk = require('hellosign-sdk');
+const awsConfig = rootRequire('/config/aws');
 const hellosignConfig = rootRequire('/config/hellosign');
 const agreements = Object.keys(hellosignConfig.agreements);
 
@@ -52,6 +54,26 @@ UserAgreementModel.prototype.sendSignatureRequestOrReminder = function() {
   }
 
   return (!this.signatureRequestId) ? this._sendSignatureRequest() : this._sendSignatureReminder();
+};
+
+UserAgreementModel.prototype.getSignatureFileAndSave = function() {
+  const s3 = new aws.S3();
+
+  return hellosign.signatureRequest.download(this.signatureRequestId, {
+    file_type: 'pdf',
+  }).then(response => {
+    return s3.upload({
+      ACL: 'public-read',
+      Body: response,
+      Bucket: awsConfig.s3UsersBucket,
+      ContentType: 'application/pdf',
+      Key: `${this.userId}/releaseAgreement.pdf`,
+    }).promise();
+  }).then(result => {
+    this.signedAgreementUrl = result.Location;
+
+    return this.save();
+  });
 };
 
 UserAgreementModel.prototype._sendSignatureRequest = function() {

@@ -9,6 +9,7 @@ module.exports.region = 'us-west-2';
  */
 
 module.exports.s3AppsBucket = 'testing-fanapptic-apps';
+module.exports.s3UsersBucket = 'testing-fanapptic-users';
 
 /*
  * SQS

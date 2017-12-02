@@ -6,6 +6,7 @@ const App = rootRequire('/libs/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppModuleModel = rootRequire('/models/AppModule');
 const UserModel = rootRequire('/models/User');
+const UserAgreementModel = rootRequire('/models/UserAgreement');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
@@ -153,12 +154,29 @@ AppModel.prototype.generateChecklist = function() {
   }
 
   // Payout Settings
-  promises.push(UserModel.find({ where: { id: this.userId } }).then(user => {
-    payout.completed = (user.paypalEmail) ? true : false;
+  promises.push(UserModel.count({
+    where: {
+      id: this.userId,
+      paypalEmail: {
+        $ne: null,
+      },
+    },
+  }).then(count => {
+    payout.completed = (count) ? true : false;
   }));
 
   // Release Agreement Signature
-  releaseAgreement.completed = true; // TODO
+  promises.push(UserAgreementModel.count({
+    where: {
+      userId: this.userId,
+      agreement: 'release',
+      signedAgreementUrl: {
+        $ne: null,
+      },
+    },
+  }).then(count => {
+    releaseAgreement.completed = (count) ? true : false;
+  }));
 
   // At Least 2 Tabs
   promises.push(AppModuleModel.count({ where: { appId: this.id } }).then(count => {

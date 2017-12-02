@@ -5,6 +5,7 @@
 const auth = require('basic-auth');
 
 const UserModel = rootRequire('/models/User');
+const UserAgreementModel = rootRequire('/models/UserAgreement');
 const AppModel = rootRequire('/models/App');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
@@ -63,6 +64,7 @@ router.post('/', (request, response, next) => {
   const { email, password, firstName, lastName, phoneNumber, paypalEmail } = request.body;
 
   let user = null;
+  let userAgreement = null;
 
   database.transaction(transaction => {
     return UserModel.create({
@@ -75,10 +77,20 @@ router.post('/', (request, response, next) => {
     }, { transaction }).then(_user => {
       user = _user;
 
+      return UserAgreementModel.create({
+        userId: user.id,
+        agreement: 'release',
+        email,
+      }, { transaction });
+    }).then(_userAgreement => {
+      userAgreement = _userAgreement;
+
       return AppModel.create({ userId: user.id }, { transaction });
-    }).then(() => {
-      response.success(user);
     });
+  }).then(() => {
+    userAgreement.sendSignatureRequestOrReminder();
+    
+    response.success(user);
   }).catch(next);
 });
 

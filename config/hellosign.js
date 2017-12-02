@@ -3,6 +3,7 @@ module.exports = {
   agreements: {
     release: {
       templateId: 'c314c8732b5564bb52f5399d3af83f691544fdb8',
+      roleName: 'App Manager',
     },
   },
 };

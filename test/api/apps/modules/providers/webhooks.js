@@ -69,7 +69,7 @@ describe('App Module Provider Webhooks', () => {
       webhookToken: '71ec605b-085b-434e-b6e1-6b55f0ca4193',
     };
 
-    it('200s when passed dataSource', done => {
+    it('204s when passed dataSource', done => {
       chai.request(server)
         .post('/apps/*/modules/*/providers/*/webhooks?' + querystring.stringify(query))
         .end((error, response) => {

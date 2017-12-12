@@ -17,12 +17,7 @@ class Configurable {
       displayName: Joi.string().required(),
       description: Joi.string().required(),
       field: fields.schema,
-      defaultValue: [
-        Joi.string().optional(),
-        Joi.number().optional(),
-        Joi.boolean().optional(),
-        Joi.object().optional(),
-      ],
+      defaultValue: Joi.any().optional(),
     });
 
     if (overrideSchema) {

@@ -10,7 +10,7 @@ let fields = {
       value: Joi.string().required(),
       tooltip: Joi.string().optional(),
     })).optional(),
-    tooltip: Joi.string().optional(),
+    attributes: Joi.object().optional(),
     validate: Joi.func().required(),
   }).required(),
 };

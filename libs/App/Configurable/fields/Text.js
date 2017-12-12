@@ -1,10 +1,11 @@
 module.exports = (overrides = {}) => {
-  const { validate } = overrides;
+  const { attributes, validate } = overrides;
 
   return {
     name: 'text',
+    attributes,
     validate: validate || (input => {
-      return (input) ? true : false;
+      return (typeof input === 'string') ? true : false;
     }),
   };
 };

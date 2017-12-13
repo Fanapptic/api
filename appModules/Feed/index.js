@@ -4,7 +4,7 @@
 
 const { Module, ConfigurableGrouping } = rootRequire('/libs/App/components');
 const Configurable = rootRequire('/libs/App/Configurable');
-const { Option, Style } = rootRequire('/libs/App/configurables');
+const { Option } = rootRequire('/libs/App/configurables');
 const dataSources = require('./dataSources');
 
 class Feed extends Module {
@@ -17,13 +17,12 @@ class Feed extends Module {
       name: Feed.name,
       displayName: 'Social Feed',
       description: 'Consolidate all of your social media accounts into a single feed.',
+      brandingColor: '#387AA6',
       defaultIcon: {
-        name: 'ion-ios-list-outline',
+        name: 'ion-grid',
         set: 'ion',
       },
-      brandingColor: '#387AA6',
       moduleUrl: 'http://localhost:8484/feed/',
-      injectedJavaScript: '$("button").click()',
     });
 
     /*
@@ -44,10 +43,34 @@ class Feed extends Module {
     this.addConfigurableGrouping(feedSourcesGrouping);
 
     /*
-     * Favoriting
+     * Look & Feed
      */
 
-    const favoritingGrouping = new ConfigurableGrouping({
+    const lookAndFeelGrouping = new ConfigurableGrouping({
+      name: 'lookAndFeel',
+      displayName: 'Look & Feel',
+      description: 'Tweak the visual aesthetics and layout of your feed to better suit the overall design of your app.',
+    });
+
+    lookAndFeelGrouping.addConfigurable(new Option({
+      name: 'galleryMode',
+      displayName: 'Gallery Mode',
+      description: 'Change the layout of your feed to only show the photos and videos specific to each post.',
+      field: Configurable.FIELDS.SWITCH(),
+      defaultValue: false,
+    }));
+
+    lookAndFeelGrouping.addConfigurable(new Option({
+      name: 'listMode',
+      displayName: 'List Mode',
+      description: 'Remove the padding around each post so they span the full width of the screen. Rounded borders are also removed from posts.',
+      field: Configurable.FIELDS.SWITCH(),
+      defaultValue: false,
+    }));
+
+    this.addConfigurableGrouping(lookAndFeelGrouping);
+
+    /*const favoritingGrouping = new ConfigurableGrouping({
       name: 'favoriting',
       displayName: 'Favoriting',
       description: 'Favoriting is a simple feature that will help keep your users in your app by allowing them to bookmark all their favorite posts they’ve seen from you.',
@@ -87,28 +110,7 @@ class Feed extends Module {
       defaultValue: 'Favorites',
     }));
 
-    this.addConfigurableGrouping(favoritingGrouping);
-
-    /*
-    /*
-     * Data Sources
-
-
-    this.addDataSource(new dataSources.Facebook());
-    this.addDataSource(new dataSources.Instagram());
-    this.addDataSource(new dataSources.YouTube());
-
-    /*
-     * Options
-
-
-    this.addOption(new options.FeedStyle());
-
-    /*
-     * Styles
-
-
-    this.addStyle(new styles.Font());*/
+    this.addConfigurableGrouping(favoritingGrouping);*/
   }
 }
 

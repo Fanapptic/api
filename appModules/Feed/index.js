@@ -69,48 +69,6 @@ class Feed extends Module {
     }));
 
     this.addConfigurableGrouping(lookAndFeelGrouping);
-
-    /*const favoritingGrouping = new ConfigurableGrouping({
-      name: 'favoriting',
-      displayName: 'Favoriting',
-      description: 'Favoriting is a simple feature that will help keep your users in your app by allowing them to bookmark all their favorite posts they’ve seen from you.',
-    });
-
-    favoritingGrouping.addConfigurable(new Option({
-      name: 'allowFavoriting',
-      displayName: 'Allow Favoriting',
-      description: 'Something about favoriting.',
-      field: Configurable.FIELDS.SWITCH(),
-      defaultValue: true,
-    }));
-
-    favoritingGrouping.addConfigurable(new Option({
-      name: 'favoritingIcon',
-      displayName: 'Favoriting Icon',
-      description: 'SOme description about the icon?',
-      field: Configurable.FIELDS.ICON(),
-      defaultValue: 'ion-heart',
-    }));
-
-    favoritingGrouping.addConfigurable(new Style({
-      name: 'favoritedIconFillColor',
-      displayName: 'Favorited Icon Fill Color',
-      description: 'Something about the fill color here',
-      cssSelector: '.some-select',
-      cssProperty: 'color',
-      field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#000000',
-    }));
-
-    favoritingGrouping.addConfigurable(new Option({
-      name: 'favoritesPageTitle',
-      displayName: 'Favorites Page Title',
-      description: 'something about the favorites page title',
-      field: Configurable.FIELDS.TEXT(),
-      defaultValue: 'Favorites',
-    }));
-
-    this.addConfigurableGrouping(favoritingGrouping);*/
   }
 }
 

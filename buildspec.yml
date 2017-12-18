@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - npm install && npm test
+
+artifacts:
+  files:
+    - appModules/**/*
+    - config/**/*
+    - libs/**/*
+    - middlewares/**/*
+    - models/**/*
+    - routes/**/*
+    - setup/**/*
+    - .env
+    - package.json
+    - server.js
+    - worker.js

@@ -45,7 +45,7 @@ router.post('/', (request, response, next) => {
 
   AppUserModel.find({ where: { id: appUserId, appId } }).then(appUser => {
     if (!appUser) {
-      throw new Error('The user provided does not belong to the application provided.');
+      throw new Error('The user provided does not belong to the application provided.'); // TODO: This is middleware-able..
     }
 
     return AppSessionModel.create({ appId, appUserId });

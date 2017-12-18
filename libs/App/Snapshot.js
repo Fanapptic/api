@@ -14,8 +14,6 @@ class Snapshot {
       bundleId: Joi.string().required(),
 //      appleTeamId: Joi.string().required(),
 //      appleTeamName: Joi.string().required(),
-//      version: Joi.string().required(),
-//      build: Joi.number().required(),
       name: Joi.string().required(),
       displayName: Joi.string().required(),
       subtitle: Joi.string().required(),

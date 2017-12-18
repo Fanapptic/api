@@ -83,7 +83,8 @@ before(done => {
 
   sequelize.authenticate().then(() => {
     fatLog('Truncating DB...');
-    sequelize.transaction(transaction => {
+
+    return sequelize.transaction(transaction => {
       return sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { transaction }).then(() => {
         return sequelize.query(`
           SELECT Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
@@ -187,11 +188,9 @@ before(done => {
 
       fatLog('Starting tests...');
       done();
-    }).catch(error => {
-      console.log(error);
     });
   }).catch(e => {
-    console.log(e);
+    console.error(e);
     process.exit(1);
   });
 });

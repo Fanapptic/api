@@ -15,7 +15,6 @@ describe('User Agreement Webhooks', () => {
       chai.request(server)
         .post('/users/*/agreements/*/webhooks?' + querystring.stringify(query))
         .end((error, response) => {
-          console.log(response.body);
           response.should.have.status(200);
           response.body.should.equal('Hello API Event Received');
           done();

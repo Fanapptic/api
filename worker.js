@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
-
 const port = process.env.PORT || 8000;
+
+require('dotenv').config(); // machine level env takes priority over .env file
 
 require('./setup/globals');
 rootRequire('/setup/aws');

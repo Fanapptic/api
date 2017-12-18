@@ -31,5 +31,5 @@ UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
 
 database.sync({
-  //force: true,
+  force: true,
 });

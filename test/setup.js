@@ -1,4 +1,10 @@
 /*
+ * Import Environment Variables
+ */
+
+require('dotenv').config(); // machine level env takes priority over .env file
+
+/*
  * Set Globals
  */
 
@@ -70,7 +76,13 @@ chai.use(chaiHttp);
  */
 
 const Sequelize = require('sequelize');
-const { database } = require('./config');
+const database = {
+  database: process.env.MYSQL_DATABASE,
+  username: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  host: process.env.MYSQL_WRITE_HOST,
+  port: process.env.MYSQL_PORT,
+};
 
 before(done => {
   const sequelize = new Sequelize(database.database, database.username, database.password, {

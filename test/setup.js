@@ -5,12 +5,24 @@
 require('dotenv').config(); // machine level env takes priority over .env file
 
 /*
+ * Start A Local Server Instance If Necessary
+ */
+
+const portScanner = require('portscanner');
+
+portScanner.checkPortStatus(process.env.PORT, 'localhost', (error, status) => {
+  if (status === 'closed') {
+    require('../worker');
+  }
+});
+
+/*
  * Set Globals
  */
 
 global.chai = require('chai');
 global.chaiHttp = require('chai-http');
-global.server = 'http://localhost:8000';
+global.server = `http://localhost:${process.env.PORT}`;
 
 global.internalToken = 'd9d467a6-6afe-11e7-907b-a6006ad3dba0';
 
@@ -75,6 +87,7 @@ chai.use(chaiHttp);
  * Start Tests
  */
 
+const waitPort = require('wait-port');
 const Sequelize = require('sequelize');
 const database = {
   database: process.env.MYSQL_DATABASE,
@@ -91,9 +104,16 @@ before(done => {
     port: database.port,
   });
 
-  fatLog('Testing DB connection...');
+  fatLog('Waiting for local server to come online...');
 
-  sequelize.authenticate().then(() => {
+  waitPort({
+    host: 'localhost',
+    port: parseInt(process.env.PORT),
+  }).then(() => {
+    fatLog('Testing DB connection...');
+
+    return sequelize.authenticate();
+  }).then(() => {
     fatLog('Truncating DB...');
 
     return sequelize.transaction(transaction => {

@@ -44,12 +44,14 @@ module.exports = app => {
   app.use('/users/:userId/agreements/:userAgreementId/webhooks', userAgreementWebhooksRouter);
 
   app.use((error, request, response, next) => { // 4 params required to handle error.
-    console.log('===========================');
-    console.log(request.method, request.path);
-    console.log('===========================');
-    console.log(error);
-    for (let i = 0; i < 10; i++) {
-      console.log('');
+    if (process.env.CONSOLE_LOG_REQUEST_ERRORS === 'true') {
+      console.log('===========================');
+      console.log(request.method, request.path);
+      console.log('===========================');
+      console.log(error);
+      for (let i = 0; i < 10; i++) {
+        console.log('');
+      }
     }
 
     // Handle Sequelize Errors

@@ -190,6 +190,9 @@ before(done => {
     }).catch(error => {
       console.log(error);
     });
+  }).catch(e => {
+    console.log(e);
+    process.exit(1);
   });
 });
 

@@ -50,6 +50,6 @@ module.exports = class extends DataSource {
   }
 
   handleWebhookRequest(request) {
-    console.log(request.body);
+    //console.log(request.body);
   }
 };

@@ -15,10 +15,10 @@ artifacts:
     - libs/**/*
     - middlewares/**/*
     - models/**/*
-    - node_modules/**/*
     - routes/**/*
     - setup/**/*
     - .env
+    - .npmrc
     - package.json
     - package-lock.json
     - server.js

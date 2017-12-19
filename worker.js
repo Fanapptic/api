@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-require('dotenv').config(); // machine level env takes priority over .env file
+require('dotenv').config(); // reimport of .env required per forked worker
 
 require('./setup/globals');
 rootRequire('/setup/aws');

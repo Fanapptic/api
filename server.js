@@ -1,7 +1,11 @@
 const cluster = require('cluster');
 const os = require('os');
 
-if (cluster.isMaster && process.env.NODE_ENV === 'production') {
+require('dotenv').config(); // set environment vars from .env, existing vars take priority over .env
+
+const clusterEnvironments = ['staging', 'production'];
+
+if (cluster.isMaster && clusterEnvironments.includes(process.env.NODE_ENV)) {
   os.cpus().forEach(() => {
     cluster.fork();
   });

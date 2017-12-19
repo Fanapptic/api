@@ -17,4 +17,5 @@ module.exports.s3UsersBucket = process.env.S3_USERS_BUCKET;
  * SQS
  */
 
-module.exports.sqsAppDeploymentsQueue = process.env.SQS_APP_DEPLOYMENT_QUEUE_URL;
+module.exports.sqsAndroidAppDeploymentQueue = process.env.SQS_ANDROID_APP_DEPLOYMENT_QUEUE_URL;
+module.exports.sqsIosAppDeploymentQueue = process.env.SQS_IOS_APP_DEPLOYMENT_QUEUE_URL;

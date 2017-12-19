@@ -15,7 +15,6 @@ artifacts:
     - libs/**/*
     - middlewares/**/*
     - models/**/*
-    - node_modules/**/*
     - routes/**/*
     - setup/**/*
     - .env

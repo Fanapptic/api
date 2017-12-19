@@ -15,9 +15,11 @@ artifacts:
     - libs/**/*
     - middlewares/**/*
     - models/**/*
+    - node_modules/**/*
     - routes/**/*
     - setup/**/*
     - .env
     - package.json
+    - package-lock.json
     - server.js
     - worker.js

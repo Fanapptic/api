@@ -72,13 +72,13 @@ AppDeploymentModel.prototype.hardDeploy = function() {
 
   promises.push(sqs.sendMessage({
     MessageBody: JSON.stringify(this),
-    MessageGroupId: 'deploy',
+    MessageGroupId: 'android-hard-deploy',
     QueueUrl: awsConfig.sqsAndroidAppDeploymentQueue,
   }).promise());
 
   promises.push(sqs.sendMessage({
     MessageBody: JSON.stringify(this),
-    MessageGroupId: 'deploy',
+    MessageGroupId: 'ios-hard-deploy',
     QueueUrl: awsConfig.sqsIosAppDeploymentQueue,
   }).promise());
 

@@ -68,11 +68,21 @@ const AppDeploymentModel = database.define('appDeployments', {
 AppDeploymentModel.prototype.hardDeploy = function() {
   const sqs = new aws.SQS();
 
-  return sqs.sendMessage({
+  let promises = [];
+
+  promises.push(sqs.sendMessage({
     MessageBody: JSON.stringify(this),
-    MessageGroupId: 'deploy',
-    QueueUrl: awsConfig.sqsAppDeploymentsQueue,
-  }).promise();
+    MessageGroupId: 'android-hard-deploy',
+    QueueUrl: awsConfig.sqsAndroidAppDeploymentQueue,
+  }).promise());
+
+  promises.push(sqs.sendMessage({
+    MessageBody: JSON.stringify(this),
+    MessageGroupId: 'ios-hard-deploy',
+    QueueUrl: awsConfig.sqsIosAppDeploymentQueue,
+  }).promise());
+
+  return Promise.all(promises);
 };
 
 AppDeploymentModel.prototype.softDeploy = function() {

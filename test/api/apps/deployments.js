@@ -21,38 +21,42 @@ describe('App Deployments', () => {
     });
 
     it('400s when no changes have occurred since previous deployment', done => {
-      chai.request(server)
-        .post(`/apps/${appId}/deployments`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-
-    it('200s with created soft app deployment object owned by app when config changes', done => {
-      chai.request(server)
-        .patch(`/apps/${appId}`)
-        .set('X-Access-Token', testUser.accessToken)
-        .send({
-          config: {
-            tabBar: {
-              backgroundGradient: '#CCCCCC, #111111',
-            },
-          },
-        })
-      .then(() => {
+      setTimeout(() => { // POST /apps/{appId}/deployments can take longer that this test.
         chai.request(server)
           .post(`/apps/${appId}/deployments`)
           .set('X-Access-Token', testUser.accessToken)
           .end((error, response) => {
-            response.should.have.status(200);
-            response.body.should.be.an('object');
-            response.body.appId.should.equal(appId);
-            response.body.type.should.equal('soft');
+            response.should.have.status(400);
             done();
           });
-      });
+      }, 500);
+    });
+
+    it('200s with created soft app deployment object owned by app when config changes', done => {
+      setTimeout(() => { // POST /apps/{appId}/deployments can take longer than this test.
+        chai.request(server)
+          .patch(`/apps/${appId}`)
+          .set('X-Access-Token', testUser.accessToken)
+          .send({
+            config: {
+              tabBar: {
+                backgroundGradient: '#CCCCCC, #111111',
+              },
+            },
+          })
+        .then(() => {
+          chai.request(server)
+            .post(`/apps/${appId}/deployments`)
+            .set('X-Access-Token', testUser.accessToken)
+            .end((error, response) => {
+              response.should.have.status(200);
+              response.body.should.be.an('object');
+              response.body.appId.should.equal(appId);
+              response.body.type.should.equal('soft');
+              done();
+            });
+        });
+      }, 500);
     });
 
     helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/deployments');

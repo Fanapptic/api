@@ -30,6 +30,6 @@ CurrencyModel.hasMany(AppRevenueModel);
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
 
-database.sync({
-  //force: true,
+module.exports = database.sync({
+  force: (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'local'),
 });

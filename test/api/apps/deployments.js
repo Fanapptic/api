@@ -29,7 +29,7 @@ describe('App Deployments', () => {
             response.should.have.status(400);
             done();
           });
-      }, 500);
+      }, 2000);
     });
 
     it('200s with created soft app deployment object owned by app when config changes', done => {

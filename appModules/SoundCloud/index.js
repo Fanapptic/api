@@ -21,7 +21,7 @@ class SoundCloud extends Module {
         name: 'ion-cloud',
         set: 'ion',
       },
-      moduleUrl: 'http://localhost:8484/soundCloud/',
+      moduleUrl: `${process.env.APP_MODULES_BASE_URL}/soundCloud/`,
     });
 
     /*

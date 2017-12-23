@@ -30,7 +30,7 @@ module.exports = {
       url: '/account/settings',
       title: 'Setup Your Payout Settings',
       description: "Before you can earn money from the minimal ads in your app, you're required to setup where we'll send the money you earn.",
-      resolution: 'Add your PayPal in "Account Settings"<br />(Click To Continue)',
+      resolution: 'To get paid, add your PayPal in "Account Settings"<br />(Click To Continue)',
     },
     releaseAgreement: {
       url: '/account/legal',

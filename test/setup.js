@@ -1,3 +1,6 @@
+const fs = require('fs');
+const portScanner = require('portscanner');
+
 /*
  * Import Environment Variables
  */
@@ -7,8 +10,6 @@ require('dotenv').config(); // machine level env takes priority over .env file
 /*
  * Start A Local Server Instance If Necessary
  */
-
-const portScanner = require('portscanner');
 
 portScanner.checkPortStatus(process.env.PORT, 'localhost', (error, status) => {
   if (status === 'closed') {
@@ -140,9 +141,16 @@ before(done => {
 
       return chai.request(server).post('/users').send(testUser);
     }).then(response => {
-      fatLog('Creating completed release agreement for global user...');
+      fatLog('Adding icon to global test app...');
 
       Object.assign(testUser, response.body);
+
+      return chai.request(server)
+        .patch(`/apps/${appId}`)
+        .set('X-Access-Token', testUser.accessToken)
+        .attach('icon', fs.readFileSync('./test/icon.png'), 'icon.png');
+    }).then(() => {
+      fatLog('Creating completed release agreement for global user...');
 
       return sequelize.query(`
         INSERT INTO userAgreements

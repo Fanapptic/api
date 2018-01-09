@@ -148,7 +148,7 @@ AppModel.prototype.generateChecklist = function() {
 
   // Branding & Marketing
   if (this.name && this.displayName && this.subtitle &&
-      this.description && this.keywords /*&& this.icons TODO: THIS BREAKS TEST, ADD DEFAULT ICON GENERATION */ &&
+      this.description && this.keywords && this.icons &&
       this.website && this.contentRating && this.config) {
     brandingMarketing.completed = true;
   }

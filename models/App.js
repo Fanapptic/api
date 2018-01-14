@@ -281,7 +281,11 @@ AppModel.prototype._generateSnapshot = function() {
 
   return AppModuleModel.findAll({ where: { appId: id } }).then(appModules => {
     appModules.forEach(appModule => {
-      app.addModule(appModule.generateModuleObject());
+      let module = appModule.generateModuleObject();
+
+      module.id = appModule.id;
+
+      app.addModule(module);
     });
 
     return new Snapshot({

@@ -58,6 +58,7 @@ class Module extends Component {
     });
 
     return {
+      id: this.id,
       name: this.name,
       navigator: this.navigator.exportPackagedConfig(),
       tab: this.tab.exportPackagedConfig(),

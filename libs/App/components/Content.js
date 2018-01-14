@@ -10,10 +10,10 @@ class Content extends Component {
       description: 'The content configuration of the application.',
     });
 
-    this.backgroundGradient = new Style({
-      name: 'backgroundGradient',
-      displayName: 'Background Gradient',
-      description: 'The background gradient of module content.',
+    this.background = new Style({
+      name: 'background',
+      displayName: 'Background',
+      description: 'The background of module content.',
       cssSelector: 'html,body',
       cssProperty: 'background',
       field: Configurable.FIELDS.GRADIENT(),

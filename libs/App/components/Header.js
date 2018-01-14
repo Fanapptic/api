@@ -10,10 +10,10 @@ class Header extends Component {
       description: 'The header configuration of the application.',
     });
 
-    this.backgroundGradient = new Option({
-      name: 'backgroundGradient',
-      displayName: 'Background Gradient',
-      description: 'The background gradient of the tab bar.',
+    this.background = new Option({
+      name: 'background',
+      displayName: 'Background',
+      description: 'The background of the tab bar.',
       field: Configurable.FIELDS.GRADIENT(),
       defaultValue: '#FAFAFA,#FAFAFA',
     });

@@ -9,7 +9,7 @@ describe('Apps', () => {
   describe('PATCH /apps', () => {
     const persistentHeader = {
       tintColor: '#AAAAAA',
-      backgroundGradient: '#BBBBBB,#000000',
+      background: '#BBBBBB,#000000',
     };
 
     it('200s with updated app object and ignores properties not in config schema when passed config', done => {
@@ -31,12 +31,12 @@ describe('Apps', () => {
           content: {
             fontSize: '14px',
             textColor: '#101010',
-            backgroundGradient: '#CCCCCC,#222222',
+            background: '#CCCCCC,#222222',
           },
           tabBar: {
             swipeEnabled: true,
             animationEnabled: false,
-            backgroundGradient: '#FFFFFF, #000000',
+            background: '#FFFFFF, #000000',
             tabBarOptions: {
               activeTintColor: '#333333',
               inactiveTintColor: '#CCCCCC',
@@ -67,7 +67,7 @@ describe('Apps', () => {
           response.body.config.header.should.deep.equal(fields.config.header);
           response.body.config.content.fontSize.value.should.equal(fields.config.content.fontSize);
           response.body.config.content.textColor.value.should.equal(fields.config.content.textColor);
-          response.body.config.content.backgroundGradient.value.should.equal(fields.config.content.backgroundGradient);
+          response.body.config.content.background.value.should.equal(fields.config.content.background);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);
           response.body.config.should.not.have.property('badField');
           done();

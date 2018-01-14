@@ -22,7 +22,6 @@ class Module extends Component {
       }).required(),
       brandingColor: Joi.string().required(),
       moduleUrl: Joi.string().uri().required(),
-      injectedJavaScript: Joi.string().optional(),
     }));
 
     this.navigator = new Navigator();
@@ -52,12 +51,18 @@ class Module extends Component {
   }
 
   exportPackagedConfig() {
+    let configurableGroupings = {};
+
+    this.configurableGroupings.forEach(grouping => {
+      configurableGroupings[grouping.name] = grouping.exportPackagedConfig();
+    });
+
     return {
       name: this.name,
       navigator: this.navigator.exportPackagedConfig(),
       tab: this.tab.exportPackagedConfig(),
+      configurableGroupings,
       moduleUrl: this.moduleUrl,
-      injectedJavaScript: this.injectedJavaScript,
     };
   }
 }

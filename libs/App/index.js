@@ -48,7 +48,7 @@ class App extends Component {
       header: this.header.exportPackagedConfig(),
       content: this.content.exportPackagedConfig(),
       tabBar: this.tabBar.exportPackagedConfig(),
-      modules: this.modules.map(module => module.exportPackagedConfig()), // default to array when no modules?
+      modules: this.modules.map(module => module.exportPackagedConfig()),
     };
   }
 }

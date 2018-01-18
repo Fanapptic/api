@@ -5,6 +5,7 @@
 const { Module, ConfigurableGrouping } = rootRequire('/libs/App/components');
 const Configurable = rootRequire('/libs/App/Configurable');
 const { Option } = rootRequire('/libs/App/configurables');
+const dataSources = require('./dataSources');
 
 class Shopify extends Module {
   static get name() {
@@ -23,6 +24,20 @@ class Shopify extends Module {
       },
       moduleUrl: `${process.env.APP_MODULES_BASE_URL}/shopify/`,
     });
+
+    /*
+     * Shopify Sources
+     */
+
+    const shopifySourcesGrouping = new ConfigurableGrouping({
+      name: 'shopifySources',
+      displayName: 'Shopify Source',
+      description: 'Your Shopify tab will contain shoppable products from the Shopify account you connect.',
+    });
+
+    shopifySourcesGrouping.addConfigurable(new dataSources.Shopify());
+
+    this.addConfigurableGrouping(shopifySourcesGrouping);
 
     /*
      * Look & Feed

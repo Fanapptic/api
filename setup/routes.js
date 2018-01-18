@@ -15,6 +15,7 @@ const healthRouter = rootRequire('/routes/health');
 const modulesRouter = rootRequire('/routes/modules');
 const oauthTwitterAuthorizationsRouter = rootRequire('/routes/oauth/twitter/authorizations');
 const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
+const oauthShopifyUsersRouter = rootRequire('/routes/oauth/shopify/users');
 const oauthYouTubeUsersRouter = rootRequire('/routes/oauth/youtube/users');
 const usersRouter = rootRequire('/routes/users');
 const userAgreementsRouter = rootRequire('/routes/users/agreements');
@@ -38,6 +39,7 @@ module.exports = app => {
   app.use('/modules/:name?', modulesRouter);
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
+  app.use('/oauth/shopify/users', oauthShopifyUsersRouter);
   app.use('/oauth/youtube/users', oauthYouTubeUsersRouter);
   app.use('/users', usersRouter);
   app.use('/users/:userId/agreements/:userAgreementId?', userAgreementsRouter);

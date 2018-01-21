@@ -22,14 +22,14 @@ module.exports = class extends DataSource {
       },
       json: true,
     }).then(result => {
-      const { products } = result;
+      const productListings = result.product_listings;
 
-      AppModuleDataModel.bulkCreate(products.map(product => {
+      AppModuleDataModel.bulkCreate(productListings.map(productListing => {
         return {
           appModuleId: appModuleProvider.appModuleId,
           appModuleProviderId: appModuleProvider.id,
-          data: product,
-          publishedAt: new Date(product.published_at),
+          data: productListing,
+          publishedAt: new Date(productListing.published_at),
         };
       }));
     });

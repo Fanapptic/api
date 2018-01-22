@@ -4,6 +4,7 @@ const appChecklistsRouter = rootRequire('/routes/apps/checklists');
 const appDeploymentsRouter = rootRequire('/routes/apps/deployments');
 const appDeploymentStepsRouter = rootRequire('/routes/apps/deployments/steps');
 const appModulesRouter = rootRequire('/routes/apps/modules');
+const appModuleApiRouter = rootRequire('/routes/apps/modules/api');
 const appModuleDataRouter = rootRequire('/routes/apps/modules/data');
 const appModuleProvidersRouter = rootRequire('/routes/apps/modules/providers');
 const appModuleProviderWebhooksRouter = rootRequire('/routes/apps/modules/providers/webhooks');
@@ -28,6 +29,7 @@ module.exports = app => {
   app.use('/apps/:appId/deployments/:appDeploymentId?', appDeploymentsRouter);
   app.use('/apps/:appId/deployments/:appDeploymentId/steps/:appDeploymentStepId?', appDeploymentStepsRouter);
   app.use('/apps/:appId/modules/:appModuleId?', appModulesRouter);
+  app.use('/apps/:appId/modules/:appModuleId/api/:appModuleName?', appModuleApiRouter);
   app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModuleDataRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId?', appModuleProvidersRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);

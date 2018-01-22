@@ -16,7 +16,7 @@ module.exports = class extends DataSource {
 
   connect(appModuleProvider) {
     return requestPromise.get({
-      url: shopifyConfig.productsUrl.replace('{shop}', appModuleProvider.accountUrl),
+      url: shopifyConfig.productListingsUrl.replace('{shop}', appModuleProvider.accountUrl),
       headers: {
         'X-Shopify-Access-Token': appModuleProvider.accessToken,
       },

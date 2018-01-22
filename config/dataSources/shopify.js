@@ -3,5 +3,5 @@ module.exports = {
   clientSecret: '9a1cedc78f9cc5c1d4bdab0e023783ab',
   accessTokensUrl: 'https://{shop}/admin/oauth/access_token.json',
   shopsUrl: 'https://{shop}/admin/shop.json',
-  productsUrl: 'https://{shop}/admin/products.json',
+  productListingsUrl: 'https://{shop}/admin/product_listings.json',
 };

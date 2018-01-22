@@ -16,20 +16,20 @@ module.exports = class extends DataSource {
 
   connect(appModuleProvider) {
     return requestPromise.get({
-      url: shopifyConfig.productListingsUrl.replace('{shop}', appModuleProvider.accountUrl),
+      url: shopifyConfig.productsUrl.replace('{shop}', appModuleProvider.accountUrl),
       headers: {
         'X-Shopify-Access-Token': appModuleProvider.accessToken,
       },
       json: true,
     }).then(result => {
-      const productListings = result.product_listings;
+      const { products } = result;
 
-      AppModuleDataModel.bulkCreate(productListings.map(productListing => {
+      AppModuleDataModel.bulkCreate(products.map(product => {
         return {
           appModuleId: appModuleProvider.appModuleId,
           appModuleProviderId: appModuleProvider.id,
-          data: productListing,
-          publishedAt: new Date(productListing.published_at),
+          data: product,
+          publishedAt: new Date(product.published_at),
         };
       }));
     });

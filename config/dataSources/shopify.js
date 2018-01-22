@@ -1,6 +1,6 @@
 module.exports = {
-  clientId: 'ed56950a4a70ab578593a1c6a4d07e4f',
-  clientSecret: '9a1cedc78f9cc5c1d4bdab0e023783ab',
+  clientId: 'e666f7201527b12071df971824e31f49',
+  clientSecret: '14e95d883a4dbd4a2a50d11f5a549d41',
   accessTokensUrl: 'https://{shop}/admin/oauth/access_token.json',
   shopsUrl: 'https://{shop}/admin/shop.json',
   productsUrl: 'https://{shop}/admin/products.json',

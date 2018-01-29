@@ -14,6 +14,9 @@ const AppUserModel = database.define('appUsers', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  networkUserId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   uuid: {
     type: Sequelize.UUID,
     unique: true,

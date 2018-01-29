@@ -16,6 +16,9 @@ const AppSessionModel = database.define('appSessions', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  location: {
+    type: Sequelize.JSON,
+  },
   startedAt: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,

@@ -11,6 +11,11 @@ const UserModel = database.define('users', {
     primaryKey: true,
     autoIncrement: true,
   },
+  accessToken: {
+    type: Sequelize.STRING,
+    unique: true,
+    defaultValue: Sequelize.UUIDV1,
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -36,11 +41,6 @@ const UserModel = database.define('users', {
         }
       },
     },
-  },
-  accessToken: {
-    type: Sequelize.STRING,
-    unique: true,
-    defaultValue: Sequelize.UUIDV1,
   },
   firstName: {
     type: Sequelize.STRING,

@@ -11,6 +11,7 @@ const AppUserModel = rootRequire('/models/AppUser');
 
 const ArticleModel = rootRequire('/models/Article');
 const CurrencyModel = rootRequire('/models/Currency');
+const NetworkUserModel = rootRequire('/models/NetworkUser');
 const UserModel = rootRequire('/models/User');
 const UserAgreementModel = rootRequire('/models/UserAgreement');
 

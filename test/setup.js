@@ -74,13 +74,7 @@ chai.should();
 chai.use(chaiHttp);
 
 /*
- * Test Connection
- * Truncate DB
- * Create Global Test User + App In DB
- * Create Global Test App Deployment In DB
- * Create Global Test App User In DB
- * Create Global Test App Module In DB
- * Start Tests
+ * Setup Test Environement
  */
 
 const waitPort = require('wait-port');
@@ -191,7 +185,7 @@ before(done => {
 
       return Promise.all(promises);
     }).then(() => {
-      fatLog('Creating global test app user in DB...');
+      fatLog('Creating global test app device in DB...');
 
       return chai.request(server).post('/apps/1/devices').send(testAppDevice);
     }).then(response => {

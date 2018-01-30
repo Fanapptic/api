@@ -6,7 +6,7 @@ describe('App Devices', () => {
    */
 
   describe('POST /apps/{appId}/devices', () => {
-    it('200s with created app user object owned by app', done => {
+    it('200s with created app device object owned by app', done => {
       const fields = {
         platform: 'android',
       };
@@ -51,7 +51,7 @@ describe('App Devices', () => {
    */
 
   describe('GET /apps/{appId}/devices', () => {
-    it('200s with an array of app user objects owned by app', done => {
+    it('200s with an array of app device objects owned by app', done => {
       chai.request(server)
         .get(`/apps/${appId}/devices`)
         .set('X-Access-Token', testUser.accessToken)
@@ -67,7 +67,7 @@ describe('App Devices', () => {
         });
     });
 
-    it('200s with app user object owned by app when passed app user id', done => {
+    it('200s with app device object owned by app when passed app device id', done => {
       chai.request(server)
         .get(`/apps/${appId}/devices/1`)
         .set('X-Access-Token', testUser.accessToken)
@@ -79,7 +79,7 @@ describe('App Devices', () => {
         });
     });
 
-    it('400s when passed invalid app user id', done => {
+    it('400s when passed invalid app device id', done => {
       chai.request(server)
         .get(`/apps/${appId}/devices/1241241`)
         .set('X-Access-Token', testUser.accessToken)

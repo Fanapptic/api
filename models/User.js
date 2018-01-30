@@ -12,7 +12,7 @@ const UserModel = database.define('users', {
     autoIncrement: true,
   },
   accessToken: {
-    type: Sequelize.STRING,
+    type: Sequelize.UUID,
     unique: true,
     defaultValue: Sequelize.UUIDV1,
   },

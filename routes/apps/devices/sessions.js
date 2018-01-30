@@ -1,8 +1,8 @@
 /*
- * Route: /apps/:appId/sessions/:appSessionId?
+ * Route: /apps/:appId/devices/:appDeviceId/sessions/:appSessionDeviceId?
  */
 
-const AppSessionModel = rootRequire('/models/AppSession');
+const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
@@ -10,6 +10,9 @@ const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const router = express.Router({
   mergeParams: true,
 });
+
+
+//// rrrrewrite this.
 
 /*
  * GET
@@ -21,7 +24,7 @@ router.get('/', (request,  response, next) => {
   const { appId, appSessionId } = request.params;
 
   if (appSessionId) {
-    AppSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
+    AppDeviceSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
       if (!appSession) {
         throw new Error('The app session does not exist.');
       }
@@ -29,7 +32,7 @@ router.get('/', (request,  response, next) => {
       response.success(appSession);
     }).catch(next);
   } else {
-    AppSessionModel.findAll({ where: { appId } }).then(appSessions => {
+    AppDeviceSessionModel.findAll({ where: { appId } }).then(appSessions => {
       response.success(appSessions);
     }).catch(next);
   }
@@ -48,7 +51,7 @@ router.post('/', (request, response, next) => {
       throw new Error('The device provided does not belong to the application provided.'); // TODO: This is middleware-able..
     }
 
-    return AppSessionModel.create({ appId, appDeviceId });
+    return AppDeviceSessionModel.create({ appId, appDeviceId });
   }).then(appSession => {
     response.success(appSession);
   }).catch(next);
@@ -61,7 +64,7 @@ router.post('/', (request, response, next) => {
 router.patch('/', (request, response, next) => {
   const { appId, appSessionId } = request.params;
 
-  AppSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
+  AppDeviceSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
     if (!appSession || appSession.endedAt) {
       throw new Error('The app session is invalid.');
     }

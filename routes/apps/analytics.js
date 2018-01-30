@@ -5,7 +5,7 @@
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const AppRevenueModel = rootRequire('/models/AppRevenue');
-const AppSessionModel = rootRequire('/models/AppSession');
+const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 const AppDeviceModel = rootRequire('/models/AppDevice');
 
 const router = express.Router({
@@ -52,7 +52,7 @@ router.get('/', (request, response, next) => {
   }));
 
   // Daily Active Users - Total
-  promises.push(AppSessionModel.count({
+  promises.push(AppDeviceSessionModel.count({
     distinct: true,
     col: 'appDeviceId',
     where: {
@@ -61,13 +61,12 @@ router.get('/', (request, response, next) => {
         $gt: new Date(Date.now() - 1000 * 60 * 60 * 24),
       },
     },
-
   }).then(count => {
     dailyActiveUsers = count;
   }));
 
   // Weekly Active Users - Total
-  promises.push(AppSessionModel.count({
+  promises.push(AppDeviceSessionModel.count({
     distinct: true,
     col: 'appDeviceId',
     where: {
@@ -81,7 +80,7 @@ router.get('/', (request, response, next) => {
   }));
 
   // Daily Usage - Average
-  promises.push(AppSessionModel.find({
+  promises.push(AppDeviceSessionModel.find({
     attributes: [[
       database.fn('avg',
         database.fn('timestampdiff', database.literal('MINUTE'), database.col('startedAt'), database.col('endedAt'))
@@ -102,7 +101,7 @@ router.get('/', (request, response, next) => {
   }));
 
   // Total Usage - Sum
-  promises.push(AppSessionModel.find({
+  promises.push(AppDeviceSessionModel.find({
     attributes: [[
       database.fn('sum',
         database.fn('timestampdiff', database.literal('MINUTE'), database.col('startedAt'), database.col('endedAt'))

@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppSessionModel = database.define('appSessions', {
+const AppDeviceSessionModel = database.define('appDeviceSessions', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -38,4 +38,4 @@ const AppSessionModel = database.define('appSessions', {
  * Export
  */
 
-module.exports = AppSessionModel;
+module.exports = AppDeviceSessionModel;

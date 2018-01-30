@@ -1,12 +1,13 @@
-const helpers = require('../../helpers');
+const helpers = require('../../../helpers');
 
-describe('App Sessions', () => {
+describe('App Device Sessions', () => {
+  // THESE TESTS NEED REWRITING AFTER FIXING DEVICE SESSIONS ENDPOINT.
   /*
    * POST
    */
 
-  describe('POST /apps/{appId}/sessions', () => {
-    it('200s with created app session object owned by app', done => {
+  describe('POST /apps/{appId}/devices/{appDeviceId}/sessions', () => {
+    it('200s with created app device session object owned by app', done => {
       const fields = {
         appDeviceId: testAppDevice.id,
       };

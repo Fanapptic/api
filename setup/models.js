@@ -6,7 +6,7 @@ const AppModuleModel = rootRequire('/models/AppModule');
 const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const AppModuleProviderModel = rootRequire('/models/AppModuleProvider');
 const AppPushNotificationModel = rootRequire('/models/AppPushNotification');
-const AppSessionModel = rootRequire('/models/AppSession');
+const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 const AppDeviceModel = rootRequire('/models/AppDevice');
 
 const ArticleModel = rootRequire('/models/Article');
@@ -19,15 +19,16 @@ AppModel.hasMany(AppDeploymentModel);
 AppModel.hasMany(AppModuleModel);
 AppModel.hasMany(AppPushNotificationModel);
 AppModel.hasMany(AppRevenueModel);
-AppModel.hasMany(AppSessionModel);
 AppModel.hasMany(AppDeviceModel);
+AppModel.hasMany(AppDeviceSessionModel);
 AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppModuleModel.hasMany(AppModuleProviderModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
-AppDeviceModel.hasMany(AppSessionModel);
+AppDeviceModel.hasMany(AppDeviceSessionModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
+NetworkUserModel.hasMany(AppDeviceSessionModel);
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
 

@@ -55,9 +55,9 @@ describe('User Agreements', () => {
           response.should.have.status(200);
           response.body.should.be.an('array');
           response.body.length.should.be.at.least(1);
-          response.body.forEach(appUserObject => {
-            appUserObject.should.be.an('object');
-            appUserObject.userId.should.equal(testUser.id);
+          response.body.forEach(appDeviceObject => {
+            appDeviceObject.should.be.an('object');
+            appDeviceObject.userId.should.equal(testUser.id);
           });
           done();
         });

@@ -9,7 +9,7 @@
       "internalToken": true,
       "appId": true,
       "testUser": true,
-      "testAppUser": true,
+      "testAppDevice": true,
       "testAppDeployment": true,
       "testAppModule": true,
       "testAppModuleProvider": true,

@@ -8,7 +8,7 @@ describe('App Sessions', () => {
   describe('POST /apps/{appId}/sessions', () => {
     it('200s with created app session object owned by app', done => {
       const fields = {
-        appUserId: testAppUser.id,
+        appDeviceId: testAppDevice.id,
       };
 
       chai.request(server)
@@ -26,7 +26,7 @@ describe('App Sessions', () => {
 
     it('400s when passed invalid app id', done => {
       const fields = {
-        appUserId: testAppUser.id,
+        appDeviceId: testAppDevice.id,
       };
 
       chai.request(server)

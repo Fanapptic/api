@@ -40,16 +40,11 @@ global.testUser = {
   paypalEmail: 'testemail@gmail.com',
 };
 
-global.testAppUser = {
+global.testAppDevice = {
   id: null,
   appId: null,
   uuid: null,
   platform: 'ios',
-};
-
-global.testAppUserAgreement = {
-  id: null,
-  userId: null,
 };
 
 global.testAppDeployment = {
@@ -198,9 +193,9 @@ before(done => {
     }).then(() => {
       fatLog('Creating global test app user in DB...');
 
-      return chai.request(server).post('/apps/1/users').send(testAppUser);
+      return chai.request(server).post('/apps/1/devices').send(testAppDevice);
     }).then(response => {
-      Object.assign(testAppUser, response.body);
+      Object.assign(testAppDevice, response.body);
       fatLog('Creating global test app deployment in DB...');
 
       return chai.request(server)

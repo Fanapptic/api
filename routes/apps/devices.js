@@ -1,8 +1,8 @@
 /*
- * Route: /apps/:appId/users/:appUserId?
+ * Route: /apps/:appId/devices/:appDeviceId?
  */
 
-const AppUserModel = rootRequire('/models/AppUser');
+const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
@@ -17,19 +17,19 @@ const router = express.Router({
 router.get('/', userAuthorize);
 router.get('/', appAuthorize);
 router.get('/', (request, response, next) => {
-  const { appId, appUserId } = request.params;
+  const { appId, appDeviceId } = request.params;
 
-  if (appUserId) {
-    AppUserModel.find({ where: { id: appUserId, appId } }).then(appUser => {
-      if (!appUser) {
-        throw new Error('The app user does not exist.');
+  if (appDeviceId) {
+    AppDeviceModel.find({ where: { id: appDeviceId, appId } }).then(appDevice => {
+      if (!appDevice) {
+        throw new Error('The app device does not exist.');
       }
 
-      response.success(appUser);
+      response.success(appDevice);
     }).catch(next);
   } else {
-    AppUserModel.findAll({ where: { appId } }).then(appUsers => {
-      response.success(appUsers);
+    AppDeviceModel.findAll({ where: { appId } }).then(appDevices => {
+      response.success(appDevices);
     }).catch(next);
   }
 });
@@ -42,8 +42,8 @@ router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { platform } = request.body;
 
-  AppUserModel.create({ appId, platform }).then(appUser => {
-    response.success(appUser);
+  AppDeviceModel.create({ appId, platform }).then(appDevice => {
+    response.success(appDevice);
   }).catch(next);
 });
 

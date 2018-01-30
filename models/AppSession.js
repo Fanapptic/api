@@ -12,7 +12,7 @@ const AppSessionModel = database.define('appSessions', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  appUserId: {
+  appDeviceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },

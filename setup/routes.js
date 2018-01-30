@@ -10,7 +10,7 @@ const appModuleProvidersRouter = rootRequire('/routes/apps/modules/providers');
 const appModuleProviderWebhooksRouter = rootRequire('/routes/apps/modules/providers/webhooks');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appSessionsRouter = rootRequire('/routes/apps/sessions');
-const appUsersRouter = rootRequire('/routes/apps/users');
+const appDevicesRouter = rootRequire('/routes/apps/devices');
 const articlesRouter = rootRequire('/routes/articles');
 const networkUsersRouter = rootRequire('/routes/network/users');
 const healthRouter = rootRequire('/routes/health');
@@ -36,7 +36,7 @@ module.exports = app => {
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/sessions/:appSessionId?', appSessionsRouter);
-  app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
+  app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);
   app.use('/articles/:articleId?', articlesRouter);
   app.use('/networks/fanapptic/users/:networkUserId?', networkUsersRouter);
   app.use('/health', healthRouter);

@@ -1,18 +1,18 @@
 const helpers = require('../../helpers');
 
-describe('App Users', () => {
+describe('App Devices', () => {
   /*
    * POST
    */
 
-  describe('POST /apps/{appId}/users', () => {
+  describe('POST /apps/{appId}/devices', () => {
     it('200s with created app user object owned by app', done => {
       const fields = {
         platform: 'android',
       };
 
       chai.request(server)
-        .post(`/apps/${appId}/users`)
+        .post(`/apps/${appId}/devices`)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
@@ -24,7 +24,7 @@ describe('App Users', () => {
 
     it('400s when passed invalid app id', done => {
       chai.request(server)
-        .post('/apps/9494949/users')
+        .post('/apps/9494949/devices')
         .end((error, response) => {
           response.should.have.status(400);
           done();
@@ -37,7 +37,7 @@ describe('App Users', () => {
       };
 
       chai.request(server)
-        .post(`/apps/${appId}/users`)
+        .post(`/apps/${appId}/devices`)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
@@ -50,18 +50,18 @@ describe('App Users', () => {
    * GET
    */
 
-  describe('GET /apps/{appId}/users', () => {
+  describe('GET /apps/{appId}/devices', () => {
     it('200s with an array of app user objects owned by app', done => {
       chai.request(server)
-        .get(`/apps/${appId}/users`)
+        .get(`/apps/${appId}/devices`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('array');
           response.body.length.should.be.at.least(1);
-          response.body.forEach(appUserObject => {
-            appUserObject.should.be.an('object');
-            appUserObject.appId.should.equal(appId);
+          response.body.forEach(appDeviceObject => {
+            appDeviceObject.should.be.an('object');
+            appDeviceObject.appId.should.equal(appId);
           });
           done();
         });
@@ -69,7 +69,7 @@ describe('App Users', () => {
 
     it('200s with app user object owned by app when passed app user id', done => {
       chai.request(server)
-        .get(`/apps/${appId}/users/1`)
+        .get(`/apps/${appId}/devices/1`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);
@@ -81,7 +81,7 @@ describe('App Users', () => {
 
     it('400s when passed invalid app user id', done => {
       chai.request(server)
-        .get(`/apps/${appId}/users/1241241`)
+        .get(`/apps/${appId}/devices/1241241`)
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(400);
@@ -89,7 +89,7 @@ describe('App Users', () => {
         });
     });
 
-    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/users');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/users');
+    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/devices');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/devices');
   });
 });

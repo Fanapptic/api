@@ -6,7 +6,7 @@ const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const AppRevenueModel = rootRequire('/models/AppRevenue');
 const AppSessionModel = rootRequire('/models/AppSession');
-const AppUserModel = rootRequire('/models/AppUser');
+const AppDeviceModel = rootRequire('/models/AppDevice');
 
 const router = express.Router({
   mergeParams: true,
@@ -31,7 +31,7 @@ router.get('/', (request, response, next) => {
   let promises = [];
 
   // Weekly Downloads - Total
-  promises.push(AppUserModel.count({
+  promises.push(AppDeviceModel.count({
     where: {
       appId,
       createdAt: {
@@ -43,7 +43,7 @@ router.get('/', (request, response, next) => {
   }));
 
   // Total Downloads - Total
-  promises.push(AppUserModel.count({
+  promises.push(AppDeviceModel.count({
     where: {
       appId,
     },
@@ -54,7 +54,7 @@ router.get('/', (request, response, next) => {
   // Daily Active Users - Total
   promises.push(AppSessionModel.count({
     distinct: true,
-    col: 'appUserId',
+    col: 'appDeviceId',
     where: {
       appId,
       startedAt: {
@@ -69,7 +69,7 @@ router.get('/', (request, response, next) => {
   // Weekly Active Users - Total
   promises.push(AppSessionModel.count({
     distinct: true,
-    col: 'appUserId',
+    col: 'appDeviceId',
     where: {
       appId,
       startedAt: {

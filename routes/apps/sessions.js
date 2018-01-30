@@ -3,7 +3,7 @@
  */
 
 const AppSessionModel = rootRequire('/models/AppSession');
-const AppUserModel = rootRequire('/models/AppUser');
+const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 
@@ -41,14 +41,14 @@ router.get('/', (request,  response, next) => {
 
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
-  const { appUserId } = request.body;
+  const { appDeviceId } = request.body;
 
-  AppUserModel.find({ where: { id: appUserId, appId } }).then(appUser => {
-    if (!appUser) {
-      throw new Error('The user provided does not belong to the application provided.'); // TODO: This is middleware-able..
+  AppDeviceModel.find({ where: { id: appDeviceId, appId } }).then(appDevice => {
+    if (!appDevice) {
+      throw new Error('The device provided does not belong to the application provided.'); // TODO: This is middleware-able..
     }
 
-    return AppSessionModel.create({ appId, appUserId });
+    return AppSessionModel.create({ appId, appDeviceId });
   }).then(appSession => {
     response.success(appSession);
   }).catch(next);

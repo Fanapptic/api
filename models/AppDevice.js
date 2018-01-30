@@ -4,7 +4,7 @@ const platforms = ['android', 'ios'];
  * Model Definition
  */
 
-const AppUserModel = database.define('appUsers', {
+const AppDeviceModel = database.define('appDevices', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -38,4 +38,4 @@ const AppUserModel = database.define('appUsers', {
  * Export
  */
 
-module.exports = AppUserModel;
+module.exports = AppDeviceModel;

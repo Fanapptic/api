@@ -16,6 +16,9 @@ const AppSessionModel = database.define('appSessions', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  networkUserId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   location: {
     type: Sequelize.JSON,
   },

@@ -40,9 +40,9 @@ router.get('/', (request, response, next) => {
 
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
-  const { platform } = request.body;
+  const { platform, deviceDetails } = request.body;
 
-  AppDeviceModel.create({ appId, platform }).then(appDevice => {
+  AppDeviceModel.create({ appId, platform, deviceDetails }).then(appDevice => {
     response.success(appDevice);
   }).catch(next);
 });

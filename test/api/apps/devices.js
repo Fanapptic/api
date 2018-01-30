@@ -9,6 +9,18 @@ describe('App Devices', () => {
     it('200s with created app device object owned by app', done => {
       const fields = {
         platform: 'android',
+        deviceDetails: {
+          brand: 'Apple',
+          deviceCountry: 'US',
+          deviceName: 'Braydons iPhone',
+          deviceLocale: 'en_US',
+          manufacturer: 'Apple',
+          model: 'iPhone 6',
+          systemName: 'iPhone OS',
+          systemVersion: '9.0',
+          uniqueId: 'FCDBD8EF-62FC-4ECB-B2F5-92C9E79AC7F9',
+          userAgent: 'AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/61.0.3163.98 Mobile Safari/537.36',
+        },
       };
 
       chai.request(server)
@@ -18,6 +30,8 @@ describe('App Devices', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal(appId + '');
+          response.body.platform.should.equal(fields.platform);
+          response.body.deviceDetails.should.deep.equal(fields.deviceDetails);
           done();
         });
     });

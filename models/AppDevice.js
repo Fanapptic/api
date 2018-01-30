@@ -14,13 +14,13 @@ const AppDeviceModel = database.define('appDevices', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  networkUserId: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
-  },
-  uuid: {
+  accessToken: {
     type: Sequelize.UUID,
     unique: true,
     defaultValue: Sequelize.UUIDV1,
+  },
+  deviceDetails: {
+    type: Sequelize.JSON,
   },
   platform: {
     type: Sequelize.ENUM(...platforms),

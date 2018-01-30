@@ -1,59 +1,28 @@
 /*
- * Route: /apps/:appId/devices/:appDeviceId/sessions/:appSessionDeviceId?
+ * Route: /apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?
  */
 
 const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
-const AppDeviceModel = rootRequire('/models/AppDevice');
-const userAuthorize = rootRequire('/middlewares/users/authorize');
-const appAuthorize = rootRequire('/middlewares/apps/authorize');
+const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
+const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 
 const router = express.Router({
   mergeParams: true,
-});
-
-
-//// rrrrewrite this.
-
-/*
- * GET
- */
-
-router.get('/', userAuthorize);
-router.get('/', appAuthorize);
-router.get('/', (request,  response, next) => {
-  const { appId, appSessionId } = request.params;
-
-  if (appSessionId) {
-    AppDeviceSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
-      if (!appSession) {
-        throw new Error('The app session does not exist.');
-      }
-
-      response.success(appSession);
-    }).catch(next);
-  } else {
-    AppDeviceSessionModel.findAll({ where: { appId } }).then(appSessions => {
-      response.success(appSessions);
-    }).catch(next);
-  }
 });
 
 /*
  * POST
  */
 
+router.post('/', appDeviceAuthorize);
+router.post('/', networkUserAuthorizeOptional);
 router.post('/', (request, response, next) => {
-  const { appId } = request.params;
-  const { appDeviceId } = request.body;
-
-  AppDeviceModel.find({ where: { id: appDeviceId, appId } }).then(appDevice => {
-    if (!appDevice) {
-      throw new Error('The device provided does not belong to the application provided.'); // TODO: This is middleware-able..
-    }
-
-    return AppDeviceSessionModel.create({ appId, appDeviceId });
-  }).then(appSession => {
-    response.success(appSession);
+  return AppDeviceSessionModel.create({
+    appDeviceId: request.appDevice.id,
+    networkUserId: request.networkUser.id,
+    location: request.body.location,
+  }).then(appDeviceSession => {
+    response.success(appDeviceSession);
   }).catch(next);
 });
 
@@ -61,19 +30,28 @@ router.post('/', (request, response, next) => {
  * PATCH
  */
 
+router.patch('/', appDeviceAuthorize);
+router.patch('/', networkUserAuthorizeOptional);
 router.patch('/', (request, response, next) => {
-  const { appId, appSessionId } = request.params;
+  const appDeviceId = request.appDevice.id;
+  const { appDeviceSessionId } = request.params;
 
-  AppDeviceSessionModel.find({ where: { id: appSessionId, appId } }).then(appSession => {
-    if (!appSession || appSession.endedAt) {
-      throw new Error('The app session is invalid.');
+  AppDeviceSessionModel.find({ where: { id: appDeviceSessionId, appDeviceId } }).then(appDeviceSession => {
+    if (!appDeviceSession) {
+      throw new Error('The app device session does not exist.');
     }
 
-    appSession.endedAt = new Date();
+    if (appDeviceSession.endedAt) {
+      throw new Error('The ended app device session cannot be modified.');
+    }
 
-    return appSession.save();
-  }).then(appSession => {
-    response.success(appSession);
+    appDeviceSession.networkUserId = request.networkUser.id || appDeviceSession.networkUserId;
+    appDeviceSession.location = request.body.location || appDeviceSession.location;
+    appDeviceSession.endedAt = (request.body.ended) ? new Date() : appDeviceSession.endedAt;
+
+    return appDeviceSession.save();
+  }).then(appDeviceSession => {
+    response.success(appDeviceSession);
   }).catch(next);
 });
 

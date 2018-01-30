@@ -20,12 +20,11 @@ AppModel.hasMany(AppModuleModel);
 AppModel.hasMany(AppPushNotificationModel);
 AppModel.hasMany(AppRevenueModel);
 AppModel.hasMany(AppDeviceModel);
-AppModel.hasMany(AppDeviceSessionModel);
 AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppModuleModel.hasMany(AppModuleProviderModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
-AppDeviceModel.hasMany(AppDeviceSessionModel);
+AppDeviceSessionModel.belongsTo(AppDeviceModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);

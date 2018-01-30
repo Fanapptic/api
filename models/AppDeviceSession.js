@@ -8,10 +8,6 @@ const AppDeviceSessionModel = database.define('appDeviceSessions', {
     primaryKey: true,
     autoIncrement: true,
   },
-  appId: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
-    allowNull: false,
-  },
   appDeviceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,

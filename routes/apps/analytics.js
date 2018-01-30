@@ -56,11 +56,16 @@ router.get('/', (request, response, next) => {
     distinct: true,
     col: 'appDeviceId',
     where: {
-      appId,
       startedAt: {
         $gt: new Date(Date.now() - 1000 * 60 * 60 * 24),
       },
     },
+    include: [
+      {
+        model: AppDeviceModel,
+        where: { appId },
+      },
+    ],
   }).then(count => {
     dailyActiveUsers = count;
   }));
@@ -70,11 +75,16 @@ router.get('/', (request, response, next) => {
     distinct: true,
     col: 'appDeviceId',
     where: {
-      appId,
       startedAt: {
         $gt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
       },
     },
+    include: [
+      {
+        model: AppDeviceModel,
+        where: { appId },
+      },
+    ],
   }).then(count => {
     weeklyActiveUsers = count;
   }));
@@ -88,7 +98,6 @@ router.get('/', (request, response, next) => {
       'usage',
     ]],
     where: {
-      appId,
       startedAt: {
         $gt: new Date(Date.now() - 60 * 60 * 24 * 1000),
       },
@@ -96,8 +105,14 @@ router.get('/', (request, response, next) => {
         $ne: null,
       },
     },
+    include: [
+      {
+        model: AppDeviceModel,
+        where: { appId },
+      },
+    ],
   }).then(result => {
-    dailyUsage = parseInt(result.dataValues.usage) || 0; // .find returns string, convert to number
+    dailyUsage = parseInt(result.dataValues.usage) || 0; // find returns string, convert to number
   }));
 
   // Total Usage - Sum
@@ -109,11 +124,16 @@ router.get('/', (request, response, next) => {
       'usage',
     ]],
     where: {
-      appId,
       endedAt: {
         $ne: null,
       },
     },
+    include: [
+      {
+        model: AppDeviceModel,
+        where: { appId },
+      },
+    ],
   }).then(result => {
     totalUsage = parseInt(result.dataValues.usage) || 0; // .find returns string, convert to number
   }));

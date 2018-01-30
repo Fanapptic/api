@@ -1,40 +1,58 @@
 const helpers = require('../../../helpers');
 
 describe('App Device Sessions', () => {
-  // THESE TESTS NEED REWRITING AFTER FIXING DEVICE SESSIONS ENDPOINT.
   /*
    * POST
    */
 
   describe('POST /apps/{appId}/devices/{appDeviceId}/sessions', () => {
-    it('200s with created app device session object owned by app', done => {
+    it('200s with created app device session object owned by app device', done => {
       const fields = {
         appDeviceId: testAppDevice.id,
+        location: {
+          as: 'AS54858 Condointernet.net',
+          city: 'Mercer Island',
+          country: 'United States',
+          countryCode: 'US',
+          isp: 'Condointernet.net',
+          lat: 47.5707,
+          lon: -122.2221,
+          org: 'Condointernet.net',
+          query: '64.187.163.6',
+          region: 'WA',
+          regionName: 'Washington',
+          status: 'success',
+          timezone: 'America/Los_Angeles',
+          zip: '98040',
+        },
       };
 
       chai.request(server)
-        .post(`/apps/${appId}/sessions`)
+        .post(`/apps/${appId}/devices/${testAppDevice.id}/sessions`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
-          response.body.appId.should.equal(appId + '');
+          response.body.appDeviceId.should.equal(fields.appDeviceId);
+          response.body.location.should.deep.equal(fields.location);
           response.body.startedAt.should.be.a('string');
           done();
         });
     });
 
-    it('400s when passed invalid app id', done => {
+    it('401s when passed invalid app device access token', done => {
       const fields = {
         appDeviceId: testAppDevice.id,
       };
 
       chai.request(server)
-        .post('/apps/421421/sessions')
+        .post(`/apps/${appId}/devices/${testAppDevice.id}/sessions`)
+        .set('X-App-Device-Access-Token', 'somebadaccesstoken')
         .send(fields)
         .end((error, response) => {
-          response.should.have.status(400);
+          response.should.have.status(401);
           done();
         });
     });
@@ -45,14 +63,39 @@ describe('App Device Sessions', () => {
    */
 
   describe('PATCH /apps/{appId}/sessions', () => {
-    it('200s with ended app session object', done => {
+    it('200s with updated app device session object', done => {
+      const fields = {
+        location: {
+          zip: '98466',
+        },
+      };
+
       chai.request(server)
-        .patch(`/apps/${appId}/sessions/1`)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions/1`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
-          response.body.appId.should.equal(appId);
+          response.body.location.should.deep.equal(fields.location);
+          done();
+        });
+    });
+
+    it('200s with ended app device session object', done => {
+      const fields = {
+        ended: true,
+      };
+
+      chai.request(server)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions/1`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.id.should.be.a('number');
           response.body.startedAt.should.be.a('string');
           response.body.endedAt.should.be.a('string');
           done();
@@ -60,77 +103,40 @@ describe('App Device Sessions', () => {
     });
 
     it('400s when patching ended app session', done => {
+      const fields = {
+        location: {
+          somedata: 'about location',
+        },
+      };
+
       chai.request(server)
-        .patch(`/apps/${appId}/sessions/1`)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions/1`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
           done();
         });
     });
 
-    it('400s when passed invalid app id', done => {
+    it('400s when passed invalid app device session id', done => {
       chai.request(server)
-        .patch('/apps/414124/sessions/1')
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions/412412`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .end((error, response) => {
           response.should.have.status(400);
           done();
         });
     });
 
-    it('400s when passed invalid app session id', done => {
+    it('401s when passed invalid app device access token', done => {
       chai.request(server)
-        .patch(`/apps/${appId}/sessions/412412`)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions`)
+        .set('X-App-Device-Access-Token', 'somebadaccesstoken')
         .end((error, response) => {
-          response.should.have.status(400);
+          response.should.have.status(401);
           done();
         });
     });
-  });
-
-  /*
-   * GET
-   */
-
-  describe('GET /apps/{appId}/sessions', () => {
-    it('200s with an array of app session objects owned by app', done => {
-      chai.request(server)
-        .get(`/apps/${appId}/sessions`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body.length.should.be.at.least(1);
-          response.body.forEach(appSessionObject => {
-            appSessionObject.should.be.an('object');
-            appSessionObject.appId.should.equal(appId);
-          });
-          done();
-        });
-    });
-
-    it('200s with app session object owned by app when passed app session id', done => {
-      chai.request(server)
-        .get(`/apps/${appId}/sessions/1`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.an('object');
-          response.body.appId.should.equal(appId);
-          done();
-        });
-    });
-
-    it('400s when passed invalid app session id', done => {
-      chai.request(server)
-        .get(`/apps/${appId}/sessions/4124124`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-
-    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/sessions');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/1241/sessions');
   });
 });

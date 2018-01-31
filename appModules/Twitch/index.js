@@ -19,7 +19,7 @@ class Twitch extends Module {
         name: 'ion-social-twitch',
         set: 'ion',
       },
-      moduleUrl: 'https://player.twitch.tv/?channel=espnesports',
+      url: 'https://player.twitch.tv/?channel=espnesports',
     });
   }
 }

@@ -22,7 +22,7 @@ class Shopify extends Module {
         name: 'ion-bag',
         set: 'ion',
       },
-      moduleUrl: `${process.env.APP_MODULES_BASE_URL}/shopify/`,
+      url: `${process.env.APP_MODULES_BASE_URL}/shopify/`,
     });
 
     /*

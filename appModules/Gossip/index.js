@@ -19,7 +19,7 @@ class Gossip extends Module {
         name: 'ion-chatboxes',
         set: 'ion',
       },
-      moduleUrl: `${process.env.APP_MODULES_BASE_URL}/gossip/`,
+      url: `${process.env.APP_MODULES_BASE_URL}/gossip/`,
     });
   }
 }

@@ -21,7 +21,7 @@ class Module extends Component {
         set: Joi.string(),
       }).required(),
       brandingColor: Joi.string().required(),
-      moduleUrl: Joi.string().uri().required(),
+      url: Joi.string().uri().required(),
     }));
 
     this.navigator = new Navigator();
@@ -63,7 +63,7 @@ class Module extends Component {
       navigator: this.navigator.exportPackagedConfig(),
       tab: this.tab.exportPackagedConfig(),
       configurableGroupings,
-      moduleUrl: this.moduleUrl,
+      url: this.url,
     };
   }
 }

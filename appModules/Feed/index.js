@@ -22,7 +22,7 @@ class Feed extends Module {
         name: 'ion-grid',
         set: 'ion',
       },
-      moduleUrl: `${process.env.APP_MODULES_BASE_URL}/feed/`,
+      url: `${process.env.APP_MODULES_BASE_URL}/feed/`,
     });
 
     /*

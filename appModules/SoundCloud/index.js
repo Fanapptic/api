@@ -17,10 +17,7 @@ class SoundCloud extends Module {
       displayName: 'SoundCloud',
       description: 'Import your soundcloud tracks to allow your fans to listen in.',
       brandingColor: '#F84403',
-      defaultIcon: {
-        name: 'ion-cloud',
-        set: 'ion',
-      },
+      defaultIcon: 'entypo-soundcloud',
       url: `${process.env.APP_MODULES_BASE_URL}/soundCloud/`,
     });
 

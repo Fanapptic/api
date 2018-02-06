@@ -15,6 +15,7 @@ module.exports = class extends DataSource {
   }
 
   connect(appModuleProvider) {
+    // TODO: should we get long lived access token? Probably.
     return requestPromise.get({
       url: `${facebookConfig.baseUrl}/${appModuleProvider.accountId}/posts?` +
            `access_token=${appModuleProvider.accessToken}` +

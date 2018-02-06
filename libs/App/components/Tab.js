@@ -23,10 +23,7 @@ class Tab extends Component {
       displayName: 'Icon',
       description: 'The icon shown for the tab.',
       field: Configurable.FIELDS.ICON(),
-      defaultValue: {
-        name: 'ion-help',
-        set: 'ion-icons',
-      },
+      defaultValue: 'ion-help',
     });
   }
 }

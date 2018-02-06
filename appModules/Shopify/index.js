@@ -18,10 +18,7 @@ class Shopify extends Module {
       displayName: 'Shopify',
       description: 'Sell product and merchandise by integrating with your Shopify account.',
       brandingColor: '#609042',
-      defaultIcon: {
-        name: 'ion-bag',
-        set: 'ion',
-      },
+      defaultIcon: 'entypo-shop',
       url: `${process.env.APP_MODULES_BASE_URL}/shopify/`,
     });
 

@@ -9,7 +9,7 @@ describe('Articles', () => {
     it('200s with created article object', done => {
       const fields = {
         author: 'Braydon Batungbacal',
-        icon: 'ion-social-facebook',
+        icon: 'entypo-facebook',
         title: 'Awesome Title',
         commentary: 'Some details about what this is about.',
         content: 'This is content <b>cool!</b>',
@@ -46,7 +46,7 @@ describe('Articles', () => {
     it('200s with updated articled object', done => {
       const fields = {
         author: 'Braydo Batungba',
-        icon: 'ion-social-instagram',
+        icon: 'entypo-instagram',
         title: 'Changed Title',
         commentary: 'Some new commentary',
         content: 'Some new content',

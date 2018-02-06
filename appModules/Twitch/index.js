@@ -15,10 +15,7 @@ class Twitch extends Module {
       displayName: 'Twitch',
       description: 'Stream live video to fans by integrating Twitch TV into your app.',
       brandingColor: '#4D387D',
-      defaultIcon: {
-        name: 'ion-social-twitch',
-        set: 'ion',
-      },
+      defaultIcon: 'entypo-video-camera',
       url: 'https://player.twitch.tv/?channel=espnesports',
     });
   }

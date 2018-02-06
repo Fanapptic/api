@@ -16,10 +16,7 @@ describe('App Modules', () => {
         },
         tab: {
           title: 'Feed',
-          icon: {
-            name: 'ion-paper-airplane',
-            set: 'ionicons',
-          },
+          icon: 'entypo-book',
         },
         configurableGroupings: {
           /*feedSources: {
@@ -91,10 +88,7 @@ describe('App Modules', () => {
   describe('PATCH /apps/{appId}/modules', () => {
     const persistentTab = {
       title: 'Muh Cool Feed',
-      icon: {
-        name: 'fontawesome',
-        set: 'rocket',
-      },
+      icon: 'entypo-cake',
     };
 
     it('200s with updated module object owned by app and ignores properties not in config schema when passed config', done => {

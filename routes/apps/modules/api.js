@@ -2,8 +2,11 @@
  * Route: /apps/:appId/modules/:appModuleId/api/:appModuleName
  */
 
-const appModuleAuthorize = rootRequire('/middlewares/apps/modules/authorize');
+const fs = require('fs');
+const path = require('path');
+
 const appModules = rootRequire('/appModules');
+const appModuleAuthorize = rootRequire('/middlewares/apps/modules/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -22,8 +25,12 @@ router.use((request, response, next) => {
   next();
 });
 
-appModules.apiRouters.forEach(apiRouter => {
-  router.use(apiRouter);
+appModules.moduleNames.forEach(moduleName => {
+  const apiPath = path.join(rootPath, `/appModules/${moduleName}/api`);
+
+  if (fs.existsSync(apiPath)) {
+    router.use(require(apiPath));
+  }
 });
 
 /*

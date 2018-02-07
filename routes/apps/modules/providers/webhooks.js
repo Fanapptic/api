@@ -38,11 +38,10 @@ router.get('/', (request, response) => {
 router.post('/', webhookAuthorize);
 router.post('/', (request, response) => {
   const { dataSource } = request.query;
-  const { moduleClasses } = appModules;
   let validDataSource = false;
 
-  Object.keys(moduleClasses).forEach(name => {
-    const module = new moduleClasses[name]();
+  appModules.moduleNames.forEach(moduleName => {
+    const module = appModules.initModule(moduleName);
     const dataSourceInstance = module.getDataSource(dataSource);
 
     if (dataSourceInstance) {

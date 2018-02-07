@@ -1,3 +1,12 @@
+const path = require('path');
+const fs = require('fs');
+
+const appModules = rootRequire('/appModules');
+
+/*
+ * Core Models
+ */
+
 const AppModel = rootRequire('/models/App');
 const AppDeploymentModel = rootRequire('/models/AppDeployment');
 const AppDeploymentStepModel = rootRequire('/models/AppDeploymentStep');
@@ -30,6 +39,22 @@ CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
+
+/*
+ * Module Models
+ */
+
+appModules.moduleNames.forEach(moduleName => {
+  const modelsPath = path.join(rootPath, `/appModules/${moduleName}/models`);
+
+  if (fs.existsSync(modelsPath)) {
+    require(modelsPath);
+  }
+});
+
+/*
+ * Export
+ */
 
 module.exports = database.sync({
   force: (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'local'),

@@ -19,7 +19,7 @@ const AppModuleModel = database.define('appModules', {
     allowNull: false,
     validate: {
       isValid(value) {
-        if (!appModules.moduleClasses[value]) {
+        if (!appModules.moduleNames.includes(value)) {
           throw new Error('The module name provided is invalid.');
         }
 

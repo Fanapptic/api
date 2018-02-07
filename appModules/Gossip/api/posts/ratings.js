@@ -1,6 +1,8 @@
 /*
- * Route: {API Base Route}/posts/:postId/ratings/:postRatingId?
+ * Route: /apps/:appId/modules/:appModuleId/api/gossip/posts/:postId/ratings/:postRatingId?
  */
+
+const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -18,6 +20,7 @@ router.get('/', (request, response) => {
  * POST
  */
 
+router.post('/', networkUserAuthorize);
 router.post('/', (request, response) => {
   response.success('goodbye!');
 });

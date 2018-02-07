@@ -13,7 +13,7 @@ class Gossip extends Module {
     super({
       name: Gossip.name,
       displayName: 'Gossip',
-      description: 'Give fans a change to ask, comment on, and upvote questions for you.',
+      description: 'Give fans a chance to ask, comment on, and upvote questions for you.',
       brandingColor: '#435E8D',
       defaultIcon: 'entypo-chat',
       url: `${process.env.APP_MODULES_BASE_URL}/gossip/`,

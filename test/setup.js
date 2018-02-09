@@ -1,4 +1,5 @@
 const fs = require('fs');
+const globPromise = require('glob-promise');
 const portScanner = require('portscanner');
 
 /*
@@ -70,6 +71,10 @@ global.testAppModuleProvider = {
   refreshToken: null,
 };
 
+global.testNetworkUser = {
+  accessToken: 'EAAFfFpdEd8UBAJU0KZBELCD5zry7kxySSuG8sm8F0aLgB6xdXRjqil9EFnqmtZCFSqIWAGglkmPYFpZCZCs8Bn9KNdXLy6covzFweZCSfymqZAJUtGjor3YE4RDVt4r7qochm3zp78gBUp2ZAXJU950z9RPbOKkUjZCZCZCv0hGbZBCV0Illm9pPvv1',
+};
+
 chai.should();
 chai.use(chaiHttp);
 
@@ -93,6 +98,9 @@ before(done => {
     dialect: 'mysql',
     port: database.port,
   });
+
+  let appModuleTestFiles = {};
+  let appModuleTestEnvironments = {};
 
   fatLog('Waiting for local server to come online...');
 
@@ -214,19 +222,97 @@ before(done => {
         .send(testAppModuleProvider);
     }).then(response => {
       Object.assign(testAppModuleProvider, response.body);
+      fatLog('Creating global test network user in DB...');
+
+      return chai.request(server)
+        .post('/networks/fanapptic/users')
+        .send(testNetworkUser);
+    }).then(response => {
+      Object.assign(testNetworkUser, response.body);
+      fatLog('Aggregating app module tests...');
+
+      return globPromise('appModules/**/test/**/*.js');
+    }).then(_appModuleTestFiles => {
+      appModuleTestFiles = _appModuleTestFiles;
+      fatLog('Creating app module environments...');
+
+      let pendingModuleTestEnvironments = [];
+      let promises = [];
+
+      appModuleTestFiles.forEach(appModuleTestFile => {
+        const moduleName = appModuleTestFile.split('/')[1].toLowerCase();
+
+        if (pendingModuleTestEnvironments.includes(moduleName)) {
+          return;
+        }
+
+        pendingModuleTestEnvironments.push(moduleName);
+
+        promises.push(createAppModuleTestEnvironment(moduleName).then(testEnvironment => {
+          appModuleTestEnvironments[moduleName] = testEnvironment;
+        }));
+      });
+
+      return Promise.all(promises);
+    }).then(() => {
+      fatLog('Queuing app module tests...');
+
+      appModuleTestFiles.forEach(appModuleTestFile => {
+        const moduleName = appModuleTestFile.split('/')[1].toLowerCase();
+        const appModuleTestEnvironment = appModuleTestEnvironments[moduleName];
+
+        require(`../${appModuleTestFile}`)(appModuleTestEnvironment);
+      });
 
       fatLog('Starting tests...');
       done();
     });
   }).catch(e => {
     console.error(e);
-    process.exit(1);
+    process.exit(1); // for CI
   });
 });
 
 /*
  * Helpers
  */
+
+function createAppModuleTestEnvironment(moduleName) {
+  let environment = {
+    user: null,
+    app: null,
+    appModule: null,
+    networkUser: testNetworkUser,
+  };
+
+  return chai.request(server).post('/users').send({
+    email: `${moduleName}@fanapptic-modules.com`,
+    password: moduleName,
+  }).then(response => {
+    const user = response.body;
+
+    environment.user = user;
+
+    return chai.request(server)
+      .get('/apps')
+      .set('X-Access-Token', user.accessToken);
+  }).then(response => {
+    const app = response.body[0];
+
+    environment.app = app;
+
+    return chai.request(server)
+      .post(`/apps/${app.id}/modules`)
+      .set('X-Access-Token', environment.user.accessToken)
+      .send({
+        name: moduleName,
+      });
+  }).then(response => {
+    environment.appModule = response.body;
+
+    return environment;
+  });
+}
 
 function fatLog(message) {
   let divider = Array(message.length + 1).join('=');

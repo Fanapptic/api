@@ -6,6 +6,8 @@ const PostRatingModel = require('./PostRating');
 
 AppModuleModel.hasMany(PostModel);
 PostModel.belongsTo(NetworkUserModel);
+PostCommentModel.belongsTo(NetworkUserModel);
+PostRatingModel.belongsTo(NetworkUserModel);
 PostCommentModel.belongsTo(PostModel, { as: 'post' });
 PostRatingModel.belongsTo(PostModel, { as: 'post' });
 

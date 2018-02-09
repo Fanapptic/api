@@ -2,6 +2,7 @@
  * Route: /apps/:appId/modules/:appModuleId/api/gossip/posts/:postId?
  */
 
+const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../models/Post');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 
@@ -17,7 +18,10 @@ router.get('/', (request, response, next) => {
   const { appModuleId, postId } = request.params;
 
   if (postId) {
-    PostModel.find({ where: { id: postId, appModuleId } }).then(post => {
+    PostModel.find({
+      where: { id: postId, appModuleId },
+      include: [ NetworkUserModel ],
+    }).then(post => {
       if (!post) {
         throw new Error('The post does not exist.');
       }
@@ -27,6 +31,7 @@ router.get('/', (request, response, next) => {
   } else {
     PostModel.findAll({
       where: { appModuleId },
+      include: [ NetworkUserModel ],
       order: [['createdAt', 'DESC']],
     }).then(posts => {
       response.success(posts);

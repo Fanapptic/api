@@ -13,6 +13,17 @@ module.exports.it401sWhenUserAuthorizationIsInvalid = (method, route) => {
   });
 };
 
+module.exports.it401sWhenNetworkUserAuthorizationIsInvalid = (method, route) => {
+  it('401s when network user authorization is invalid', done => {
+    chai.request(server)[method](route)
+      .set('X-Network-User-Access-Token', 'some bad token')
+      .end((error, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+};
+
 module.exports.it401sWhenInternalAuthorizationIsInvalid = (method, route) => {
   it('401s when internal authorization is invalid', done => {
     chai.request(server)[method](route)

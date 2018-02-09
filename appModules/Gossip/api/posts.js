@@ -55,6 +55,24 @@ router.post('/', (request, response, next) => {
 });
 
 /*
+ * DELETE
+ */
+
+router.delete('/', networkUserAuthorize);
+router.delete('/', (request, response, next) => {
+  const networkUserId = request.networkUser.id;
+  const { postId } = request.params;
+
+  PostModel.destroy({ where: { id: postId, networkUserId } }).then(affectedRows => {
+    if (!affectedRows) {
+      throw new Error('The post does not exist.');
+    }
+
+    response.success();
+  }).catch(next);
+});
+
+/*
  * Export
  */
 

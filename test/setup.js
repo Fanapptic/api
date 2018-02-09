@@ -1,6 +1,7 @@
 const fs = require('fs');
 const globPromise = require('glob-promise');
 const portScanner = require('portscanner');
+const helpers = require('./helpers');
 
 /*
  * Import Environment Variables
@@ -261,7 +262,9 @@ before(done => {
         const moduleName = appModuleTestFile.split('/')[1].toLowerCase();
         const appModuleTestEnvironment = appModuleTestEnvironments[moduleName];
 
-        require(`../${appModuleTestFile}`)(appModuleTestEnvironment);
+        describe(`App Module - ${moduleName}`, () => {
+          require(`../${appModuleTestFile}`)(appModuleTestEnvironment);
+        });
       });
 
       fatLog('Starting tests...');
@@ -282,7 +285,9 @@ function createAppModuleTestEnvironment(moduleName) {
     user: null,
     app: null,
     appModule: null,
+    appModuleApiBaseUrl: null,
     networkUser: testNetworkUser,
+    helpers,
   };
 
   return chai.request(server).post('/users').send({
@@ -309,6 +314,7 @@ function createAppModuleTestEnvironment(moduleName) {
       });
   }).then(response => {
     environment.appModule = response.body;
+    environment.appModuleApiBaseUrl = `/apps/${environment.app.id}/modules/${environment.appModule.id}/api/${moduleName}`;
 
     return environment;
   });

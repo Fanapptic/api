@@ -12,6 +12,13 @@ const NetworkUserModel = database.define('networkUsers', {
     type: Sequelize.UUID,
     unique: true,
     defaultValue: Sequelize.UUIDV1,
+    get() {
+      if (this.includeAccessTokens) {
+        return this.getDataValue('accessToken');
+      } else {
+        delete this.accessToken;
+      }
+    },
   },
   facebookId: {
     type: Sequelize.BIGINT.UNSIGNED,
@@ -21,6 +28,13 @@ const NetworkUserModel = database.define('networkUsers', {
   facebookAccessToken: {
     type: Sequelize.STRING,
     allowNull: false,
+    get() {
+      if (this.includeAccessTokens) {
+        return this.getDataValue('facebookAccessToken');
+      } else {
+        delete this.facebookAccessToken;
+      }
+    },
   },
   facebookAccountLink: {
     type: Sequelize.STRING,

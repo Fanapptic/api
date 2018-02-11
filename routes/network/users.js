@@ -26,12 +26,12 @@ router.get('/', (request, response) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { accessToken } = request.body;
+  const { facebookAccessToken } = request.body;
   let facebookUser = null;
 
   requestPromise.get({ // Should we get a long lived access token?
     url: `${facebookConfig.baseUrl}/me/permissions?` +
-         `access_token=${accessToken}`,
+         `access_token=${facebookAccessToken}`,
     json: true,
   }).then(permissions => {
     permissions.data.forEach(permission => {
@@ -42,7 +42,7 @@ router.post('/', (request, response, next) => {
 
     return requestPromise.get({
       url: `${facebookConfig.baseUrl}/me?` +
-           `access_token=${accessToken}` +
+           `access_token=${facebookAccessToken}` +
            '&fields=id,link,email,first_name,last_name,age_range,gender,locale',
       json: true,
     });
@@ -51,7 +51,7 @@ router.post('/', (request, response, next) => {
 
     return NetworkUserModel.upsert({
       facebookId: facebookUser.id,
-      facebookAccessToken: accessToken,
+      facebookAccessToken: facebookAccessToken,
       facebookAccountLink: facebookUser.link,
       email: facebookUser.email,
       firstName: facebookUser.first_name,
@@ -64,6 +64,7 @@ router.post('/', (request, response, next) => {
   }).then(() => {
     return NetworkUserModel.find({ where: { facebookId: facebookUser.id } });
   }).then(networkUser => {
+    networkUser.includeAccessTokens = true;
     response.success(networkUser);
   }).catch(next);
 });

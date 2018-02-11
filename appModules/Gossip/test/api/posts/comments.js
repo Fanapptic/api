@@ -33,7 +33,7 @@ module.exports = environment => {
    */
 
   describe('GET {baseUrl}/posts/{postId}/comments', () => {
-    it('200s with an arrow of post comments owned by post', done => {
+    it('200s with an array of post comments owned by post', done => {
       chai.request(server)
         .get(`${environment.appModuleApiBaseUrl}/posts/1/comments`)
         .end((error, response) => {

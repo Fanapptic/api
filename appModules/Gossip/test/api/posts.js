@@ -65,11 +65,17 @@ module.exports = environment => {
   describe('DELETE {baseUrl}/posts', () => {
     it('204s when passed post id', done => {
       chai.request(server)
-        .delete(`${environment.appModuleApiBaseUrl}/posts/1`)
+        .post(`${environment.appModuleApiBaseUrl}/posts`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(204);
-          done();
+        .send({ content: 'test' })
+        .then(response => {
+          chai.request(server)
+            .delete(`${environment.appModuleApiBaseUrl}/posts/${response.body.id}`)
+            .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+            .end((error, response) => {
+              response.should.have.status(204);
+              done();
+            });
         });
     });
 

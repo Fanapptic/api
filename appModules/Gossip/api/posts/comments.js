@@ -58,6 +58,25 @@ router.post('/', (request, response, next) => {
 });
 
 /*
+ * DELETE
+ */
+
+router.delete('/', networkUserAuthorize);
+router.delete('/', postAuthorize);
+router.delete('/', (request, response, next) => {
+  const networkUserId = request.networkUser.id;
+  const { postCommentId } = request.params;
+
+  PostCommentModel.destroy({ where: { id: postCommentId, networkUserId } }).then(affectedRows => {
+    if (!affectedRows) {
+      throw new Error('The post comment does not exist.');
+    }
+
+    response.success();
+  }).catch(next);
+});
+
+/*
  * Export
  */
 

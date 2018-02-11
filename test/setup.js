@@ -262,6 +262,10 @@ before(done => {
         const moduleName = appModuleTestFile.split('/')[1].toLowerCase();
         const appModuleTestEnvironment = appModuleTestEnvironments[moduleName];
 
+        if (appModuleTestFile.includes('helpers.js')) {
+          return;
+        }
+
         describe(`App Module - ${moduleName}`, () => {
           require(`../${appModuleTestFile}`)(appModuleTestEnvironment);
         });

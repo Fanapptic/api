@@ -12,35 +12,6 @@ const router = express.Router({
 });
 
 /*
- * GET
- */
-
-router.get('/', postAuthorize);
-router.get('/', (request, response, next) => {
-  const { postId, postRatingId } = request.params;
-
-  if (postRatingId) {
-    PostRatingModel.find({
-      where: { id: postRatingId, postId },
-      include: [ NetworkUserModel ],
-    }).then(postRating => {
-      if (!postRating) {
-        throw new Error('The post rating does not exist.');
-      }
-
-      response.success(postRating);
-    }).catch(next);
-  } else {
-    PostRatingModel.findAll({
-      where: { postId },
-      include: [ NetworkUserModel ],
-    }).then(postRatings => {
-      response.success(postRatings);
-    }).catch(next);
-  }
-});
-
-/*
  * POST
  */
 

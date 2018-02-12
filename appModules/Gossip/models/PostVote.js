@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const PostRatingModel = database.define('modules_gossip_postRatings', {
+const PostVoteModel = database.define('modules_gossip_postVotes', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -10,21 +10,21 @@ const PostRatingModel = database.define('modules_gossip_postRatings', {
   },
   postId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
-    unique: 'network_user_rating',
+    unique: 'network_user_vote',
     allowNull: false,
   },
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
-    unique: 'network_user_rating',
+    unique: 'network_user_vote',
     allowNull: false,
   },
-  rating: {
+  vote: {
     type: Sequelize.INTEGER(1),
     allowNull: false,
     validate: {
       isValid(value) {
-        if (value != 0 && value != 1) {
-          throw new Error('Rating must be 1 or 0.');
+        if (value != -1 && value != 1) {
+          throw new Error('Vote must be -1 or 1.');
         }
       },
     },
@@ -35,4 +35,4 @@ const PostRatingModel = database.define('modules_gossip_postRatings', {
  * Export
  */
 
-module.exports = PostRatingModel;
+module.exports = PostVoteModel;

@@ -20,6 +20,14 @@ const PostModel = database.define('modules_gossip_posts', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  upvotes: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    defaultValue: 0,
+  },
+  downvotes: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    defaultValue: 0,
+  },
 });
 
 /*

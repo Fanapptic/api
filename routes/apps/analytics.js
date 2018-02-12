@@ -60,12 +60,6 @@ router.get('/', (request, response, next) => {
         $gt: new Date(Date.now() - 1000 * 60 * 60 * 24),
       },
     },
-    include: [
-      {
-        model: AppDeviceModel,
-        where: { appId },
-      },
-    ],
   }).then(count => {
     dailyActiveUsers = count;
   }));
@@ -79,12 +73,6 @@ router.get('/', (request, response, next) => {
         $gt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
       },
     },
-    include: [
-      {
-        model: AppDeviceModel,
-        where: { appId },
-      },
-    ],
   }).then(count => {
     weeklyActiveUsers = count;
   }));
@@ -105,12 +93,6 @@ router.get('/', (request, response, next) => {
         $ne: null,
       },
     },
-    include: [
-      {
-        model: AppDeviceModel,
-        where: { appId },
-      },
-    ],
   }).then(result => {
     dailyUsage = parseInt(result.dataValues.usage) || 0; // find returns string, convert to number
   }));
@@ -128,12 +110,6 @@ router.get('/', (request, response, next) => {
         $ne: null,
       },
     },
-    include: [
-      {
-        model: AppDeviceModel,
-        where: { appId },
-      },
-    ],
   }).then(result => {
     totalUsage = parseInt(result.dataValues.usage) || 0; // .find returns string, convert to number
   }));

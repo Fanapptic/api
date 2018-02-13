@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const PostModel = database.define('modules_chat_posts', {
+const PostModel = database.define('modules_chats_posts', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

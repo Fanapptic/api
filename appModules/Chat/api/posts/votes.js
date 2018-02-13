@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/gossip/posts/:postId/votes/:postVoteId?
+ * Route: /apps/:appId/modules/:appModuleId/api/chat/posts/:postId/votes/:postVoteId?
  */
 
 const PostModel = require('../../models/Post');

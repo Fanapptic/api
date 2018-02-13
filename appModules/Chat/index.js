@@ -1,24 +1,24 @@
 /*
- * Module: Gossip
+ * Module: Chat
  */
 
 const { Module } = rootRequire('/libs/App/components');
 
-class Gossip extends Module {
+class Chat extends Module {
   static get name() {
-    return 'gossip';
+    return 'chat';
   }
 
   constructor() {
     super({
-      name: Gossip.name,
-      displayName: 'Gossip',
+      name: Chat.name,
+      displayName: 'Chat',
       description: 'Give fans a chance to ask, comment on, and upvote questions for you.',
       brandingColor: '#435E8D',
       defaultIcon: 'entypo-chat',
-      url: `${process.env.APP_MODULES_BASE_URL}/gossip/`,
+      url: `${process.env.APP_MODULES_BASE_URL}/chat/`,
     });
   }
 }
 
-module.exports = Gossip;
+module.exports = Chat;

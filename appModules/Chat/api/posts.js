@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/gossip/posts/:postId?
+ * Route: /apps/:appId/modules/:appModuleId/api/chat/posts/:postId?
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');

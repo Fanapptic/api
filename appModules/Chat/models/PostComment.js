@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const PostCommentModel = database.define('modules_gossip_postComments', {
+const PostCommentModel = database.define('modules_chat_postComments', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

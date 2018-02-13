@@ -1,6 +1,6 @@
 /*
- * Gossip API
- * Base Route: /apps/:appId/modules/:appModuleId/api/gossip
+ * Chat API
+ * Base Route: /apps/:appId/modules/:appModuleId/api/chat
  */
 
 const postsRouter = require('./posts');

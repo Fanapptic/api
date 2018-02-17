@@ -25,6 +25,7 @@ router.post('/', (request, response, next) => {
   let existingPostVote = null;
   let upsertPostVote = null;
 
+  // TODO: This should be done as a transaction
   PostVoteModel.find({ where: { postId, networkUserId } }).then(postVote => {
     existingPostVote = postVote;
 

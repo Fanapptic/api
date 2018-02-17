@@ -19,12 +19,23 @@ const PostModel = database.define('modules_chats_posts', {
   content: {
     type: Sequelize.TEXT,
     allowNull: false,
+    validate: {
+      isValid(value) {
+        if (value.length < 10) {
+          throw new Error('Post must be at least 10 characters long.');
+        }
+      },
+    },
   },
   upvotes: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     defaultValue: 0,
   },
   downvotes: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    defaultValue: 0,
+  },
+  comments: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     defaultValue: 0,
   },

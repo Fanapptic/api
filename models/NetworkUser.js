@@ -57,7 +57,7 @@ const NetworkUserModel = database.define('networkUsers', {
   locale: {
     type: Sequelize.STRING,
   },
-  picture: {
+  avatarUrl: {
     type: Sequelize.STRING,
   },
 });

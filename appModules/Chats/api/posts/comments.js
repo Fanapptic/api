@@ -3,6 +3,7 @@
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const postAuthorize = require('../../middlewares/posts/authorize');
@@ -52,8 +53,19 @@ router.post('/', (request, response, next) => {
   const { postId } = request.params;
   const { content } = request.body;
 
+  let createPostComment = null;
+
+  // TODO: use transaction
   PostCommentModel.create({ postId, networkUserId, content }).then(postComment => {
-    response.success(postComment);
+    createPostComment = postComment;
+
+    return PostModel.update({
+      comments: database.literal('comments + 1'),
+    }, {
+      where: { id: postId },
+    });
+  }).then(() => {
+    response.success(createPostComment);
   }).catch(next);
 });
 
@@ -67,11 +79,24 @@ router.delete('/', (request, response, next) => {
   const networkUserId = request.networkUser.id;
   const { postCommentId } = request.params;
 
-  PostCommentModel.destroy({ where: { id: postCommentId, networkUserId } }).then(affectedRows => {
-    if (!affectedRows) {
+  let existingPostComment = null;
+
+  // TODO: use transaction
+  PostCommentModel.find({ where: { id: postCommentId, networkUserId } }).then(postComment => {
+    if (!postComment) {
       throw new Error('The post comment does not exist.');
     }
 
+    existingPostComment = postComment;
+
+    return PostCommentModel.destroy({ where: { id: postCommentId, networkUserId } });
+  }).then(() => {
+    return PostModel.update({
+      comments: database.literal('comments - 1'),
+    }, {
+      where: { id: existingPostComment.postId },
+    });
+  }).then(() => {
     response.success();
   }).catch(next);
 });

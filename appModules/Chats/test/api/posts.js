@@ -67,7 +67,7 @@ module.exports = environment => {
       chai.request(server)
         .post(`${environment.appModuleApiBaseUrl}/posts`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-        .send({ content: 'test' })
+        .send({ content: 'this is a test comment and stuff test' })
         .then(response => {
           chai.request(server)
             .delete(`${environment.appModuleApiBaseUrl}/posts/${response.body.id}`)
@@ -76,6 +76,8 @@ module.exports = environment => {
               response.should.have.status(204);
               done();
             });
+        }).catch(error => {
+          throw error;
         });
     });
 

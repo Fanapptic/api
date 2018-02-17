@@ -6,7 +6,7 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts/{postId}/comments', () => {
-    it('200s with created post comment owned by post', done => {
+    it('200s with created post comment owned by post and updates post comments total', done => {
       const fields = {
         content: 'This is a comment on an awesome post!',
       };
@@ -15,11 +15,17 @@ module.exports = environment => {
         .post(`${environment.appModuleApiBaseUrl}/posts/1/comments`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
         .send(fields)
-        .end((error, response) => {
+        .then(response => {
           response.body.should.be.an('object');
           response.body.postId.should.equal('1');
           response.body.networkUserId.should.equal(environment.networkUser.id);
           response.body.content.should.equal(fields.content);
+
+          return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1`);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.comments.should.equal(1);
           done();
         });
     });
@@ -67,12 +73,18 @@ module.exports = environment => {
    */
 
   describe('DELETE {baseUrl}/posts/{postId}/comments/{postCommentId}', () => {
-    it('204s when passed post comment id', done => {
+    it('204s when passed post comment id and updates post comments total', done => {
       chai.request(server)
         .delete(`${environment.appModuleApiBaseUrl}/posts/1/comments/1`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-        .end((error, response) => {
+        .then(response => {
           response.should.have.status(204);
+
+          return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1`);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.comments.should.equal(0);
           done();
         });
     });

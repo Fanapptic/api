@@ -5,6 +5,7 @@
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../models/Post');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
+const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 
 const router = express.Router({
   mergeParams: true,
@@ -14,13 +15,20 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', networkUserAuthorizeOptional);
 router.get('/', (request, response, next) => {
   const { appModuleId, postId } = request.params;
+
+  let include = [ NetworkUserModel ];
+
+  if (request.networkUser) {
+     // TODO: include network user vote for post(s)
+  }
 
   if (postId) {
     PostModel.find({
       where: { id: postId, appModuleId },
-      include: [ NetworkUserModel ],
+      include,
     }).then(post => {
       if (!post) {
         throw new Error('The post does not exist.');
@@ -31,7 +39,7 @@ router.get('/', (request, response, next) => {
   } else {
     PostModel.findAll({
       where: { appModuleId },
-      include: [ NetworkUserModel ],
+      include,
       order: [['createdAt', 'DESC']],
     }).then(posts => {
       response.success(posts);

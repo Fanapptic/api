@@ -29,10 +29,7 @@ appModules.moduleNames.forEach(moduleName => {
   const apiPath = path.join(rootPath, `/appModules/${moduleName}/api`);
 
   if (fs.existsSync(apiPath)) {
-    console.log(`Requiring ${apiPath}`);
     router.use(require(apiPath));
-  } else {
-    console.log(`Did not find ${apiPath}?`);
   }
 });
 

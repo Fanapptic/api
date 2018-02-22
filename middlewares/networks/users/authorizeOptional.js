@@ -9,7 +9,7 @@ module.exports = (request, response, next) => {
   const accessToken = request.get('X-Network-User-Access-Token');
 
   NetworkUserModel.find({ where: { accessToken } }).then(networkUser => {
-    request.networkUser = networkUser || {};
+    request.networkUser = networkUser || null;
     next();
   });
 };

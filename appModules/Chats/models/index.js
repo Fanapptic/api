@@ -8,8 +8,8 @@ AppModuleModel.hasMany(PostModel);
 PostModel.belongsTo(NetworkUserModel);
 PostCommentModel.belongsTo(NetworkUserModel);
 PostVoteModel.belongsTo(NetworkUserModel);
-PostCommentModel.belongsTo(PostModel, { as: 'post' });
-PostVoteModel.belongsTo(PostModel, { as: 'post' });
+PostModel.hasMany(PostCommentModel, { as: 'postComments', foreignKey: 'postId' });
+PostModel.hasMany(PostVoteModel, { as: 'postVotes', foreignKey: 'postId' });
 
 module.exports = {
   post: PostModel,

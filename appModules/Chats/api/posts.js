@@ -4,6 +4,7 @@
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../models/Post');
+const PostVoteModel = require('../models/PostVote');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 
@@ -19,16 +20,26 @@ router.get('/', networkUserAuthorizeOptional);
 router.get('/', (request, response, next) => {
   const { appModuleId, postId } = request.params;
 
-  let include = [ NetworkUserModel ];
+  let attributes = Object.keys(PostModel.attributes);
 
   if (request.networkUser) {
-     // TODO: include network user vote for post(s)
+    attributes = attributes.concat([
+      [database.literal('(' +
+        'SELECT `modules_chats_postVotes`.`vote` ' +
+        'FROM `modules_chats_postVotes` ' +
+        'WHERE `modules_chats_postVotes`.`postId` = `modules_chats_post`.`id` ' +
+        'AND `modules_chats_postVotes`.`networkUserId` = ' + request.networkUser.id +
+      ')'), 'loggedInNetworkUserVote'],
+    ]);
   }
+
+  console.log(attributes);
 
   if (postId) {
     PostModel.find({
+      attributes,
       where: { id: postId, appModuleId },
-      include,
+      include: [ NetworkUserModel ],
     }).then(post => {
       if (!post) {
         throw new Error('The post does not exist.');
@@ -38,8 +49,9 @@ router.get('/', (request, response, next) => {
     }).catch(next);
   } else {
     PostModel.findAll({
+      attributes,
       where: { appModuleId },
-      include,
+      include: [ NetworkUserModel ],
       order: [['createdAt', 'DESC']],
     }).then(posts => {
       response.success(posts);

@@ -33,7 +33,7 @@ AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppModuleModel.hasMany(AppModuleProviderModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
-AppDeviceSessionModel.belongsTo(AppDeviceModel);
+AppDeviceModel.hasMany(AppDeviceSessionModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);

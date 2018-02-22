@@ -22,7 +22,7 @@ router.get('/', (request, response, next) => {
 
   let attributes = Object.keys(PostModel.attributes);
 
-  if (request.networkUser) {
+  if (request.networkUser.id) {
     attributes = attributes.concat([
       [database.literal('(' +
         'SELECT `modules_chats_postVotes`.`vote` ' +

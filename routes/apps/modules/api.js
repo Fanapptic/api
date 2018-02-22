@@ -26,8 +26,6 @@ router.use((request, response, next) => {
 });
 
 appModules.moduleNames.forEach(moduleName => {
-  moduleName = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
-
   const apiPath = path.join(rootPath, `/appModules/${moduleName}/api`);
 
   if (fs.existsSync(apiPath)) {

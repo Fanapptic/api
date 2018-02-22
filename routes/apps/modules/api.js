@@ -31,6 +31,8 @@ appModules.moduleNames.forEach(moduleName => {
   if (fs.existsSync(apiPath)) {
     console.log(`Requiring ${apiPath}`);
     router.use(require(apiPath));
+  } else {
+    console.log(`Did not find ${apiPath}?`);
   }
 });
 

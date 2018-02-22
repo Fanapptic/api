@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppDeviceSessionModel = database.define('appDeviceSessions', {
+const AppDeviceSessionModel = database.define('appDeviceSession', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

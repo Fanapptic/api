@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppRevenueModel = database.define('appRevenues', {
+const AppRevenueModel = database.define('appRevenue', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

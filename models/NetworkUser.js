@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const NetworkUserModel = database.define('networkUsers', {
+const NetworkUserModel = database.define('networkUser', {
   id: {
     type:Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

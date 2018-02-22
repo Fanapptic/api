@@ -16,7 +16,7 @@ const contentRatings = ['4+', '9+', '12+', '17+'];
  * Model Definition
  */
 
-const AppModel = database.define('apps', {
+const AppModel = database.define('app', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

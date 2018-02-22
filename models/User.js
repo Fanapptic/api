@@ -5,7 +5,7 @@ const phone = require('phone');
  * Model Definition
  */
 
-const UserModel = database.define('users', {
+const UserModel = database.define('user', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

@@ -4,7 +4,7 @@ const appModules = rootRequire('/appModules');
  * Model Definition
  */
 
-const AppModuleModel = database.define('appModules', {
+const AppModuleModel = database.define('appModule', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

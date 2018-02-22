@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppModuleProviderModel = database.define('appModuleProviders', {
+const AppModuleProviderModel = database.define('appModuleProvider', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

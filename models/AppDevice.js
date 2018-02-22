@@ -4,7 +4,7 @@ const platforms = ['android', 'ios'];
  * Model Definition
  */
 
-const AppDeviceModel = database.define('appDevices', {
+const AppDeviceModel = database.define('appDevice', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

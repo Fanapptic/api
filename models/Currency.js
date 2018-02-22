@@ -5,7 +5,7 @@ const positions = ['before', 'after'];
  * Model Definition
  */
 
-const CurrencyModel = database.define('currencies', {
+const CurrencyModel = database.define('currency', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

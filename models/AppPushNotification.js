@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const AppPushNotificationModel = database.define('appPushNotifications', {
+const AppPushNotificationModel = database.define('appPushNotification', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

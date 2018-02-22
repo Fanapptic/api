@@ -4,7 +4,7 @@ const platforms = ['android', 'ios'];
  * Model Definition
  */
 
-const AppDeploymentStep = database.define('appDeploymentSteps', {
+const AppDeploymentStep = database.define('appDeploymentStep', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

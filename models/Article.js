@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const ArticleModel = database.define('articles', {
+const ArticleModel = database.define('article', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

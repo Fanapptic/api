@@ -12,7 +12,7 @@ const hellosign = hellosignSdk({
  * Model Definition
  */
 
-const UserAgreementModel = database.define('userAgreements', {
+const UserAgreementModel = database.define('userAgreement', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

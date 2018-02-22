@@ -9,7 +9,7 @@ const statuses = ['pending', 'complete', 'failed'];
  * Model Definition
  */
 
-const AppDeploymentModel = database.define('appDeployments', {
+const AppDeploymentModel = database.define('appDeployment', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,

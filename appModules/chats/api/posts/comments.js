@@ -6,6 +6,7 @@ const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
+const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 const postAuthorize = require('../../middlewares/posts/authorize');
 
 const router = express.Router({
@@ -16,12 +17,27 @@ const router = express.Router({
  * GET
  */
 
+router.get('/', networkUserAuthorizeOptional);
 router.get('/', postAuthorize);
 router.get('/', (request, response, next) => {
   const { postId, postCommentId } = request.params;
 
+  let attributes = Object.keys(PostCommentModel.attributes);
+
+  if (request.networkUser.id) {
+    attributes = attributes.concat([
+      [database.literal('(' +
+        'SELECT `modules_chats_postCommentVotes`.`vote` ' +
+        'FROM `modules_chats_postCommentVotes` ' +
+        'WHERE `modules_chats_postCommentVotes`.`postCommentId` = `modules_chats_postComments`.`id` ' +
+        'AND `modules_chats_postCommentVotes`.`networkUserId` = ' + request.networkUser.id +
+      ')'), 'loggedInNetworkUserVote'],
+    ]);
+  }
+
   if (postCommentId) {
     PostCommentModel.find({
+      attributes,
       where: { id: postCommentId, postId },
       include: [ NetworkUserModel ],
     }).then(postComment => {
@@ -33,6 +49,7 @@ router.get('/', (request, response, next) => {
     }).catch(next);
   } else {
     PostCommentModel.findAll({
+      attributes,
       where: { postId },
       include: [ NetworkUserModel ],
       order: [['createdAt', 'DESC']],

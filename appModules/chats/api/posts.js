@@ -27,7 +27,7 @@ router.get('/', (request, response, next) => {
       [database.literal('(' +
         'SELECT `modules_chats_postVotes`.`vote` ' +
         'FROM `modules_chats_postVotes` ' +
-        'WHERE `modules_chats_postVotes`.`postId` = `modules_chats_post`.`id` ' +
+        'WHERE `modules_chats_postVotes`.`postId` = `modules_chats_posts`.`id` ' +
         'AND `modules_chats_postVotes`.`networkUserId` = ' + request.networkUser.id +
       ')'), 'loggedInNetworkUserVote'],
     ]);

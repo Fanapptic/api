@@ -6,6 +6,7 @@
 const postsRouter = require('./posts');
 const postCommentsRouter = require('./posts/comments');
 const postCommentRepliesRouter = require('./posts/comments/replies');
+const postCommentVotesRouter = require('./posts/comments/votes');
 const postVotesRouter = require('./posts/votes');
 
 const router = express.Router({
@@ -19,6 +20,7 @@ const router = express.Router({
 router.use('/posts/:postId?', postsRouter);
 router.use('/posts/:postId/comments/:postCommentId?', postCommentsRouter);
 router.use('/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId?', postCommentRepliesRouter);
+router.use('/posts/:postId/comments/:postCommentId/votes/:postCommentVoteId?', postCommentVotesRouter);
 router.use('/posts/:postId/votes/:postVoteId?', postVotesRouter);
 
 /*

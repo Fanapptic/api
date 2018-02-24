@@ -25,6 +25,7 @@ module.exports = environment => {
         });
     });
 
+    helpers.it403sWhenPassedPostIdNotOwnedByAppModule('post', `${environment.appModuleApiBaseUrl}/posts/412/comments/1/replies`);
     helpers.it403sWhenPassedPostCommentIdNotOwnedByPost('post', `${environment.appModuleApiBaseUrl}/posts/1/comments/241/replies`);
     environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('post', `${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies`);
   });
@@ -60,6 +61,7 @@ module.exports = environment => {
         });
     });
 
+    helpers.it403sWhenPassedPostIdNotOwnedByAppModule('get', `${environment.appModuleApiBaseUrl}/posts/412/comments/1/replies`);
     helpers.it403sWhenPassedPostCommentIdNotOwnedByPost('get', `${environment.appModuleApiBaseUrl}/posts/1/comments/421/replies`);
   });
 
@@ -78,6 +80,8 @@ module.exports = environment => {
         });
     });
 
+    helpers.it403sWhenPassedPostIdNotOwnedByAppModule('delete', `${environment.appModuleApiBaseUrl}/posts/412/comments/1/replies`);
+    helpers.it403sWhenPassedPostCommentIdNotOwnedByPost('delete', `${environment.appModuleApiBaseUrl}/posts/1/comments/421/replies`);
     environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('delete', `${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies/1`);
   });
 };

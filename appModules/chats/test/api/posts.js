@@ -67,15 +67,14 @@ module.exports = environment => {
       chai.request(server)
         .post(`${environment.appModuleApiBaseUrl}/posts`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-        .send({ content: 'this is a test comment and stuff test' })
+        .send({ content: 'this is a test post and stuff test' })
         .then(response => {
-          chai.request(server)
+          return chai.request(server)
             .delete(`${environment.appModuleApiBaseUrl}/posts/${response.body.id}`)
-            .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-            .end((error, response) => {
-              response.should.have.status(204);
-              done();
-            });
+            .set('X-Network-User-Access-Token', environment.networkUser.accessToken);
+        }).then(response => {
+          response.should.have.status(204);
+          done();
         }).catch(error => {
           throw error;
         });
@@ -91,6 +90,6 @@ module.exports = environment => {
         });
     });
 
-    environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('delete', `${environment.appModuleApiBaseUrl}/posts`);
+    environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('delete', `${environment.appModuleApiBaseUrl}/posts/1`);
   });
 };

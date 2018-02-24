@@ -33,8 +33,6 @@ router.get('/', (request, response, next) => {
     ]);
   }
 
-  console.log(attributes);
-
   if (postId) {
     PostModel.find({
       attributes,

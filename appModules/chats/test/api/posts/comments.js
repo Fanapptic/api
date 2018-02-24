@@ -75,17 +75,24 @@ module.exports = environment => {
   describe('DELETE {baseUrl}/posts/{postId}/comments/{postCommentId}', () => {
     it('204s when passed post comment id and updates post comments total', done => {
       chai.request(server)
-        .delete(`${environment.appModuleApiBaseUrl}/posts/1/comments/1`)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .send({ content: 'this is a test comment and stuff test' })
         .then(response => {
+          return chai.request(server)
+            .delete(`${environment.appModuleApiBaseUrl}/posts/1/comments/${response.body.id}`)
+            .set('X-Network-User-Access-Token', environment.networkUser.accessToken);
+        }).then(response => {
           response.should.have.status(204);
 
           return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1`);
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.comments.should.equal(0);
+          response.body.comments.should.equal(1); // 1, because POST test also creates a comment.
           done();
+        }).catch(error => {
+          throw error;
         });
     });
 
@@ -99,7 +106,7 @@ module.exports = environment => {
         });
     });
 
-    helpers.it403sWhenPassedPostIdNotOwnedByAppModule('delete', `${environment.appModuleApiBaseUrl}/posts/412/comments`);
-    environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('delete', `${environment.appModuleApiBaseUrl}/posts/1/comments`);
+    helpers.it403sWhenPassedPostIdNotOwnedByAppModule('delete', `${environment.appModuleApiBaseUrl}/posts/412/comments/1`);
+    environment.helpers.it401sWhenNetworkUserAuthorizationIsInvalid('delete', `${environment.appModuleApiBaseUrl}/posts/1/comments/1`);
   });
 };

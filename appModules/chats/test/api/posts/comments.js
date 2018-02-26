@@ -25,7 +25,7 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.comments.should.equal(1);
+          response.body.totalComments.should.equal(1);
           done();
         });
     });
@@ -89,7 +89,7 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.comments.should.equal(1); // 1, because POST test also creates a comment.
+          response.body.totalComments.should.equal(1); // 1, because POST test also creates a comment.
           done();
         }).catch(error => {
           throw error;

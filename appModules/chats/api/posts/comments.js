@@ -5,6 +5,7 @@
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
+const PostCommentReplyModel = require('../../models/PostCommentReply');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 const postAuthorize = require('../../middlewares/posts/authorize');
@@ -29,7 +30,7 @@ router.get('/', (request, response, next) => {
       [database.literal('(' +
         'SELECT `modules_chats_postCommentVotes`.`vote` ' +
         'FROM `modules_chats_postCommentVotes` ' +
-        'WHERE `modules_chats_postCommentVotes`.`postCommentId` = `modules_chats_postComments`.`id` ' +
+        'WHERE `modules_chats_postCommentVotes`.`postCommentId` = `modules_chats_postComment`.`id` ' +
         'AND `modules_chats_postCommentVotes`.`networkUserId` = ' + request.networkUser.id +
       ')'), 'loggedInNetworkUserVote'],
     ]);
@@ -70,19 +71,19 @@ router.post('/', (request, response, next) => {
   const { postId } = request.params;
   const { content } = request.body;
 
-  let createPostComment = null;
+  let createdPostComment = null;
 
   // TODO: use transaction
   PostCommentModel.create({ postId, networkUserId, content }).then(postComment => {
-    createPostComment = postComment;
+    createdPostComment = postComment;
 
     return PostModel.update({
-      comments: database.literal('comments + 1'),
+      totalComments: database.literal('totalComments + 1'),
     }, {
       where: { id: postId },
     });
   }).then(() => {
-    response.success(createPostComment);
+    response.success(createdPostComment);
   }).catch(next);
 });
 
@@ -109,7 +110,7 @@ router.delete('/', (request, response, next) => {
     return PostCommentModel.destroy({ where: { id: postCommentId, networkUserId } });
   }).then(() => {
     return PostModel.update({
-      comments: database.literal('comments - 1'),
+      totalComments: database.literal('totalComments - 1'),
     }, {
       where: { id: existingPostComment.postId },
     });

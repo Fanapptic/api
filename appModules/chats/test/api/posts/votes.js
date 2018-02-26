@@ -29,8 +29,8 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.upvotes.should.equal(1);
-          response.body.downvotes.should.equal(0);
+          response.body.totalUpvotes.should.equal(1);
+          response.body.totalDownvotes.should.equal(0);
           done();
         });
     });
@@ -56,8 +56,8 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.upvotes.should.equal(0);
-          response.body.downvotes.should.equal(1);
+          response.body.totalUpvotes.should.equal(0);
+          response.body.totalDownvotes.should.equal(1);
           done();
         });
     });

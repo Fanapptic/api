@@ -3,6 +3,7 @@
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const PostCommentModel = require('../../../models/PostComment');
 const PostCommentReplyModel = require('../../../models/PostCommentReply');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const postAuthorize = require('../../../middlewares/posts/authorize');
@@ -55,8 +56,19 @@ router.post('/', (request, response, next) => {
   const { postCommentId } = request.params;
   const { content } = request.body;
 
+  let createdPostCommentReply = null;
+
+  // TODO: use transaction
   PostCommentReplyModel.create({ postCommentId, networkUserId, content }).then(postCommentReply => {
-    response.success(postCommentReply);
+    createdPostCommentReply = postCommentReply;
+
+    return PostCommentModel.update({
+      totalReplies: database.literal('totalReplies + 1'),
+    }, {
+      where: { id: postCommentId },
+    });
+  }).then(() => {
+    response.success(createdPostCommentReply);
   }).catch(next);
 });
 
@@ -71,11 +83,24 @@ router.delete('/', (request, response, next) => {
   const networkUserId = request.networkUser.id;
   const { postCommentReplyId } = request.params;
 
-  PostCommentReplyModel.destroy({ where: { id: postCommentReplyId, networkUserId } }).then(affectedRows => {
-    if (!affectedRows) {
+  let existingPostCommentReply = null;
+
+  // TODO: use transaction
+  PostCommentReplyModel.find({ where: { id: postCommentReplyId, networkUserId } }).then(postCommentReply => {
+    if (!postCommentReply) {
       throw new Error('The post comment reply does not exist.');
     }
 
+    existingPostCommentReply = postCommentReply;
+
+    return PostCommentReplyModel.destroy({ where: { id: postCommentReplyId, networkUserId } });
+  }).then(() => {
+    return PostCommentModel.update({
+      totalReplies: database.literal('totalReplies - 1'),
+    }, {
+      where: { id: existingPostCommentReply.postCommentId },
+    });
+  }).then(() => {
     response.success();
   }).catch(next);
 });

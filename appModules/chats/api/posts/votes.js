@@ -35,15 +35,15 @@ router.post('/', (request, response, next) => {
   }).then(postVote => {
     upsertPostVote = postVote;
 
-    let upvotesIncrement = (existingPostVote && existingPostVote.vote == 1) ? -1 : 0;
-    upvotesIncrement += (upsertPostVote.vote == 1) ? 1 : 0;
+    let totalUpvotesIncrement = (existingPostVote && existingPostVote.vote == 1) ? -1 : 0;
+    totalUpvotesIncrement += (upsertPostVote.vote == 1) ? 1 : 0;
 
-    let downvotesIncrement = (existingPostVote && existingPostVote.vote == -1) ? -1 : 0;
-    downvotesIncrement += (upsertPostVote.vote == -1) ? 1 : 0;
+    let totalDownvotesIncrement = (existingPostVote && existingPostVote.vote == -1) ? -1 : 0;
+    totalDownvotesIncrement += (upsertPostVote.vote == -1) ? 1 : 0;
 
     return PostModel.update({
-      upvotes: database.literal(`upvotes + ${upvotesIncrement}`),
-      downvotes: database.literal(`downvotes + ${downvotesIncrement}`),
+      totalUpvotes: database.literal(`totalUpvotes + ${totalUpvotesIncrement}`),
+      totalDownvotes: database.literal(`totalDownvotes + ${totalDownvotesIncrement}`),
     }, {
       where: { id: postId },
     });

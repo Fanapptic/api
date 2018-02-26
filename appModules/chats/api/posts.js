@@ -4,7 +4,6 @@
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../models/Post');
-const PostVoteModel = require('../models/PostVote');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 
@@ -27,7 +26,7 @@ router.get('/', (request, response, next) => {
       [database.literal('(' +
         'SELECT `modules_chats_postVotes`.`vote` ' +
         'FROM `modules_chats_postVotes` ' +
-        'WHERE `modules_chats_postVotes`.`postId` = `modules_chats_posts`.`id` ' +
+        'WHERE `modules_chats_postVotes`.`postId` = `modules_chats_post`.`id` ' +
         'AND `modules_chats_postVotes`.`networkUserId` = ' + request.networkUser.id +
       ')'), 'loggedInNetworkUserVote'],
     ]);

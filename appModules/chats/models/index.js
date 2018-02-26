@@ -12,10 +12,10 @@ PostCommentModel.belongsTo(NetworkUserModel);
 PostCommentReplyModel.belongsTo(NetworkUserModel);
 PostCommentVoteModel.belongsTo(NetworkUserModel);
 PostVoteModel.belongsTo(NetworkUserModel);
-PostModel.hasMany(PostCommentModel, { as: 'postComments', foreignKey: 'postId' });
-PostModel.hasMany(PostVoteModel, { as: 'postVotes', foreignKey: 'postId' });
-PostCommentModel.hasMany(PostCommentReplyModel, { as: 'postCommentReplies', foreignKey: 'postCommentId' });
-PostCommentModel.hasMany(PostCommentVoteModel, { as: 'postCommentVotes', foreignKey: 'postCommentId' });
+PostModel.hasMany(PostCommentModel, { as: 'comments', foreignKey: 'postId' });
+PostModel.hasMany(PostVoteModel, { as: 'votes', foreignKey: 'postId' });
+PostCommentModel.hasMany(PostCommentReplyModel, { as: 'replies', foreignKey: 'postCommentId' });
+PostCommentModel.hasMany(PostCommentVoteModel, { as: 'votes', foreignKey: 'postCommentId' });
 
 module.exports = {
   post: PostModel,

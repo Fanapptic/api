@@ -40,7 +40,7 @@ router.get('/', (request, response, next) => {
     PostCommentModel.find({
       attributes,
       where: { id: postCommentId, postId },
-      include: [ NetworkUserModel ],
+      include: [ NetworkUserModel, PostCommentReplyModel ],
     }).then(postComment => {
       if (!postComment) {
         throw new Error('The post comment does not exist.');
@@ -52,7 +52,7 @@ router.get('/', (request, response, next) => {
     PostCommentModel.findAll({
       attributes,
       where: { postId },
-      include: [ NetworkUserModel ],
+      include: [ NetworkUserModel, { model: PostCommentReplyModel, as: 'replies' } ],
       order: [['createdAt', 'DESC']],
     }).then(postComments => {
       response.success(postComments);

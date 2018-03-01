@@ -14,7 +14,7 @@ const AppRevenueModel = rootRequire('/models/AppRevenue');
 const AppModuleModel = rootRequire('/models/AppModule');
 const AppModuleDataModel = rootRequire('/models/AppModuleData');
 const AppModuleProviderModel = rootRequire('/models/AppModuleProvider');
-const AppPushNotificationModel = rootRequire('/models/AppPushNotification');
+const AppNotificationModel = rootRequire('/models/AppNotification');
 const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 const AppDeviceModel = rootRequire('/models/AppDevice');
 
@@ -26,17 +26,20 @@ const UserAgreementModel = rootRequire('/models/UserAgreement');
 
 AppModel.hasMany(AppDeploymentModel);
 AppModel.hasMany(AppModuleModel);
-AppModel.hasMany(AppPushNotificationModel);
+AppModel.hasMany(AppNotificationModel);
 AppModel.hasMany(AppRevenueModel);
 AppModel.hasMany(AppDeviceModel);
+AppModel.hasMany(AppNotificationModel);
 AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppModuleModel.hasMany(AppModuleProviderModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
 AppDeviceModel.hasMany(AppDeviceSessionModel);
+AppDeviceModel.hasMany(AppNotificationModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);
+NetworkUserModel.hasMany(AppNotificationModel);
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
 
@@ -57,5 +60,5 @@ appModules.moduleNames.forEach(moduleName => {
  */
 
 module.exports = database.sync({
-  force: (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'local'),
+  alter: true,
 });

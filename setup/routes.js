@@ -8,6 +8,7 @@ const appModuleApiRouter = rootRequire('/routes/apps/modules/api');
 const appModuleDataRouter = rootRequire('/routes/apps/modules/data');
 const appModuleProvidersRouter = rootRequire('/routes/apps/modules/providers');
 const appModuleProviderWebhooksRouter = rootRequire('/routes/apps/modules/providers/webhooks');
+const appNotificationsRouter = rootRequire('/routes/apps/notifications');
 const appRevenuesRouter = rootRequire('/routes/apps/revenues');
 const appDeviceSessionsRouter = rootRequire('/routes/apps/devices/sessions');
 const appDevicesRouter = rootRequire('/routes/apps/devices');
@@ -34,6 +35,7 @@ module.exports = app => {
   app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModuleDataRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId?', appModuleProvidersRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);
+  app.use('/apps/:appId/notifications/:appPushNotificationId?', appNotificationsRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?', appDeviceSessionsRouter);
   app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);

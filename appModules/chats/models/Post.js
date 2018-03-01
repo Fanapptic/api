@@ -29,14 +29,17 @@ const PostModel = database.define('modules_chats_post', {
   },
   totalUpvotes: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
     defaultValue: 0,
   },
   totalDownvotes: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
     defaultValue: 0,
   },
   totalComments: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
     defaultValue: 0,
   },
 });

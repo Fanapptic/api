@@ -35,7 +35,7 @@ module.exports = app => {
   app.use('/apps/:appId/modules/:appModuleId/data/:appModuleDataId?', appModuleDataRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId?', appModuleProvidersRouter);
   app.use('/apps/:appId/modules/:appModuleId/providers/:appModuleProviderId/webhooks', appModuleProviderWebhooksRouter);
-  app.use('/apps/:appId/notifications/:appPushNotificationId?', appNotificationsRouter);
+  app.use('/apps/:appId/notifications/:appNotificationId?', appNotificationsRouter);
   app.use('/apps/:appId/revenues/:appRevenueId?', appRevenuesRouter);
   app.use('/apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?', appDeviceSessionsRouter);
   app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);

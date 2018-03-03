@@ -8,7 +8,6 @@ describe('App Device Sessions', () => {
   describe('POST /apps/{appId}/devices/{appDeviceId}/sessions', () => {
     it('200s with created app device session object owned by app device', done => {
       const fields = {
-        appDeviceId: testAppDevice.id,
         location: {
           as: 'AS54858 Condointernet.net',
           city: 'Mercer Island',
@@ -30,12 +29,13 @@ describe('App Device Sessions', () => {
       chai.request(server)
         .post(`/apps/${appId}/devices/${testAppDevice.id}/sessions`)
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .set('X-Network-User-Access-Token', testNetworkUser.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
-          response.body.appDeviceId.should.equal(fields.appDeviceId);
+          response.body.appDeviceId.should.equal(testAppDevice.id);
           response.body.location.should.deep.equal(fields.location);
           response.body.startedAt.should.be.a('string');
           done();
@@ -66,6 +66,7 @@ describe('App Device Sessions', () => {
     it('200s with updated app device session object', done => {
       const fields = {
         location: {
+
           zip: '98466',
         },
       };

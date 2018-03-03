@@ -14,7 +14,6 @@ const AppNotificationModel = database.define('appNotification', {
   },
   appDeviceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
-    allowNull: false,
   },
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
@@ -35,6 +34,11 @@ const AppNotificationModel = database.define('appNotification', {
   content: {
     type: Sequelize.TEXT,
     allowNull: false,
+  },
+  read: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
 });
 

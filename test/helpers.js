@@ -77,3 +77,13 @@ module.exports.it403sWhenPassedAppDeploymentIdNotOwnedByApp = (method, route) =>
       });
   });
 };
+
+module.exports.it403sWhenAppDeviceAndUserAuthorizationIsNotProvided = (method, route) => {
+  it('403s when app device and user authorization is not provided', done => {
+    chai.request(server)[method](route)
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+  });
+};

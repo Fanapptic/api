@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('App Device Sessions', () => {
   /*
    * POST

@@ -62,11 +62,10 @@ describe('App Device Sessions', () => {
    * PATCH
    */
 
-  describe('PATCH /apps/{appId}/sessions', () => {
+  describe('PATCH /apps/{appId}/devices/{appDeviceId}/sessions/{appDeviceSessionId}', () => {
     it('200s with updated app device session object', done => {
       const fields = {
         location: {
-
           zip: '98466',
         },
       };

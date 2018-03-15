@@ -4,6 +4,7 @@
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../models/Post');
+const PostVoteModel = require('../models/PostVote');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 
@@ -65,8 +66,19 @@ router.post('/', (request, response, next) => {
   const networkUserId = request.networkUser.id;
   const { appModuleId } = request.params;
   const { content } = request.body;
+  const totalUpvotes = 1;
 
-  PostModel.create({ appModuleId, networkUserId, content }).then(post => {
+  let post = null;
+
+  // TODO: This should be done as a transaction
+  PostModel.create({ appModuleId, networkUserId, content, totalUpvotes }).then(_post => {
+    post = _post;
+
+    return PostVoteModel.create({ postId: post.id, networkUserId, vote: 1 });
+  }).then(() => {
+    post = post.toJSON();
+    post.loggedInNetworkUserVote = 1;
+
     response.success(post);
   }).catch(next);
 });

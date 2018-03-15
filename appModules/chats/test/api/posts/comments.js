@@ -6,7 +6,7 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts/{postId}/comments', () => {
-    it('200s with created post comment owned by post and updates post comments total', done => {
+    it('200s with created post comment owned by post with initial upvote and updates post comments total', done => {
       const fields = {
         content: 'This is a comment on an awesome post!',
       };
@@ -20,6 +20,7 @@ module.exports = environment => {
           response.body.postId.should.equal('1');
           response.body.networkUserId.should.equal(environment.networkUser.id);
           response.body.content.should.equal(fields.content);
+          response.body.loggedInNetworkUserVote.should.equal(1);
 
           return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1`);
         }).then(response => {

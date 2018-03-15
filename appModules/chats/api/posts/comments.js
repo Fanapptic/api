@@ -6,6 +6,7 @@ const NetworkUserModel = rootRequire('/models/NetworkUser');
 const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
 const PostCommentReplyModel = require('../../models/PostCommentReply');
+const PostCommentVoteModel = require('../../models/PostCommentVote');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 const postAuthorize = require('../../middlewares/posts/authorize');
@@ -84,12 +85,13 @@ router.post('/', (request, response, next) => {
   const networkUserId = request.networkUser.id;
   const { postId } = request.params;
   const { content } = request.body;
+  const totalUpvotes = 1;
 
-  let createdPostComment = null;
+  let postComment = null;
 
   // TODO: use transaction
-  PostCommentModel.create({ postId, networkUserId, content }).then(postComment => {
-    createdPostComment = postComment;
+  PostCommentModel.create({ postId, networkUserId, content, totalUpvotes }).then(_postComment => {
+    postComment = _postComment;
 
     return PostModel.update({
       totalComments: database.literal('totalComments + 1'),
@@ -97,7 +99,12 @@ router.post('/', (request, response, next) => {
       where: { id: postId },
     });
   }).then(() => {
-    response.success(createdPostComment);
+    return PostCommentVoteModel.create({ postCommentId: postComment.id, networkUserId, vote: 1 });
+  }).then(() => {
+    postComment = postComment.toJSON();
+    postComment.loggedInNetworkUserVote = 1;
+
+    response.success(postComment);
   }).catch(next);
 });
 

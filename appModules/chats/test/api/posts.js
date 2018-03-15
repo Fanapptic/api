@@ -4,7 +4,7 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts', () => {
-    it('200s with created post owned by app module', done => {
+    it('200s with created post owned by app module with initial upvote', done => {
       const fields = {
         content: 'This is an awesome test post!',
       };
@@ -19,6 +19,7 @@ module.exports = environment => {
           response.body.appModuleId.should.equal(environment.appModule.id + '');
           response.body.networkUserId.should.equal(environment.networkUser.id);
           response.body.content.should.equal(fields.content);
+          response.body.loggedInNetworkUserVote.should.equal(1);
           done();
         });
     });

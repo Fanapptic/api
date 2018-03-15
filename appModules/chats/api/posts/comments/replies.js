@@ -56,11 +56,11 @@ router.post('/', (request, response, next) => {
   const { postCommentId } = request.params;
   const { content } = request.body;
 
-  let createdPostCommentReply = null;
+  let postCommentReply = null;
 
   // TODO: use transaction
-  PostCommentReplyModel.create({ postCommentId, networkUserId, content }).then(postCommentReply => {
-    createdPostCommentReply = postCommentReply;
+  PostCommentReplyModel.create({ postCommentId, networkUserId, content }).then(_postCommentReply => {
+    postCommentReply = _postCommentReply;
 
     return PostCommentModel.update({
       totalReplies: database.literal('totalReplies + 1'),
@@ -68,7 +68,7 @@ router.post('/', (request, response, next) => {
       where: { id: postCommentId },
     });
   }).then(() => {
-    response.success(createdPostCommentReply);
+    response.success(postCommentReply);
   }).catch(next);
 });
 

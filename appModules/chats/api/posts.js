@@ -19,6 +19,7 @@ const router = express.Router({
 router.get('/', networkUserAuthorizeOptional);
 router.get('/', (request, response, next) => {
   const { appModuleId, postId } = request.params;
+  const { sort } = request.query;
 
   let attributes = Object.keys(PostModel.attributes);
 
@@ -46,11 +47,21 @@ router.get('/', (request, response, next) => {
       response.success(post);
     }).catch(next);
   } else {
+    let order = [['createdAt', 'DESC']];
+
+    if (sort === 'totalComments') {
+      order = [['totalComments', 'DESC']];
+    }
+
+    if (sort === 'totalUpvotes') {
+      order = [['totalUpvotes', 'DESC']];
+    }
+
     PostModel.findAll({
       attributes,
       where: { appModuleId },
       include: [ NetworkUserModel ],
-      order: [['createdAt', 'DESC']],
+      order,
     }).then(posts => {
       response.success(posts);
     }).catch(next);

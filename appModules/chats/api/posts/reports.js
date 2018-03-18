@@ -24,6 +24,7 @@ router.post('/', (request, response, next) => {
   let existingPostReport = null;
   let upsertPostReport = null;
 
+  // TODO: This should be done as a transaction
   PostReportModel.find({ where: { postId, networkUserId } }).then(postReport => {
     existingPostReport = postReport;
 

@@ -92,8 +92,6 @@ module.exports = environment => {
           response.body.should.be.an('object');
           response.body.totalComments.should.equal(1); // 1, because POST test also creates a comment.
           done();
-        }).catch(error => {
-          throw error;
         });
     });
 

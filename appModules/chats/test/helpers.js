@@ -23,3 +23,14 @@ module.exports.it403sWhenPassedPostCommentIdNotOwnedByPost = (method, route) => 
       });
   });
 };
+
+module.exports.it403sWhenPassedPostCommentReplyIdNotOwnedByPostComment = (method, route) => {
+  it('403s when passed post comment reply id not owned by post comment', done => {
+    chai.request(server)[method](route)
+      .set('X-Network-User-Access-Token', testNetworkUser.accessToken)
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+  });
+};

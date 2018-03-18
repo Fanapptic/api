@@ -70,12 +70,23 @@ module.exports = environment => {
    */
 
   describe('DELETE {baseUrl}/posts/{postId}/comments/{postCommentId}/replies', () => {
-    it('204s when passed post comment reply id', done => {
+    it('204s when passed post comment reply id and updates post comment replies total', done => {
       chai.request(server)
-        .delete(`${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies/1`)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies`)
         .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
-        .end((error, response) => {
+        .send({ content: 'This is some test comment testing stuff' })
+        .then(response => {
+          return chai.request(server)
+            .delete(`${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies/${response.body.id}`)
+            .set('X-Network-User-Access-Token', environment.networkUser.accessToken);
+        }).then(response => {
           response.should.have.status(204);
+
+          return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1/comments/1`);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.totalReplies.should.equal(1); // 1, because POST test also creates a reply.
           done();
         });
     });

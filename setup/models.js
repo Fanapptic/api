@@ -60,5 +60,5 @@ appModules.moduleNames.forEach(moduleName => {
  */
 
 module.exports = database.sync({
-  alter: true,
+//  force: true,
 });

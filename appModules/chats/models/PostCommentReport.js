@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const PostCommentReplyModel = database.define('modules_chats_postCommentReply', {
+const PostCommentReportModel = database.define('modules_chats_postCommentReport', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -10,20 +10,13 @@ const PostCommentReplyModel = database.define('modules_chats_postCommentReply', 
   },
   postCommentId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    unique: 'network_user_report',
     allowNull: false,
   },
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    unique: 'network_user_report',
     allowNull: false,
-  },
-  content: {
-    type: Sequelize.TEXT,
-    allowNull: false,
-  },
-  totalReports: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
-    allowNull: false,
-    defaultValue: 0,
   },
 });
 
@@ -31,4 +24,4 @@ const PostCommentReplyModel = database.define('modules_chats_postCommentReply', 
  * Export
  */
 
-module.exports = PostCommentReplyModel;
+module.exports = PostCommentReportModel;

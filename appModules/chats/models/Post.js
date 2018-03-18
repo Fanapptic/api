@@ -42,6 +42,11 @@ const PostModel = database.define('modules_chats_post', {
     allowNull: false,
     defaultValue: 0,
   },
+  totalReports: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
+    defaultValue: 0,
+  },
 });
 
 /*

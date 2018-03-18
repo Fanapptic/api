@@ -35,6 +35,11 @@ const PostCommentModel = database.define('modules_chats_postComment', {
     allowNull: false,
     defaultValue: 0,
   },
+  totalReports: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
+    defaultValue: 0,
+  },
 });
 
 /*

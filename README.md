@@ -16,7 +16,9 @@ Before running the api, you'll need to start MySQL on your machine (Port 3306, w
 
 After starting, use your favorite tool for manipulating MySQL databases. Popular tools include <a href="https://dev.mysql.com/downloads/shell/">MySQL Shell</a>, <a href="https://www.phpmyadmin.net/">PHPMyAdmin</a> or <a href="https://www.mysql.com/products/workbench/">MySQL Workbench</a>.
 
-Create a new database called `fanapptic`. It should have the `root` MySQL user assigned to it. The `root` user should not have a password. You may use alternative users, just be sure to change the `MYSQL_USERNAME` and `MYSQL_PASSWORD` fields in the root level `.env` file of the api to match.
+Create a new database called `fanapptic`. It should have the `root` MySQL user assigned to it. The `root` user should not have a password. You should use the collation `utf8mb4_unicode_ci`.
+
+You may use alternative users, just be sure to change the `MYSQL_USERNAME` and `MYSQL_PASSWORD` fields in the root level `.env` file of the api to match.
 
 ## Setting up a basic dataset and testing
 

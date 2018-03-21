@@ -30,9 +30,8 @@ const AppNotificationModel = database.define('appNotification', {
   parameters: {
     type: Sequelize.JSON,
   },
-  preview: {
+  previewImageUrl: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
   content: {
     type: Sequelize.TEXT,

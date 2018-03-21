@@ -13,7 +13,7 @@ describe('App Notifications', () => {
         moduleRelativeUrl: '',
         externalUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         parameters: { rick: 'roll' },
-        preview: 'Open this notification for a surprise!',
+        previewImageUrl: 'https://graph.facebook.com/v2.12/182375745868394/picture',
         content: 'Open this notification for a surprise!!',
       };
 
@@ -54,8 +54,8 @@ describe('App Notifications', () => {
           appNotification.should.be.an('object');
           appNotification.appId.should.equal(appId);
           appNotification.networkUserId.should.equal(testNetworkUser.id);
+          appNotification.previewImageUrl.should.equal(fields.previewImageUrl);
           appNotification.content.should.equal(fields.content);
-          appNotification.preview.should.equal(fields.preview);
           appNotificationNetworkUser = appNotification;
         });
 

@@ -69,7 +69,7 @@ router.post('/', (request, response, next) => {
     moduleRelativeUrl: request.body.moduleRelativeUrl,
     externalUrl: request.body.externalUrl,
     parameters: request.body.parameters,
-    preview: request.body.preview,
+    previewImageUrl: request.body.previewImageUrl,
     content: request.body.content,
   };
 

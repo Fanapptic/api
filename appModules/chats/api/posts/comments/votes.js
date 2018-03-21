@@ -42,7 +42,6 @@ router.post('/', (request, response, next) => {
 
     if (!existingPostCommentVote && networkUserId != postCommentNetworkUserId) {
       const action = (vote === 1) ? 'upvoted' : 'downvoted';
-      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} ${action} your comment!`;
 
       AppNotificationModel.create({
         appId,
@@ -50,8 +49,8 @@ router.post('/', (request, response, next) => {
         networkUserId: postCommentNetworkUserId,
         relativeUrl: '/post',
         parameters: { postId },
-        preview: notificationContent,
-        content: notificationContent,
+        previewImageUrl: networkUser.avatarUrl,
+        content: `${networkUser.firstName} ${networkUser.lastName} ${action} your comment!`,
       }).catch(error => console.log(error));
     }
 

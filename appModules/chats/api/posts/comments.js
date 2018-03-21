@@ -97,16 +97,14 @@ router.post('/', (request, response, next) => {
     postComment = _postComment;
 
     if (networkUserId !== postNetworkUserId) {
-      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} commented on your post!`;
-
       AppNotificationModel.create({
         appId,
         appModuleId,
         networkUserId: postNetworkUserId,
         relativeUrl: '/post',
         parameters: { postId },
-        preview: notificationContent,
-        content: notificationContent,
+        previewImageUrl: networkUser.avatarUrl,
+        content: `${networkUser.firstName} ${networkUser.lastName} commented on your post!`,
       }).catch(error => console.log(error));
     }
 

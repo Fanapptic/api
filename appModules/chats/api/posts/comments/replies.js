@@ -66,16 +66,14 @@ router.post('/', (request, response, next) => {
     postCommentReply = _postCommentReply;
 
     if (networkUserId !== postCommentNetworkUserId) {
-      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} replied to your comment!`;
-
       AppNotificationModel.create({
         appId,
         appModuleId,
         networkUserId: postCommentNetworkUserId,
         relativeUrl: '/post',
         parameters: { postId },
-        preview: notificationContent,
-        content: notificationContent,
+        previewImageUrl: networkUser.avatarUrl,
+        content: `${networkUser.firstName} ${networkUser.lastName} replied to your comment!`,
       }).catch(error => console.log(error));
     }
 

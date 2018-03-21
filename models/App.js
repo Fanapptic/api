@@ -276,10 +276,12 @@ AppModel.prototype.deploy = function() {
 };
 
 AppModel.prototype._generateSnapshot = function() {
-  const id = this.id;
   const app = this.generateAppObject();
 
-  return AppModuleModel.findAll({ where: { appId: id } }).then(appModules => {
+  return AppModuleModel.findAll({
+    where: { appId: this.id },
+    order: [['position', 'ASC']],
+  }).then(appModules => {
     appModules.forEach(appModule => {
       let module = appModule.generateModuleObject();
 

@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: 'https://graph.facebook.com/v2.11',
+  baseUrl: 'https://graph.facebook.com/v2.12',
 };

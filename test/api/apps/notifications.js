@@ -1,7 +1,6 @@
 const helpers = require('../../helpers');
 
 let appNotificationNetworkUser = null;
-let a
 
 describe('App Notifications', () => {
   /*
@@ -11,7 +10,7 @@ describe('App Notifications', () => {
   describe('POST /apps/{appId}/notifications', () => {
     it('204s and creates push notifications for app devices and app device session network users', done => {
       const fields = {
-        modulePath: '',
+        moduleRelativeUrl: '',
         externalUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         parameters: { rick: 'roll' },
         preview: 'Open this notification for a surprise!',

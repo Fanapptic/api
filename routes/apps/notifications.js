@@ -66,7 +66,7 @@ router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const notification = {
     appId,
-    modulePath: request.body.modulePath,
+    moduleRelativeUrl: request.body.moduleRelativeUrl,
     externalUrl: request.body.externalUrl,
     parameters: request.body.parameters,
     preview: request.body.preview,

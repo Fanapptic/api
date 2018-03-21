@@ -33,6 +33,7 @@ AppModel.hasMany(AppNotificationModel);
 AppDeploymentModel.hasMany(AppDeploymentStepModel);
 AppModuleModel.hasMany(AppModuleDataModel);
 AppModuleModel.hasMany(AppModuleProviderModel);
+AppModuleModel.hasMany(AppNotificationModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
 AppDeviceModel.hasMany(AppDeviceSessionModel);
 AppDeviceModel.hasMany(AppNotificationModel);

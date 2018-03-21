@@ -12,14 +12,17 @@ const AppNotificationModel = database.define('appNotification', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  appModuleId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   appDeviceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
-  modulePath: {
-    type: Sequelize.STRING,
+  moduleRelativeUrl: {
+    type: Sequelize.TEXT,
   },
   externalUrl: {
     type: Sequelize.TEXT,

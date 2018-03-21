@@ -7,6 +7,7 @@ const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
 const PostCommentReplyModel = require('../../models/PostCommentReply');
 const PostCommentVoteModel = require('../../models/PostCommentVote');
+const AppNotificationModel = rootRequire('/models/AppNotification');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const networkUserAuthorizeOptional = rootRequire('/middlewares/networks/users/authorizeOptional');
 const postAuthorize = require('../../middlewares/posts/authorize');
@@ -82,9 +83,11 @@ router.get('/', (request, response, next) => {
 router.post('/', networkUserAuthorize);
 router.post('/', postAuthorize);
 router.post('/', (request, response, next) => {
-  const networkUserId = request.networkUser.id;
-  const { postId } = request.params;
+  const { networkUser } = request;
+  const { appId, appModuleId, postId } = request.params;
   const { content } = request.body;
+  const networkUserId = networkUser.id;
+  const postNetworkUserId = request.post.networkUserId;
   const totalUpvotes = 1;
 
   let postComment = null;
@@ -92,6 +95,20 @@ router.post('/', (request, response, next) => {
   // TODO: use transaction
   PostCommentModel.create({ postId, networkUserId, content, totalUpvotes }).then(_postComment => {
     postComment = _postComment;
+
+    if (networkUserId !== postNetworkUserId) {
+      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} commented on your post!`;
+
+      AppNotificationModel.create({
+        appId,
+        appModuleId,
+        networkUserId: postNetworkUserId,
+        relativeUrl: '/post',
+        parameters: { postId },
+        preview: notificationContent,
+        content: notificationContent,
+      }).catch(error => console.log(error));
+    }
 
     return PostModel.update({
       totalComments: database.literal('totalComments + 1'),

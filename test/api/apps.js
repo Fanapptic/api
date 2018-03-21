@@ -36,7 +36,7 @@ describe('Apps', () => {
           tabBar: {
             swipeEnabled: true,
             animationEnabled: false,
-            background: '#FFFFFF, #000000',
+            background: '#FFFFFF,#000000',
             tabBarOptions: {
               activeTintColor: '#333333',
               inactiveTintColor: '#CCCCCC',

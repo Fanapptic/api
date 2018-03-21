@@ -4,6 +4,7 @@
 
 const PostModel = require('../../models/Post');
 const PostVoteModel = require('../../models/PostVote');
+const AppNotificationModel = rootRequire('/models/AppNotification');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const postAuthorize = require('../../middlewares/posts/authorize');
 
@@ -18,9 +19,11 @@ const router = express.Router({
 router.post('/', networkUserAuthorize);
 router.post('/', postAuthorize);
 router.post('/', (request, response, next) => {
-  const networkUserId = request.networkUser.id;
-  const { postId } = request.params;
+  const { networkUser } = request;
+  const { appId, appModuleId, postId } = request.params;
   const { vote } = request.body;
+  const networkUserId = networkUser.id;
+  const postNetworkUserId = request.post.networkUserId;
 
   let existingPostVote = null;
   let upsertPostVote = null;
@@ -34,6 +37,21 @@ router.post('/', (request, response, next) => {
     return PostVoteModel.find({ where: { postId, networkUserId } });
   }).then(postVote => {
     upsertPostVote = postVote;
+
+    if (!existingPostVote && networkUserId !== postNetworkUserId) {
+      const action = (vote === 1) ? 'upvoted' : 'downvoted';
+      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} ${action} your post!`;
+
+      AppNotificationModel.create({
+        appId,
+        appModuleId,
+        networkUserId: postNetworkUserId,
+        relativeUrl: '/post',
+        parameters: { postId },
+        preview: notificationContent,
+        content: notificationContent,
+      }).catch(error => console.log(error));
+    }
 
     let totalUpvotesIncrement = (existingPostVote && existingPostVote.vote == 1) ? -1 : 0;
     totalUpvotesIncrement += (upsertPostVote.vote == 1) ? 1 : 0;

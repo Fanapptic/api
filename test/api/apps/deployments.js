@@ -40,7 +40,7 @@ describe('App Deployments', () => {
           .send({
             config: {
               tabBar: {
-                background: '#CCCCCC, #111111',
+                background: '#CCCCCC,#111111',
               },
             },
           })

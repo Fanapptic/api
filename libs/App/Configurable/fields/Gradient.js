@@ -4,7 +4,7 @@ module.exports = (overrides = {}) => {
   return {
     name: 'gradient',
     validate: validate || (input => {
-      return (input) ? true : false;
+      return (input && input.includes(',') && !input.includes(' ')) ? true : false;
     }),
   };
 };

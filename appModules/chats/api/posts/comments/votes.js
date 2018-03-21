@@ -4,6 +4,7 @@
 
 const PostCommentModel = require('../../../models/PostComment');
 const PostCommentVoteModel = require('../../../models/PostCommentVote');
+const AppNotificationModel = rootRequire('/models/AppNotification');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const postAuthorize = require('../../../middlewares/posts/authorize');
 const postCommentAuthorize = require('../../../middlewares/posts/comments/authorize');
@@ -20,9 +21,11 @@ router.post('/', networkUserAuthorize);
 router.post('/', postAuthorize);
 router.post('/', postCommentAuthorize);
 router.post('/', (request, response, next) => {
-  const networkUserId = request.networkUser.id;
-  const { postCommentId } = request.params;
+  const { networkUser } = request;
+  const { appId, appModuleId, postId, postCommentId } = request.params;
   const { vote } = request.body;
+  const networkUserId = networkUser.id;
+  const postCommentNetworkUserId = request.postComment.networkUserId;
 
   let existingPostCommentVote = null;
   let upsertPostCommentVote = null;
@@ -36,6 +39,21 @@ router.post('/', (request, response, next) => {
     return PostCommentVoteModel.find({ where: { postCommentId, networkUserId } });
   }).then(postCommentVote => {
     upsertPostCommentVote = postCommentVote;
+
+    if (!existingPostCommentVote && networkUserId != postCommentNetworkUserId) {
+      const action = (vote === 1) ? 'upvoted' : 'downvoted';
+      const notificationContent = `${networkUser.firstName} ${networkUser.lastName} ${action} your comment!`;
+
+      AppNotificationModel.create({
+        appId,
+        appModuleId,
+        networkUserId: postCommentNetworkUserId,
+        relativeUrl: '/post',
+        parameters: { postId },
+        preview: notificationContent,
+        content: notificationContent,
+      }).catch(error => console.log(error));
+    }
 
     let totalUpvotesIncrement = (existingPostCommentVote && existingPostCommentVote.vote == 1) ? -1 : 0;
     totalUpvotesIncrement += (upsertPostCommentVote.vote == 1) ? 1 : 0;

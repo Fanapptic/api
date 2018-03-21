@@ -39,8 +39,6 @@ router.get('/', (request, response, next) => {
     return response.respond(403, 'An app device or network user must be provided to retrieve notifications for.');
   }
 
-  console.log(where);
-
   if (appNotificationId) {
     AppNotificationModel.find({ where }).then(appNotification => {
       if (!appNotification) {
@@ -50,7 +48,10 @@ router.get('/', (request, response, next) => {
       response.success(appNotification);
     }).catch(next);
   } else {
-    AppNotificationModel.findAll({ where }).then(appNotifications => {
+    AppNotificationModel.findAll({
+      where,
+      order: [['id', 'DESC']],
+    }).then(appNotifications => {
       response.success(appNotifications);
     }).catch(next);
   }

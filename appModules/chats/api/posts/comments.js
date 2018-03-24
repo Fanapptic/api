@@ -101,7 +101,7 @@ router.post('/', (request, response, next) => {
         appId,
         appModuleId,
         networkUserId: postNetworkUserId,
-        relativeUrl: '/post',
+        moduleRelativeUrl: '/post',
         parameters: { postId },
         previewImageUrl: networkUser.avatarUrl,
         content: `${networkUser.firstName} ${networkUser.lastName} commented on your post!`,

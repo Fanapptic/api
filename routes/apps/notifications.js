@@ -27,12 +27,10 @@ router.get('/', (request, response, next) => {
 
   let where = { appId };
 
-  if (appDevice.id) {
-    where.appDeviceId = appDevice.id;
-  }
-
   if (networkUser.id) {
     where.networkUserId = networkUser.id;
+  } else if (appDevice.id) {
+    where.appDeviceId = appDevice.id;
   }
 
   if (!where.appDeviceId && !where.networkUserId) {
@@ -125,12 +123,10 @@ router.patch('/', (request, response, next) => {
 
   let where = { id: appNotificationId, appId };
 
-  if (appDevice.id) {
-    where.appDeviceId = appDevice.id;
-  }
-
   if (networkUser.id) {
     where.networkUserId = networkUser.id;
+  } else if (appDevice.id) {
+    where.appDeviceId = appDevice.id;
   }
 
   if (!where.appDeviceId && !where.networkUserId) {

@@ -19,6 +19,12 @@ const AppDeviceModel = database.define('appDevice', {
     unique: true,
     defaultValue: Sequelize.UUIDV1,
   },
+  apnsToken: {
+    type: Sequelize.STRING,
+  },
+  gcmRegistrationId: {
+    type: Sequelize.STRING,
+  },
   deviceDetails: {
     type: Sequelize.JSON,
   },

@@ -5,6 +5,7 @@
 const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
+const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -43,6 +44,22 @@ router.post('/', (request, response, next) => {
   const { platform, deviceDetails } = request.body;
 
   AppDeviceModel.create({ appId, platform, deviceDetails }).then(appDevice => {
+    response.success(appDevice);
+  }).catch(next);
+});
+
+/*
+ * PATCH
+ */
+
+router.patch('/', appDeviceAuthorize);
+router.patch('/', (request, response, next) => {
+  const { appDevice } = request;
+
+  appDevice.apnsToken = request.body.apnsToken || appDevice.apnsToken;
+  appDevice.gcmRegistrationId = request.body.gcmRegistrationId || appDevice.gcmRegistrationId;
+
+  appDevice.save().then(() => {
     response.success(appDevice);
   }).catch(next);
 });

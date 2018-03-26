@@ -89,7 +89,7 @@ router.post('/', (request, response, next) => {
     });
   }).then(() => {
     userAgreement.sendSignatureRequestOrReminder();
-    
+
     response.success(user);
   }).catch(next);
 });
@@ -100,7 +100,7 @@ router.post('/', (request, response, next) => {
 
 router.patch('/', userAuthorize);
 router.patch('/', (request, response, next) => {
-  const user = request.user;
+  const { user } = request;
 
   user.email = request.body.email || user.email;
   user.password = request.body.password || user.password;

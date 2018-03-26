@@ -61,6 +61,51 @@ describe('App Devices', () => {
   });
 
   /*
+   * PATCH
+   */
+
+  describe('PATCH /apps/{appId}/devices', () => {
+    it('200s with updated app device object owned by app', done => {
+      const fields = {
+        apnsToken: 'sometoken123abc',
+        gcmRegistrationId: 'someid123',
+      };
+
+      chai.request(server)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.apnsToken.should.equal(fields.apnsToken);
+          response.body.gcmRegistrationId.should.equal(fields.gcmRegistrationId);
+          done();
+        });
+    });
+
+    it('400s when passed invalid app device id', done => {
+      chai.request(server)
+        .post(`/apps/${appId}/devices/123132`)
+        .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
+    it('401s when passed invalid app device access token', done => {
+      chai.request(server)
+        .patch(`/apps/${appId}/devices/${testAppDevice.id}`)
+        .set('X-App-Device-Access-Token', 'somebadaccesstoken')
+        .end((error, response) => {
+          response.should.have.status(401);
+          done();
+        });
+    });
+  });
+
+  /*
    * GET
    */
 

@@ -300,7 +300,6 @@ AppModel.prototype._generateSnapshot = function() {
       icons: this.icons,
       website: this.website,
       contentRating: this.contentRating,
-      launchConfig: app.exportLaunchConfig(),
       packagedConfig: app.exportPackagedConfig(),
     });
   });

@@ -27,7 +27,6 @@ class Snapshot {
       website: Joi.string().optional(),
       contentRating: Joi.string().required(),
       packagedConfig: Joi.object().required(),
-      launchConfig: Joi.object().required(),
     });
 
     Joi.assert(initObject, schema);

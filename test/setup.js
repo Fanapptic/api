@@ -152,8 +152,8 @@ before(done => {
 
       return sequelize.query(`
         INSERT INTO userAgreements
-        (userId, agreement, email, signedAgreementUrl)
-        VALUES (${testUser.id}, 'release', '${testUser.email}', 'placeholder.com')
+        (userId, agreement, email, signedAgreementUrl, createdAt, updatedAt)
+        VALUES (${testUser.id}, 'release', '${testUser.email}', 'placeholder.com', NOW(), NOW())
       `);
     }).then(() => {
       fatLog('Making global test user an admin...');

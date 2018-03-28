@@ -27,8 +27,6 @@ global.chai = require('chai');
 global.chaiHttp = require('chai-http');
 global.server = `http://localhost:${process.env.PORT}`;
 
-global.internalToken = 'd9d467a6-6afe-11e7-907b-a6006ad3dba0';
-
 global.appId = 1;
 
 global.testUser = {

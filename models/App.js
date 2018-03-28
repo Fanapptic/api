@@ -284,9 +284,15 @@ AppModel.prototype.deploy = function() {
 AppModel.prototype._generateSnapshot = function() {
   const app = this.generateAppObject();
 
-  return AppModuleModel.findAll({
-    where: { appId: this.id },
-    order: [['position', 'ASC']],
+  let user = null;
+
+  return UserModel.find({ where: { id: this.userId } }).then(_user => {
+    user = _user;
+
+    return AppModuleModel.findAll({
+      where: { appId: this.id },
+      order: [['position', 'ASC']],
+    });
   }).then(appModules => {
     appModules.forEach(appModule => {
       let module = appModule.generateModuleObject();
@@ -298,6 +304,7 @@ AppModel.prototype._generateSnapshot = function() {
 
     return new Snapshot({
       bundleId: this.bundleId,
+      userAccessToken: user.accessToken,
       name: this.name,
       displayName: this.displayName,
       subtitle: this.subtitle,

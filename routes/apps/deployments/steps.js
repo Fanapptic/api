@@ -6,7 +6,6 @@ const AppDeploymentStepModel = rootRequire('/models/AppDeploymentStep');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appDeploymentAuthorize = rootRequire('/middlewares/apps/deployments/authorize');
-const internalAuthorize = rootRequire('/middlewares/internal/authorize');
 
 const router = express.Router({
   mergeParams: true,
@@ -41,7 +40,9 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
-router.post('/', internalAuthorize);
+router.post('/', userAuthorize);
+router.post('/', appAuthorize);
+router.post('/', appDeploymentAuthorize);
 router.post('/', (request, response, next) => {
   const { appDeploymentId } = request.params;
   const { platform, name, message, success } = request.body;

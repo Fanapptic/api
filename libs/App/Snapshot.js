@@ -12,8 +12,7 @@ class Snapshot {
   constructor(initObject) {
     const schema = Joi.object({
       bundleId: Joi.string().required(),
-//      appleTeamId: Joi.string().required(),
-//      appleTeamName: Joi.string().required(),
+      userAccessToken: Joi.string().required(),
       name: Joi.string().required(),
       displayName: Joi.string().required(),
       subtitle: Joi.string().required(),

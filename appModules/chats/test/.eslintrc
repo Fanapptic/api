@@ -6,7 +6,6 @@
       "chai": true,
       "chaiHttp": true,
       "server": true,
-      "internalToken": true,
       "appId": true,
       "testUser": true,
       "testAppDevice": true,

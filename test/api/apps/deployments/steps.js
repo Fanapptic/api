@@ -16,7 +16,7 @@ describe('App Deployment Steps', () => {
     it('200s with created app deployment step objected owned by app deployment', done => {
       chai.request(server)
         .post(`/apps/${appId}/deployments/1/steps`)
-        .set('X-Internal-Token', internalToken)
+        .set('X-Access-Token', testUser.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
@@ -34,7 +34,9 @@ describe('App Deployment Steps', () => {
     //  done();
     //});
 
-    helpers.it401sWhenInternalAuthorizationIsInvalid('post', '/apps/1/deployments/1/steps');
+    helpers.it401sWhenUserAuthorizationIsInvalid('post', '/apps/1/deployments/1/steps');
+    helpers.it403sWhenPassedAppIdNotOwnedByUser('post', '/apps/1321/deployments/1/steps');
+    helpers.it403sWhenPassedAppDeploymentIdNotOwnedByApp('post', '/apps/1/deployments/1241/steps');
   });
 
   /*

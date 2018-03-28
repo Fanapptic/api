@@ -26,6 +26,8 @@ class Snapshot {
       })).allow(null).required(),
       website: Joi.string().optional(),
       contentRating: Joi.string().required(),
+      apnsSnsArn: Joi.string().allow(null).optional(),
+      gcmSnsArn: Joi.string().allow(null).optional(),
       packagedConfig: Joi.object().required(),
     });
 

@@ -106,6 +106,12 @@ const AppModel = database.define('app', {
       },
     },
   },
+  apnsSnsArn: {
+    type: Sequelize.STRING,
+  },
+  gcmSnsArn: {
+    type: Sequelize.STRING,
+  },
   config: {
     type: Sequelize.JSON,
     allowNull: false,
@@ -300,6 +306,8 @@ AppModel.prototype._generateSnapshot = function() {
       icons: this.icons,
       website: this.website,
       contentRating: this.contentRating,
+      apnsSnsArn: this.apnsSnsArn,
+      gcmSnsArn: this.gcmSnsArn,
       packagedConfig: app.exportPackagedConfig(),
     });
   });

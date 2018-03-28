@@ -57,6 +57,8 @@ router.patch('/', (request, response, next) => {
     app.keywords = request.body.keywords || app.keywords;
     app.website = request.body.website || app.website;
     app.contentRating = request.body.contentRating || app.contentRating;
+    app.apnsSnsArn = request.body.apnsSnsArn || app.apnsSnsArn;
+    app.gcmSnsArn = request.body.gcmSnsArn || app.gcmSnsArn;
 
     if (request.body.config) {
       app.config = App.mergeImportable(app.config, request.body.config);

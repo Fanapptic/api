@@ -35,8 +35,13 @@ const AppModel = database.define('app', {
     },
   },
   name: {
-    type: Sequelize.STRING,
-    defaultValue: 'My App',
+    type: Sequelize.STRING(30),
+    validate: {
+      max: {
+        args: 30,
+        msg: 'Name cannot exceed a total of 30 characters.',
+      },
+    },
   },
   displayName: {
     type: Sequelize.STRING,

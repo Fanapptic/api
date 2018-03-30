@@ -186,7 +186,8 @@ AppModel.prototype.generateChecklist = function() {
       },
     },
   }).then(count => {
-    releaseAgreement.completed = (count) ? true : false;
+    // only required in production.
+    releaseAgreement.completed = (count || ['staging', 'production'].includes(process.env.NODE_ENV)) ? true : false;
   }));
 
   // At Least 2 Tabs

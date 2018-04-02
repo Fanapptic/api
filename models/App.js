@@ -31,7 +31,11 @@ const AppModel = database.define('app', {
     unique: true,
     allowNull: false,
     defaultValue() {
-      return `com.fanapptic.${uuidV1().split('-').join('')}`;
+      // All final bundle id segments are prefixed with 'f'.
+      // uuidV1() can generate a uuid that starts with
+      // an integer, this causes android deployments to break.
+      
+      return `com.fanapptic.f${uuidV1().split('-').join('')}`;
     },
   },
   name: {

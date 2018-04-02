@@ -19,6 +19,13 @@ const PostCommentReplyModel = database.define('modules_chats_postCommentReply', 
   content: {
     type: Sequelize.TEXT,
     allowNull: false,
+    validate: {
+      isValid(value) {
+        if (value.trim().length < 1) {
+          throw new Error('Post must be at least one character long.');
+        }
+      },
+    },
   },
   totalReports: {
     type: Sequelize.INTEGER(10).UNSIGNED,

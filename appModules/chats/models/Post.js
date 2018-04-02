@@ -21,7 +21,7 @@ const PostModel = database.define('modules_chats_post', {
     allowNull: false,
     validate: {
       isValid(value) {
-        if (value.length < 10) {
+        if (value.trim().length < 10) {
           throw new Error('Post must be at least 10 characters long.');
         }
       },

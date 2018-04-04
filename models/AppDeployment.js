@@ -94,7 +94,17 @@ AppDeploymentModel.prototype.softDeploy = function() {
     Bucket: awsConfig.s3AppsBucket,
     ContentType: 'application/json',
     Key: `${this.snapshot.bundleId}/runtimeConfig.json`,
-  }).promise();
+  }).promise().then(data => {
+    this.status = 'complete';
+    this.save();
+
+    return data;
+  }).catch(error => {
+    this.status = 'failed';
+    this.save();
+
+    throw error;
+  });
 };
 
 /*

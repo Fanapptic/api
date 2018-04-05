@@ -2,35 +2,32 @@
  * Model Definition
  */
 
-const PostCommentReplyModel = database.define('modules_chats_postCommentReply', {
+const PostVoteModel = database.define('modules_community_postVote', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
-  postCommentId: {
+  postId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    unique: 'network_user_vote',
     allowNull: false,
   },
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
+    unique: 'network_user_vote',
     allowNull: false,
   },
-  content: {
-    type: Sequelize.TEXT,
+  vote: {
+    type: Sequelize.INTEGER(1),
     allowNull: false,
     validate: {
       isValid(value) {
-        if (value.trim().length < 1) {
-          throw new Error('Post must be at least one character long.');
+        if (value != -1 && value != 1) {
+          throw new Error('Vote must be -1 or 1.');
         }
       },
     },
-  },
-  totalReports: {
-    type: Sequelize.INTEGER(10).UNSIGNED,
-    allowNull: false,
-    defaultValue: 0,
   },
 });
 
@@ -38,4 +35,4 @@ const PostCommentReplyModel = database.define('modules_chats_postCommentReply', 
  * Export
  */
 
-module.exports = PostCommentReplyModel;
+module.exports = PostVoteModel;

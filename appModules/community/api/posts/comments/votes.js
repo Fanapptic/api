@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/comments/:postCommentId/votes/:postCommentVoteId?
+ * Route: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/comments/:postCommentId/votes/:postCommentVoteId?
  */
 
 const PostCommentModel = require('../../../models/PostComment');

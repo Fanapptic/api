@@ -1,6 +1,6 @@
 /*
  * Post Ownership Authorization For Matching Routes
- * Possible Route Usage: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/*
+ * Possible Route Usage: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/*
  */
 
 const PostModel = require('../../models/Post');

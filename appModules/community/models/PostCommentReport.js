@@ -2,13 +2,13 @@
  * Model Definition
  */
 
-const PostReportModel = database.define('modules_chats_postReport', {
+const PostCommentReportModel = database.define('modules_community_postCommentReport', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
-  postId: {
+  postCommentId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     unique: 'network_user_report',
     allowNull: false,
@@ -24,4 +24,4 @@ const PostReportModel = database.define('modules_chats_postReport', {
  * Export
  */
 
-module.exports = PostReportModel;
+module.exports = PostCommentReportModel;

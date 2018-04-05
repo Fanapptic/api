@@ -1,6 +1,6 @@
 /*
- * Chats API
- * Base Route: /apps/:appId/modules/:appModuleId/api/chats
+ * Community API
+ * Base Route: /apps/:appId/modules/:appModuleId/api/community
  */
 
 const postsRouter = require('./posts');

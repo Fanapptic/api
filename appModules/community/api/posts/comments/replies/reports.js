@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId/reports/:postCommentReplyReportId?
+ * Route: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId/reports/:postCommentReplyReportId?
  */
 
 const PostCommentReplyModel = require('../../../../models/PostCommentReply');

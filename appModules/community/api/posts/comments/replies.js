@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId
+ * Route: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');

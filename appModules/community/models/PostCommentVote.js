@@ -2,13 +2,13 @@
  * Model Definition
  */
 
-const PostVoteModel = database.define('modules_chats_postVote', {
+const PostCommentVoteModel = database.define('modules_community_postCommentVote', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
-  postId: {
+  postCommentId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     unique: 'network_user_vote',
     allowNull: false,
@@ -35,4 +35,4 @@ const PostVoteModel = database.define('modules_chats_postVote', {
  * Export
  */
 
-module.exports = PostVoteModel;
+module.exports = PostCommentVoteModel;

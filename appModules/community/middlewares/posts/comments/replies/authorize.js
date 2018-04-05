@@ -1,6 +1,6 @@
 /*
  * Post Comment Reply Ownership Authorization For Matching Routes
- * Possible Route Usage: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId/*
+ * Possible Route Usage: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/comments/:postCommentId/replies/:postCommentReplyId/*
  */
 
 const PostCommentReplyModel = require('../../../../models/PostCommentReply');

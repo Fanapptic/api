@@ -1,5 +1,5 @@
 /*
- * Route: /apps/:appId/modules/:appModuleId/api/chats/posts/:postId/comments/:postCommentId?
+ * Route: /apps/:appId/modules/:appModuleId/api/community/posts/:postId/comments/:postCommentId?
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
@@ -30,10 +30,10 @@ router.get('/', (request, response, next) => {
   if (request.networkUser.id) {
     attributes = attributes.concat([
       [database.literal('(' +
-        'SELECT `modules_chats_postCommentVotes`.`vote` ' +
-        'FROM `modules_chats_postCommentVotes` ' +
-        'WHERE `modules_chats_postCommentVotes`.`postCommentId` = `modules_chats_postComment`.`id` ' +
-        'AND `modules_chats_postCommentVotes`.`networkUserId` = ' + request.networkUser.id +
+        'SELECT `modules_community_postCommentVotes`.`vote` ' +
+        'FROM `modules_community_postCommentVotes` ' +
+        'WHERE `modules_community_postCommentVotes`.`postCommentId` = `modules_community_postComment`.`id` ' +
+        'AND `modules_community_postCommentVotes`.`networkUserId` = ' + request.networkUser.id +
       ')'), 'loggedInNetworkUserVote'],
     ]);
   }

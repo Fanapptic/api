@@ -17,7 +17,7 @@ class Global extends Component {
       cssSelector: 'html,body',
       cssProperty: 'font-family',
       field: Configurable.FIELDS.FONT(),
-      defaultValue: 'Arial',
+      defaultValue: 'Helvetica',
     });
   }
 }

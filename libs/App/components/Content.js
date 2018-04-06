@@ -17,7 +17,7 @@ class Content extends Component {
       cssSelector: 'html,body',
       cssProperty: 'background',
       field: Configurable.FIELDS.GRADIENT(),
-      defaultValue: '#F4F4F4',
+      defaultValue: '#F4F4F4,#F4F4F4',
     });
 
     this.textColor = new Style({

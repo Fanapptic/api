@@ -15,7 +15,7 @@ class Header extends Component {
       displayName: 'Background',
       description: 'The background of the tab bar.',
       field: Configurable.FIELDS.GRADIENT(),
-      defaultValue: '#FFFFFF',
+      defaultValue: '#FFFFFF,#FFFFFF',
     });
 
     this.tintColor = new Option({

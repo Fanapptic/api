@@ -15,7 +15,7 @@ class Header extends Component {
       displayName: 'Background',
       description: 'The background of the tab bar.',
       field: Configurable.FIELDS.GRADIENT(),
-      defaultValue: '#FAFAFA,#FAFAFA',
+      defaultValue: '#FFFFFF',
     });
 
     this.tintColor = new Option({
@@ -23,7 +23,7 @@ class Header extends Component {
       displayName: 'Tint Color',
       description: 'The color of the header items.',
       field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#272727',
+      defaultValue: '#252525',
     });
   }
 }

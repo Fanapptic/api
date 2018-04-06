@@ -15,7 +15,7 @@ class TabBarOptions extends Component {
       displayName: 'Active Tint Color',
       description: 'The color of the currenctly selected tab item.',
       field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#252525',
+      defaultValue: '#333333',
     });
 
     this.inactiveTintColor = new Option({
@@ -23,7 +23,7 @@ class TabBarOptions extends Component {
       displayName: 'Inactive Tint Color',
       description: 'The color of the inactive tab items.',
       field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#838383',
+      defaultValue: '#9DA0A4',
     });
 
     this.showLabel = new Option({
@@ -31,7 +31,7 @@ class TabBarOptions extends Component {
       displayName: 'Show Label',
       description: 'Toggles whether or not the labels under each tab icon show.',
       field: Configurable.FIELDS.SWITCH(),
-      defaultValue: true,
+      defaultValue: false,
     });
   }
 }

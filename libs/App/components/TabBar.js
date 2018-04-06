@@ -32,7 +32,7 @@ class TabBar extends Component {
       displayName: 'Background',
       description: 'The background of the tab bar.',
       field: Configurable.FIELDS.GRADIENT(),
-      defaultValue: '#FAFAFA,#FAFAFA',
+      defaultValue: '#FFFFFF',
     });
 
     this.tabBarOptions = new TabBarOptions();

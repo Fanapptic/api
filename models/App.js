@@ -211,6 +211,7 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
 
   const s3 = new aws.S3();
   const requiredIcons = appConfig.requiredIcons;
+  const sharpImage = sharp(iconImageBuffer).background({r: 255, g: 255, b:255, alpha: 0}).flatten();
 
   let promises = [];
   let icons = [];
@@ -219,7 +220,7 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
     const size = requiredIcons[iconName].size;
 
     promises.push(
-      sharp(iconImageBuffer).resize(size, size).toBuffer().then(buffer => {
+      sharpImage.resize(size, size).toBuffer().then(buffer => {
         return s3.upload({
           ACL: 'public-read',
           Body: buffer,

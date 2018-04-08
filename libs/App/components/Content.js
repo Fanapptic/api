@@ -17,7 +17,7 @@ class Content extends Component {
       cssSelector: 'html,body',
       cssProperty: 'background',
       field: Configurable.FIELDS.GRADIENT(),
-      defaultValue: '#000000,#FFFFFF',
+      defaultValue: '#F4F4F4,#F4F4F4',
     });
 
     this.textColor = new Style({
@@ -27,7 +27,7 @@ class Content extends Component {
       cssSelector: 'p',
       cssProperty: 'color',
       field: Configurable.FIELDS.COLOR(),
-      defaultValue: '#999333',
+      defaultValue: '#252525',
     });
 
     this.fontSize = new Style({
@@ -37,7 +37,7 @@ class Content extends Component {
       cssSelector: 'html,body',
       cssProperty: 'font-size',
       field: Configurable.FIELDS.PIXEL(),
-      defaultValue: '12px',
+      defaultValue: '14px',
     });
   }
 }

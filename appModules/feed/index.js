@@ -54,7 +54,7 @@ class Feed extends Module {
       displayName: 'Gallery Mode',
       description: 'Change the layout of your feed to only show the photos and videos specific to each post.',
       field: Configurable.FIELDS.SWITCH(),
-      defaultValue: false,
+      defaultValue: true,
     }));
 
     lookAndFeelGrouping.addConfigurable(new Option({

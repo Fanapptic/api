@@ -18,7 +18,7 @@ class Feed extends Module {
       displayName: 'Social Feed',
       description: 'Consolidate all of your social media accounts into a single feed.',
       brandingColor: '#387AA6',
-      defaultIcon: 'entypo-documents',
+      defaultIcon: 'entypo-layers',
       url: `${process.env.APP_MODULES_BASE_URL}/feed/`,
     });
 

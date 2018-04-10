@@ -284,6 +284,12 @@ AppModel.prototype.deploy = function() {
         if (deploymentType === Snapshot.DEPLOYMENT_TYPES.HARD) {
           return appDeployment.hardDeploy();
         }
+
+        if (deploymentType === Snapshot.DEPLOYMENT_TYPES.SOFT) {
+          appDeployment.status = 'complete';
+          
+          return appDeployment.save({ transaction });
+        }
       }).then(() => {
         return appDeployment;
       }).catch(error => {

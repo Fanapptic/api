@@ -13,7 +13,7 @@ describe('App Notifications', () => {
         moduleRelativeUrl: '',
         externalUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         parameters: { rick: 'roll' },
-        previewImageUrl: 'https://graph.facebook.com/v2.12/182375745868394/picture',
+        previewImageUrl: 'https://graph.facebook.com/v2.12/182375745868394/picture?type=large',
         content: 'Open this notification for a surprise!!',
       };
 

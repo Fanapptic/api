@@ -34,7 +34,7 @@ const AppModel = database.define('app', {
       // All final bundle id segments are prefixed with 'f'.
       // uuidV1() can generate a uuid that starts with
       // an integer, this causes android deployments to break.
-      
+
       return `com.fanapptic.f${uuidV1().split('-').join('')}`;
     },
   },
@@ -283,6 +283,12 @@ AppModel.prototype.deploy = function() {
       }).then(() => {
         if (deploymentType === Snapshot.DEPLOYMENT_TYPES.HARD) {
           return appDeployment.hardDeploy();
+        }
+
+        if (deploymentType === Snapshot.DEPLOYMENT_TYPES.SOFT) {
+          appDeployment.status = 'complete';
+
+          return appDeployment.save({ transaction });
         }
       }).then(() => {
         return appDeployment;

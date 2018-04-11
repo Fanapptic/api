@@ -31,7 +31,6 @@ describe('Apps', () => {
           },
           header: persistentHeader,
           content: {
-            fontSize: '14px',
             textColor: '#101010',
             background: '#CCCCCC,#222222',
           },
@@ -69,7 +68,6 @@ describe('Apps', () => {
           response.body.config.global.fontFamily.value.should.equal(fields.config.global.fontFamily);
           response.body.config.statusBar.should.deep.equal(fields.config.statusBar);
           response.body.config.header.should.deep.equal(fields.config.header);
-          response.body.config.content.fontSize.value.should.equal(fields.config.content.fontSize);
           response.body.config.content.textColor.value.should.equal(fields.config.content.textColor);
           response.body.config.content.background.value.should.equal(fields.config.content.background);
           response.body.config.tabBar.should.deep.equal(fields.config.tabBar);

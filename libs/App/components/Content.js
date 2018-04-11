@@ -29,16 +29,6 @@ class Content extends Component {
       field: Configurable.FIELDS.COLOR(),
       defaultValue: '#252525',
     });
-
-    this.fontSize = new Style({
-      name: 'fontSize',
-      displayName: 'Font Size',
-      description: 'The font size of module text.',
-      cssSelector: 'html,body',
-      cssProperty: 'font-size',
-      field: Configurable.FIELDS.PIXEL(),
-      defaultValue: '14px',
-    });
   }
 }
 

@@ -59,7 +59,7 @@ router.post('/', (request, response, next) => {
       ageRange: facebookUser.age_range,
       gender: facebookUser.gender,
       locale: facebookUser.locale,
-      avatarUrl: `${facebookConfig.baseUrl}/${facebookUser.id}/picture?type=large`,
+      avatarUrl: `${facebookConfig.baseUrl}/${facebookUser.id}/picture`,
     });
   }).then(() => {
     return NetworkUserModel.find({ where: { facebookId: facebookUser.id } });

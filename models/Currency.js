@@ -29,7 +29,7 @@ const CurrencyModel = database.define('currency', {
     allowNull: false,
   },
   position: {
-    type: Sequelize.ENUM(...positions),
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       isIn: {

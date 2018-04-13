@@ -35,7 +35,7 @@ const AppDeviceModel = database.define('appDevice', {
     type: Sequelize.JSON,
   },
   platform: {
-    type: Sequelize.ENUM(...platforms),
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       isIn: {

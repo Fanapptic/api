@@ -22,7 +22,7 @@ const PostCommentReplyModel = database.define('modules_community_postCommentRepl
     validate: {
       isValid(value) {
         if (value.trim().length < 1) {
-          throw new Error('Post must be at least one character long.');
+          throw new Error('Reply must be at least one character long.');
         }
       },
     },

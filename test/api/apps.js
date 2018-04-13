@@ -20,6 +20,8 @@ describe('Apps', () => {
         keywords: 'some,really,great,keywords',
         website: 'http://www.website.com/',
         contentRating: '4+',
+        appleCategory: 'Social Networking',
+        googleCategory: 'Business',
         apnsSnsArn: 'arn:aws:sns:us-west-2:026971357:app/APNS/production-apns-app-com.fanapptic.deploymentTestApp',
         gcmSnsArn: 'arn:aws:sns:us-west-2:02697123357:app/GCM/production-gcm-app-com.fanapptic.deploymentTestApp',
         config: {
@@ -63,6 +65,8 @@ describe('Apps', () => {
           response.body.keywords.should.equal(fields.keywords);
           response.body.website.should.equal(fields.website);
           response.body.contentRating.should.equal(fields.contentRating);
+          response.body.appleCategory.should.equal(fields.appleCategory);
+          response.body.googleCategory.should.equal(fields.googleCategory);
           response.body.apnsSnsArn.should.equal(fields.apnsSnsArn);
           response.body.gcmSnsArn.should.equal(fields.gcmSnsArn);
           response.body.config.global.fontFamily.value.should.equal(fields.config.global.fontFamily);

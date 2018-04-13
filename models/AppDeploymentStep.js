@@ -15,7 +15,7 @@ const AppDeploymentStep = database.define('appDeploymentStep', {
     allowNull: false,
   },
   platform: {
-    type: Sequelize.ENUM(...platforms),
+    type: Sequelize.STRING,
     validate: {
       isIn: {
         args: [platforms],

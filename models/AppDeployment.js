@@ -25,7 +25,7 @@ const AppDeploymentModel = database.define('appDeployment', {
     defaultValue: appConfig.version,
   },
   type: {
-    type: Sequelize.ENUM(...types),
+    type: Sequelize.STRING,
     validate: {
       isIn: {
         args: [types],
@@ -34,7 +34,7 @@ const AppDeploymentModel = database.define('appDeployment', {
     },
   },
   status: {
-    type: Sequelize.ENUM(...statuses),
+    type: Sequelize.STRING,
     validate: {
       isIn: {
         args: [statuses],

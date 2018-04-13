@@ -23,7 +23,7 @@ const UserAgreementModel = database.define('userAgreement', {
     allowNull: false,
   },
   agreement: {
-    type: Sequelize.ENUM(...agreements),
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       isIn: {

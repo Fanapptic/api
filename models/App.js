@@ -183,7 +183,8 @@ AppModel.prototype.generateChecklist = function() {
   // Branding & Marketing
   if (this.name && this.displayName && this.subtitle &&
       this.description && this.keywords && this.icons &&
-      this.website && this.contentRating && this.config) {
+      this.website && this.contentRating && this.appleCategory &&
+      this.googleCategory && this.config) {
     brandingMarketing.completed = true;
   }
 

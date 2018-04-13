@@ -22,10 +22,10 @@ const AppDeviceModel = database.define('appDevice', {
   apnsToken: {
     type: Sequelize.STRING,
   },
-  gcmRegistrationId: {
+  apnsSnsArn: {
     type: Sequelize.STRING,
   },
-  apnsSnsArn: {
+  gcmRegistrationId: {
     type: Sequelize.STRING,
   },
   gcmSnsArn: {

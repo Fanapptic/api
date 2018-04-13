@@ -125,6 +125,7 @@ const AppModel = database.define('app', {
         msg: 'The apple category provided is invalid.',
       },
     },
+    defaultValue: 'Entertainment',
   },
   googleCategory: {
     type: Sequelize.STRING,
@@ -132,6 +133,7 @@ const AppModel = database.define('app', {
       args: [googleConfig.categories],
       msg: 'The google category provided is invalid.',
     },
+    defaultValue: 'Entertainment',
   },
   apnsSnsArn: {
     type: Sequelize.STRING,
@@ -349,6 +351,8 @@ AppModel.prototype._generateSnapshot = function() {
       icons: this.icons,
       website: this.website,
       contentRating: this.contentRating,
+      appleCategory: this.appleCategory,
+      googleCategory: this.googleCategory,
       apnsSnsArn: this.apnsSnsArn,
       gcmSnsArn: this.gcmSnsArn,
       packagedConfig: app.exportPackagedConfig(),

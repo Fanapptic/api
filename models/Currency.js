@@ -47,7 +47,7 @@ const CurrencyModel = database.define('currency', {
  * Instance Hooks
  */
 
-CurrencyModel.hook('afterSync', function() {
+CurrencyModel.afterSync(function() {
   return this.count().then(currenciesCount => {
     if (currenciesCount === 0) {
       this.bulkCreate(currencies);

@@ -1,3 +1,5 @@
+const aws = require('aws-sdk');
+const AppModel = rootRequire('/models/App');
 const platforms = ['android', 'ios'];
 
 /*
@@ -45,6 +47,45 @@ const AppDeviceModel = database.define('appDevice', {
     },
   },
 });
+
+/*
+ * Instance Hooks
+ */
+
+AppDeviceModel.beforeCreate(setPlatformArn);
+AppDeviceModel.beforeUpdate(setPlatformArn);
+
+function setPlatformArn(instance) {
+  if (!instance.apnsToken && !instance.gcmRegistrationId) {
+    return;
+  }
+
+  return AppModel.find({ where: { id: instance.appId } }).then(app => {
+    const sns = new aws.SNS();
+    let snsPromises = [];
+
+    if (app.apnsSnsArn && instance.apnsToken && instance.changed('apnsToken')) {
+      snsPromises.push(sns.createPlatformEndpoint({
+        Token: instance.apnsToken,
+        PlatformApplicationArn: app.apnsSnsArn,
+      }).promise().then(result => {
+        console.log(result);
+        instance.apnsSnsArn = result.EndpointArn;
+      }));
+    }
+
+    if (app.gcmSnsArn && instance.gcmRegistrationId && instance.changed('gcmRegistrationId')) {
+      snsPromises.push(sns.createPlatformEndpoint({
+        Token: instance.gcmRegistrationId,
+        PlatformApplicationArn: app.gcmSnsArn,
+      }).promise().then(result => {
+        instance.gcmSnsArn = result.EndpointArn;
+      }));
+    }
+
+    return Promise.all(snsPromises);
+  });
+}
 
 /*
  * Export

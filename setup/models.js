@@ -60,4 +60,4 @@ appModules.moduleNames.forEach(moduleName => {
  * Export
  */
 
-module.exports = database.sync({force: true}); // DON'T YOU EVER FUCKING USE FORCE HERE.
+module.exports = database.sync(); // DON'T YOU EVER FUCKING USE FORCE HERE.

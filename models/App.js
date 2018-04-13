@@ -10,6 +10,8 @@ const UserAgreementModel = rootRequire('/models/UserAgreement');
 const Snapshot = rootRequire('/libs/App/Snapshot');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
+const appleConfig = rootRequire('/config/apple');
+const googleConfig = rootRequire('/config/google');
 const contentRatings = ['4+', '9+', '12+', '17+'];
 
 /*
@@ -107,12 +109,28 @@ const AppModel = database.define('app', {
     },
   },
   contentRating: {
-    type: Sequelize.ENUM(...contentRatings),
+    type: Sequelize.STRING,
     validate: {
       isIn: {
         args: [contentRatings],
         msg: 'The content rating provided is invalid.',
       },
+    },
+  },
+  appleCategory: {
+    type: Sequelize.STRING,
+    validate: {
+      isIn: {
+        args: [appleConfig.categories],
+        msg: 'The apple category provided is invalid.',
+      },
+    },
+  },
+  googleCategory: {
+    type: Sequelize.STRING,
+    isIn: {
+      args: [googleConfig.categories],
+      msg: 'The google category provided is invalid.',
     },
   },
   apnsSnsArn: {

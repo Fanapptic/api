@@ -41,7 +41,7 @@ const AppModel = database.define('app', {
     },
   },
   name: {
-    type: Sequelize.STRING(30),
+    type: Sequelize.STRING,
     validate: {
       max: {
         args: 30,
@@ -57,10 +57,9 @@ const AppModel = database.define('app', {
         msg: 'Display name cannot exceed a total of 11 characters.',
       },
     },
-    defaultValue: 'My App',
   },
   subtitle: {
-    type: Sequelize.STRING(80),
+    type: Sequelize.STRING,
     validate: {
       max: {
         args: 80,
@@ -78,7 +77,7 @@ const AppModel = database.define('app', {
     },
   },
   keywords: {
-    type: Sequelize.STRING(100),
+    type: Sequelize.STRING,
     validate: {
       max: {
         args: 100,

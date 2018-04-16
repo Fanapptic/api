@@ -69,7 +69,6 @@ function setPlatformArn(instance) {
         Token: instance.apnsToken,
         PlatformApplicationArn: app.apnsSnsArn,
       }).promise().then(result => {
-        console.log(result);
         instance.apnsSnsArn = result.EndpointArn;
       }));
     }

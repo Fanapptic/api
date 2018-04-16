@@ -37,6 +37,7 @@ AppModuleModel.hasMany(AppNotificationModel);
 AppModuleProviderModel.hasMany(AppModuleDataModel);
 AppDeviceModel.hasMany(AppDeviceSessionModel);
 AppDeviceModel.hasMany(AppNotificationModel);
+AppDeviceSessionModel.belongsTo(AppDeviceModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);

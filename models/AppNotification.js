@@ -1,3 +1,6 @@
+const AppDeviceModel = rootRequire('/models/AppDevice');
+const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
+
 /*
  * Model Definition
  */
@@ -44,7 +47,55 @@ const AppNotificationModel = database.define('appNotification', {
   },
 });
 
-// create hook to send push?
+/*
+ * Instance Hooks
+ */
+
+AppNotificationModel.afterCreate(instance => {
+  if (instance.appDeviceId) {
+    return AppDeviceModel.find({
+      where: {
+        $and: {
+          id: instance.appDeviceId,
+          $or: [
+            { apnsSnsArn: { $ne: null } },
+            { gcmSnsArn: { $ne: null } },
+          ],
+        },
+      },
+    }).then(appDevice => {
+      appDevice.sendPushNotification(instance);
+    });
+  }
+
+  if (instance.networkUserId) {
+    return AppDeviceSessionModel.findAll({
+      where: {
+        networkUserId: 1,
+        startedAt: {
+          $eq: database.literal('(' +
+            'SELECT MAX(`startedAt`)' +
+            'FROM `appDeviceSessions` ' +
+            'WHERE `appDeviceId` = `appDeviceSession`.`appDeviceId`' +
+          ')'),
+        },
+      },
+      include: {
+        model: AppDeviceModel,
+        where: {
+          $or: [
+            { apnsSnsArn: { $ne: null } },
+            { gcmSnsArn: { $ne: null } },
+          ],
+        },
+      },
+    }).then(appDeviceSessions => {
+      appDeviceSessions.forEach(appDeviceSession => {
+        appDeviceSession.appDevice.sendPushNotification(instance);
+      });
+    });
+  }
+});
 
 /*
  * Export

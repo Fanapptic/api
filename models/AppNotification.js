@@ -51,7 +51,12 @@ const AppNotificationModel = database.define('appNotification', {
  * Instance Hooks
  */
 
-AppNotificationModel.afterCreate(instance => {
+AppNotificationModel.afterCreate(afterCreate);
+AppNotificationModel.afterBulkCreate(instances => {
+  instances.forEach(instance => afterCreate(instance));
+});
+
+function afterCreate(instance) {
   if (instance.appDeviceId) {
     return AppDeviceModel.find({
       where: {
@@ -64,7 +69,9 @@ AppNotificationModel.afterCreate(instance => {
         },
       },
     }).then(appDevice => {
-      appDevice.sendPushNotification(instance);
+      if (appDevice) {
+        appDevice.sendPushNotification(instance);
+      }
     });
   }
 
@@ -95,7 +102,7 @@ AppNotificationModel.afterCreate(instance => {
       });
     });
   }
-});
+}
 
 /*
  * Export

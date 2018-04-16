@@ -87,6 +87,50 @@ function setPlatformArn(instance) {
 }
 
 /*
+ * Instance Methods / Overrides
+ */
+
+AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
+  if (!this.apnsSnsArn && !this.gcmSnsArn) {
+    return;
+  }
+
+  const sns = new aws.SNS();
+
+  if (this.apnsSnsArn) {
+    sns.publish({
+      Message: JSON.stringify({
+        APNS: {
+          aps: {
+            alert: appNotification.content,
+            notification: appNotification,
+          },
+        },
+      }),
+      TargetArn: this.apnsSnsArn,
+      MessageStructure: 'json',
+    });
+  }
+
+  if (this.gcmSnsArn) {
+    // TODO: Not sure what the correct usage of GCM params is to send notification &
+    // data to the android apps..
+/*    sns.publish({
+      Message: JSON.stringify({
+        GCM: {
+          notification: {
+            message: appNotification.content,
+            notification: appNotification,
+          },
+        },
+      }),
+      TargetArn: this.gcmSnsArn,
+      MessageStructure: 'json',
+    });*/
+  }
+};
+
+/*
  * Export
  */
 

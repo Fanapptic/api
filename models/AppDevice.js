@@ -16,6 +16,9 @@ const AppDeviceModel = database.define('appDevice', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  networkUserId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   accessToken: {
     type: Sequelize.UUID,
     unique: true,

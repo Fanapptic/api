@@ -57,51 +57,22 @@ AppNotificationModel.afterBulkCreate(instances => {
 });
 
 function afterCreate(instance) {
-  if (instance.appDeviceId) {
-    return AppDeviceModel.find({
-      where: {
-        $and: {
-          id: instance.appDeviceId,
-          $or: [
-            { apnsSnsArn: { $ne: null } },
-            { gcmSnsArn: { $ne: null } },
-          ],
-        },
-      },
-    }).then(appDevice => {
-      if (appDevice) {
-        appDevice.sendPushNotification(instance);
-      }
-    });
-  }
+  let where = {
+    $and: {
+      appDeviceId: (instance.appDeviceId) ? instance.appDeviceId : null,
+      networkUserId: (instance.networkUserId) ? instance.networkUserId : null,
+      $or: [
+        { apnsSnsArn: { $ne: null } },
+        { gcmSnsArn: { $ne: null } },
+      ],
+    },
+  };
 
-  if (instance.networkUserId) {
-    return AppDeviceSessionModel.findAll({
-      where: {
-        networkUserId: 1,
-        startedAt: {
-          $eq: database.literal('(' +
-            'SELECT MAX(`startedAt`)' +
-            'FROM `appDeviceSessions` ' +
-            'WHERE `appDeviceId` = `appDeviceSession`.`appDeviceId`' +
-          ')'),
-        },
-      },
-      include: {
-        model: AppDeviceModel,
-        where: {
-          $or: [
-            { apnsSnsArn: { $ne: null } },
-            { gcmSnsArn: { $ne: null } },
-          ],
-        },
-      },
-    }).then(appDeviceSessions => {
-      appDeviceSessions.forEach(appDeviceSession => {
-        appDeviceSession.appDevice.sendPushNotification(instance);
-      });
+  AppDeviceModel.findAll({ where }).then(appDevices => {
+    appDevices.forEach(appDevice => {
+      appDevice.sendPushNotification(instance);
     });
-  }
+  });
 }
 
 /*

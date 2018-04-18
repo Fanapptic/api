@@ -59,7 +59,7 @@ function afterCreate(instance) {
   AppDeviceModel.findAll({
     where: {
       $and: {
-        appDeviceId: (instance.appDeviceId) ? instance.appDeviceId : null,
+        id: (instance.appDeviceId) ? instance.appDeviceId : null,
         networkUserId: (instance.networkUserId) ? instance.networkUserId : null,
         $or: [
           { apnsSnsArn: { $ne: null } },

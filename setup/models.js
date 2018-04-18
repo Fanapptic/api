@@ -39,6 +39,7 @@ AppDeviceModel.hasMany(AppDeviceSessionModel);
 AppDeviceModel.hasMany(AppNotificationModel);
 
 CurrencyModel.hasMany(AppRevenueModel);
+NetworkUserModel.hasMany(AppDeviceModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);
 NetworkUserModel.hasMany(AppNotificationModel);
 UserModel.hasMany(AppModel);

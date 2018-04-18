@@ -16,6 +16,9 @@ const AppDeviceModel = database.define('appDevice', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  networkUserId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   accessToken: {
     type: Sequelize.UUID,
     unique: true,
@@ -32,6 +35,9 @@ const AppDeviceModel = database.define('appDevice', {
   },
   gcmSnsArn: {
     type: Sequelize.STRING,
+  },
+  location: {
+    type: Sequelize.JSON,
   },
   deviceDetails: {
     type: Sequelize.JSON,
@@ -69,7 +75,6 @@ function setPlatformArn(instance) {
         Token: instance.apnsToken,
         PlatformApplicationArn: app.apnsSnsArn,
       }).promise().then(result => {
-        console.log(result);
         instance.apnsSnsArn = result.EndpointArn;
       }));
     }
@@ -86,6 +91,57 @@ function setPlatformArn(instance) {
     return Promise.all(snsPromises);
   });
 }
+
+/*
+ * Instance Methods / Overrides
+ */
+
+AppDeviceModel.prototype.syncToSession = function(appDeviceSession) {
+  this.networkUserId = appDeviceSession.networkUserId;
+  this.location = appDeviceSession.location;
+
+  return this.save();
+};
+
+AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
+  if (!this.apnsSnsArn && !this.gcmSnsArn) {
+    return;
+  }
+
+  const sns = new aws.SNS();
+
+  if (this.apnsSnsArn) {
+    sns.publish({
+      Message: JSON.stringify({
+        APNS: {
+          aps: {
+            alert: appNotification.content,
+            notification: appNotification,
+          },
+        },
+      }),
+      TargetArn: this.apnsSnsArn,
+      MessageStructure: 'json',
+    });
+  }
+
+  if (this.gcmSnsArn) {
+    // TODO: Not sure what the correct usage of GCM params is to send notification &
+    // data to the android apps..
+/*    sns.publish({
+      Message: JSON.stringify({
+        GCM: {
+          notification: {
+            message: appNotification.content,
+            notification: appNotification,
+          },
+        },
+      }),
+      TargetArn: this.gcmSnsArn,
+      MessageStructure: 'json',
+    });*/
+  }
+};
 
 /*
  * Export

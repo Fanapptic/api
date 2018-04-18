@@ -1,3 +1,5 @@
+const AppDeviceModel = rootRequire('/models/AppDevice');
+
 /*
  * Model Definition
  */
@@ -44,7 +46,33 @@ const AppNotificationModel = database.define('appNotification', {
   },
 });
 
-// create hook to send push?
+/*
+ * Instance Hooks
+ */
+
+AppNotificationModel.afterCreate(afterCreate);
+AppNotificationModel.afterBulkCreate(instances => {
+  instances.forEach(instance => afterCreate(instance));
+});
+
+function afterCreate(instance) {
+  AppDeviceModel.findAll({
+    where: {
+      $and: {
+        appDeviceId: (instance.appDeviceId) ? instance.appDeviceId : null,
+        networkUserId: (instance.networkUserId) ? instance.networkUserId : null,
+        $or: [
+          { apnsSnsArn: { $ne: null } },
+          { gcmSnsArn: { $ne: null } },
+        ],
+      },
+    },
+  }).then(appDevices => {
+    appDevices.forEach(appDevice => {
+      appDevice.sendPushNotification(instance);
+    });
+  });
+}
 
 /*
  * Export

@@ -4,7 +4,6 @@
 
 const AppNotificationModel = rootRequire('/models/AppNotification');
 const AppDeviceModel = rootRequire('/models/AppDevice');
-const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appDeviceAuthorizeOptional = rootRequire('/middlewares/apps/devices/authorizeOptional');
@@ -63,46 +62,22 @@ router.post('/', userAuthorize);
 router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
-  const notification = {
-    appId,
-    moduleRelativeUrl: request.body.moduleRelativeUrl,
-    externalUrl: request.body.externalUrl,
-    parameters: request.body.parameters,
-    previewImageUrl: request.body.previewImageUrl,
-    content: request.body.content,
-  };
 
-  AppDeviceModel.findAll({
-    where: { appId },
-    include: {
-      model: AppDeviceSessionModel,
-      where: {
-        networkUserId: { $ne: null },
-      },
-      required: false,
-    },
-  }).then(appDevices => {
-    let appDeviceNotifications = {};
-    let networkUserNotifications = {};
+  AppDeviceModel.findAll({ where: { appId } }).then(appDevices => {
+    let bulkNotifications = [];
 
     appDevices.forEach(appDevice => {
-      appDeviceNotifications[appDevice.id] = Object.assign({
-        appDeviceId: appDevice.id,
-      }, notification);
-
-      if (appDevice.appDeviceSessions) {
-        appDevice.appDeviceSessions.forEach(appDeviceSession => {
-          networkUserNotifications[appDeviceSession.networkUserId] = Object.assign({
-            networkUserId: appDeviceSession.networkUserId,
-          }, notification);
-        });
-      }
+      bulkNotifications.push({
+        appId,
+        appDeviceId: (!appDevice.networkUserId) ? appDevice.id : null,
+        networkUserId: (appDevice.networkUserId) ? appDevice.networkUserId : null,
+        moduleRelativeUrl: request.body.moduleRelativeUrl,
+        externalUrl: request.body.externalUrl,
+        parameters: request.body.parameters,
+        previewImageUrl: request.body.previewImageUrl,
+        content: request.body.content,
+      });
     });
-
-    appDeviceNotifications = Object.values(appDeviceNotifications);
-    networkUserNotifications = Object.values(networkUserNotifications);
-
-    const bulkNotifications = appDeviceNotifications.concat(networkUserNotifications);
 
     return AppNotificationModel.bulkCreate(bulkNotifications);
   }).then(() => {

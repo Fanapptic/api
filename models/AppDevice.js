@@ -36,6 +36,9 @@ const AppDeviceModel = database.define('appDevice', {
   gcmSnsArn: {
     type: Sequelize.STRING,
   },
+  location: {
+    type: Sequelize.JSON,
+  },
   deviceDetails: {
     type: Sequelize.JSON,
   },

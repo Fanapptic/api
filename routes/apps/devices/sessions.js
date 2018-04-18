@@ -45,7 +45,7 @@ router.patch('/', (request, response, next) => {
       throw new Error('The ended app device session cannot be modified.');
     }
 
-    appDeviceSession.networkUserId = request.networkUser.id || appDeviceSession.networkUserId;
+    appDeviceSession.networkUserId = request.networkUser.id || null;
     appDeviceSession.location = request.body.location || appDeviceSession.location;
     appDeviceSession.endedAt = (request.body.ended) ? new Date() : appDeviceSession.endedAt;
 

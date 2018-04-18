@@ -56,18 +56,22 @@ AppNotificationModel.afterBulkCreate(instances => {
 });
 
 function afterCreate(instance) {
-  AppDeviceModel.findAll({
-    where: {
-      $and: {
-        id: (instance.appDeviceId) ? instance.appDeviceId : null,
-        networkUserId: (instance.networkUserId) ? instance.networkUserId : null,
-        $or: [
-          { apnsSnsArn: { $ne: null } },
-          { gcmSnsArn: { $ne: null } },
-        ],
-      },
+  let where = {
+    $and: {
+      $or: [
+        { apnsSnsArn: { $ne: null } },
+        { gcmSnsArn: { $ne: null } },
+      ],
     },
-  }).then(appDevices => {
+  };
+
+  if (instance.networkUserId) {
+    where.$and.networkUserId = instance.networkUserId;
+  } else {
+    where.$and.id = instance.appDeviceId;
+  }
+
+  AppDeviceModel.findAll({ where }).then(appDevices => {
     console.log('SENDING NOTIFICATION TO...');
     console.log(appDevices);
     appDevices.forEach(appDevice => {

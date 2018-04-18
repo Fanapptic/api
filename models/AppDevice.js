@@ -122,7 +122,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
       }),
       TargetArn: this.apnsSnsArn,
       MessageStructure: 'json',
-    });
+    }).promise().catch(err => console.log(err));
   }
 
   if (this.gcmSnsArn) {

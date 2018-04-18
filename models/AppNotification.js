@@ -68,6 +68,8 @@ function afterCreate(instance) {
       },
     },
   }).then(appDevices => {
+    console.log('SENDING NOTIFICATION TO...');
+    console.log(appDevices);
     appDevices.forEach(appDevice => {
       appDevice.sendPushNotification(instance);
     });

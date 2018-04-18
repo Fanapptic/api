@@ -117,8 +117,9 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
         APNS: JSON.stringify({
           aps: {
             alert: appNotification.content,
-            notification: appNotification,
+            sound: 'default',
           },
+          notification: appNotification,
         }),
       }),
       TargetArn: this.apnsSnsArn,

@@ -113,6 +113,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   if (this.apnsSnsArn) {
     sns.publish({
       Message: JSON.stringify({
+        default: appNotification.content,
         APNS: {
           aps: {
             alert: appNotification.content,
@@ -130,6 +131,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
     // data to the android apps..
 /*    sns.publish({
       Message: JSON.stringify({
+        default: appNotification.content,
         GCM: {
           notification: {
             message: appNotification.content,

@@ -114,12 +114,12 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
     sns.publish({
       Message: JSON.stringify({
         default: appNotification.content,
-        APNS: {
+        APNS: JSON.stringify({
           aps: {
             alert: appNotification.content,
             notification: appNotification,
           },
-        },
+        }),
       }),
       TargetArn: this.apnsSnsArn,
       MessageStructure: 'json',
@@ -132,12 +132,12 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
 /*    sns.publish({
       Message: JSON.stringify({
         default: appNotification.content,
-        GCM: {
+        GCM: JSON.stringify({
           notification: {
             message: appNotification.content,
             notification: appNotification,
           },
-        },
+        }),
       }),
       TargetArn: this.gcmSnsArn,
       MessageStructure: 'json',

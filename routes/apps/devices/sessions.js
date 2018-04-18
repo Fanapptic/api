@@ -17,11 +17,17 @@ const router = express.Router({
 router.post('/', appDeviceAuthorize);
 router.post('/', networkUserAuthorizeOptional);
 router.post('/', (request, response, next) => {
+  let appDeviceSession = null;
+
   return AppDeviceSessionModel.create({
     appDeviceId: request.appDevice.id,
     networkUserId: request.networkUser.id,
     location: request.body.location,
-  }).then(appDeviceSession => {
+  }).then(_appDeviceSession => {
+    appDeviceSession = _appDeviceSession;
+
+    return request.appDevice.syncToSession(appDeviceSession);
+  }).then(() => {
     response.success(appDeviceSession);
   }).catch(next);
 });
@@ -36,7 +42,11 @@ router.patch('/', (request, response, next) => {
   const appDeviceId = request.appDevice.id;
   const { appDeviceSessionId } = request.params;
 
-  AppDeviceSessionModel.find({ where: { id: appDeviceSessionId, appDeviceId } }).then(appDeviceSession => {
+  let appDeviceSession = null;
+
+  AppDeviceSessionModel.find({ where: { id: appDeviceSessionId, appDeviceId } }).then(_appDeviceSession => {
+    appDeviceSession = _appDeviceSession;
+
     if (!appDeviceSession) {
       throw new Error('The app device session does not exist.');
     }
@@ -49,8 +59,10 @@ router.patch('/', (request, response, next) => {
     appDeviceSession.location = request.body.location || appDeviceSession.location;
     appDeviceSession.endedAt = (request.body.ended) ? new Date() : appDeviceSession.endedAt;
 
-    return appDeviceSession.save();
-  }).then(appDeviceSession => {
+    return _appDeviceSession.save();
+  }).then(() => {
+    return request.appDevice.syncToSession(appDeviceSession);
+  }).then(() => {
     response.success(appDeviceSession);
   }).catch(next);
 });

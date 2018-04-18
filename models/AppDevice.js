@@ -96,6 +96,13 @@ function setPlatformArn(instance) {
  * Instance Methods / Overrides
  */
 
+AppDeviceModel.prototype.syncToSession = function(appDeviceSession) {
+  this.networkUserId = appDeviceSession.networkUserId;
+  this.location = appDeviceSession.location;
+
+  return this.save();
+};
+
 AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   if (!this.apnsSnsArn && !this.gcmSnsArn) {
     return;

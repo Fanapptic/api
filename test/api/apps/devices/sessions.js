@@ -4,7 +4,7 @@ describe('App Device Sessions', () => {
    */
 
   describe('POST /apps/{appId}/devices/{appDeviceId}/sessions', () => {
-    it('200s with created app device session object owned by app device', done => {
+    it('200s with created app device session object owned by app device and updates app device', done => {
       const fields = {
         location: {
           as: 'AS54858 Condointernet.net',
@@ -29,13 +29,23 @@ describe('App Device Sessions', () => {
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .set('X-Network-User-Access-Token', testNetworkUser.accessToken)
         .send(fields)
-        .end((error, response) => {
+        .then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
           response.body.appDeviceId.should.equal(testAppDevice.id);
+          response.body.networkUserId.should.equal(testNetworkUser.id);
           response.body.location.should.deep.equal(fields.location);
           response.body.startedAt.should.be.a('string');
+
+          return chai.request(server)
+            .get(`/apps/${appId}/devices/${testAppDevice.id}`)
+            .set('X-Access-Token', testUser.accessToken);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.networkUserId.should.equal(testNetworkUser.id);
+          response.body.location.should.deep.equal(fields.location);
           done();
         });
     });
@@ -61,7 +71,7 @@ describe('App Device Sessions', () => {
    */
 
   describe('PATCH /apps/{appId}/devices/{appDeviceId}/sessions/{appDeviceSessionId}', () => {
-    it('200s with updated app device session object', done => {
+    it('200s with updated app device session object and updates app device', done => {
       const fields = {
         location: {
           zip: '98466',
@@ -72,10 +82,19 @@ describe('App Device Sessions', () => {
         .patch(`/apps/${appId}/devices/${testAppDevice.id}/sessions/1`)
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .send(fields)
-        .end((error, response) => {
+        .then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
+          response.body.location.should.deep.equal(fields.location);
+
+          return chai.request(server)
+            .get(`/apps/${appId}/devices/${testAppDevice.id}`)
+            .set('X-Access-Token', testUser.accessToken);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          chai.expect(response.body.networkUserId).to.be.null;
           response.body.location.should.deep.equal(fields.location);
           done();
         });

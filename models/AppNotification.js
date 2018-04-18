@@ -1,5 +1,4 @@
 const AppDeviceModel = rootRequire('/models/AppDevice');
-const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
 
 /*
  * Model Definition

@@ -40,6 +40,7 @@
     "express": "^4.16.2",
     "express-fileupload": "^0.1.4",
     "express-query-boolean": "^1.0.0",
+    "file-type": "^7.6.0",
     "hellosign-sdk": "^1.1.14",
     "joi": "^10.4.2",
     "lodash": "^4.17.4",

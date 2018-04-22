@@ -21,6 +21,7 @@ const AppDeviceModel = rootRequire('/models/AppDevice');
 const ArticleModel = rootRequire('/models/Article');
 const CurrencyModel = rootRequire('/models/Currency');
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const NetworkUserMediaModel = rootRequire('/models/NetworkUserMedia');
 const UserModel = rootRequire('/models/User');
 const UserAgreementModel = rootRequire('/models/UserAgreement');
 
@@ -42,6 +43,7 @@ CurrencyModel.hasMany(AppRevenueModel);
 NetworkUserModel.hasMany(AppDeviceModel);
 NetworkUserModel.hasMany(AppDeviceSessionModel);
 NetworkUserModel.hasMany(AppNotificationModel);
+NetworkUserModel.hasMany(NetworkUserMediaModel);
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserAgreementModel);
 

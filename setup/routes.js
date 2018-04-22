@@ -14,6 +14,7 @@ const appDeviceSessionsRouter = rootRequire('/routes/apps/devices/sessions');
 const appDevicesRouter = rootRequire('/routes/apps/devices');
 const articlesRouter = rootRequire('/routes/articles');
 const networkUsersRouter = rootRequire('/routes/network/users');
+const networkUserMediaRouter = rootRequire('/routes/network/users/media');
 const healthRouter = rootRequire('/routes/health');
 const modulesRouter = rootRequire('/routes/modules');
 const oauthTwitterAuthorizationsRouter = rootRequire('/routes/oauth/twitter/authorizations');
@@ -41,6 +42,7 @@ module.exports = app => {
   app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);
   app.use('/articles/:articleId?', articlesRouter);
   app.use('/networks/fanapptic/users/:networkUserId?', networkUsersRouter);
+  app.use('/networks/fanapptic/users/:networkUserId/media/:networkUserMediaId?', networkUserMediaRouter);
   app.use('/health', healthRouter);
   app.use('/modules/:name?', modulesRouter);
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);

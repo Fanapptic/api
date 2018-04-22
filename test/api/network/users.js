@@ -1,7 +1,3 @@
-/*
- * Route: /networks/fanapptic/users
- */
-
 describe('Network Users', () => {
   /*
    * POST

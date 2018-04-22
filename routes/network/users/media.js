@@ -6,7 +6,7 @@ const aws = require('aws-sdk');
 const fileUpload = require('express-fileupload');
 const fileType = require('file-type');
 const uuidV1 = require('uuid/v1');
-const NetworkUserMediaModel = rootRequire('/models/networkUserMedia');
+const NetworkUserMediaModel = rootRequire('/models/NetworkUserMedia');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
 const awsConfig = rootRequire('/config/aws');
 

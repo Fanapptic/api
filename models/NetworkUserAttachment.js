@@ -2,7 +2,7 @@
  * Model Definition
  */
 
-const NetworkUserMediaModel = database.define('networkUserMedia', {
+const NetworkUserAttachmentModel = database.define('networkUserAttachment', {
   id: {
     type:Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -11,11 +11,20 @@ const NetworkUserMediaModel = database.define('networkUserMedia', {
   networkUserId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
+  contentType: {
+    type: Sequelize.STRING,
+  },
   url: {
     type: Sequelize.STRING,
   },
-  contentType: {
+  previewImageUrl: {
     type: Sequelize.STRING,
+  },
+  title: {
+    type: Sequelize.TEXT,
+  },
+  description: {
+    type: Sequelize.TEXT,
   },
 });
 
@@ -23,4 +32,4 @@ const NetworkUserMediaModel = database.define('networkUserMedia', {
  * Export
  */
 
-module.exports = NetworkUserMediaModel;
+module.exports = NetworkUserAttachmentModel;

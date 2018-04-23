@@ -9,6 +9,7 @@ module.exports = environment => {
     it('200s with created post comment reply owned by post comment', done => {
       const fields = {
         content: 'This is a reply to an awesome comment!',
+        networkUserAttachmentId: environment.networkUserAttachment.id,
       };
 
       chai.request(server)

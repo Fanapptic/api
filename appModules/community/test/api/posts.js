@@ -6,6 +6,7 @@ module.exports = environment => {
   describe('POST {baseUrl}/posts', () => {
     it('200s with created post owned by app module with initial upvote', done => {
       const fields = {
+        networkUserAttachmentId: environment.networkUserAttachment.id,
         content: 'This is an awesome test post!',
       };
 

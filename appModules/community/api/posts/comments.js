@@ -106,7 +106,7 @@ router.post('/', postAuthorize);
 router.post('/', (request, response, next) => {
   const { networkUser } = request;
   const { appId, appModuleId, postId } = request.params;
-  const { content } = request.body;
+  const { networkUserAttachmentId, content } = request.body;
   const networkUserId = networkUser.id;
   const postNetworkUserId = request.post.networkUserId;
   const totalUpvotes = 1;
@@ -114,7 +114,7 @@ router.post('/', (request, response, next) => {
   let postComment = null;
 
   // TODO: use transaction
-  PostCommentModel.create({ postId, networkUserId, content, totalUpvotes }).then(_postComment => {
+  PostCommentModel.create({ postId, networkUserId, networkUserAttachmentId, content, totalUpvotes }).then(_postComment => {
     postComment = _postComment;
 
     if (networkUserId !== postNetworkUserId) {

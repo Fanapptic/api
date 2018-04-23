@@ -13,5 +13,6 @@
       "testAppModule": true,
       "testAppModuleProvider": true,
       "testNetworkUser": true,
+      "testNetworkUserAttachment": true,
     },
 }

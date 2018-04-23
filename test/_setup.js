@@ -74,6 +74,8 @@ global.testNetworkUser = {
   facebookAccessToken: 'EAAFfFpdEd8UBAJU0KZBELCD5zry7kxySSuG8sm8F0aLgB6xdXRjqil9EFnqmtZCFSqIWAGglkmPYFpZCZCs8Bn9KNdXLy6covzFweZCSfymqZAJUtGjor3YE4RDVt4r7qochm3zp78gBUp2ZAXJU950z9RPbOKkUjZCZCZCv0hGbZBCV0Illm9pPvv1',
 };
 
+global.testNetworkUserAttachment = {};
+
 chai.should();
 chai.use(chaiHttp);
 
@@ -228,6 +230,14 @@ before(done => {
         .send(testNetworkUser);
     }).then(response => {
       Object.assign(testNetworkUser, response.body);
+      fatLog('Creating global test network user attachment in DB...');
+
+      return chai.request(server)
+        .post('/networks/fanapptic/users/1/attachments')
+        .set('X-Network-User-Access-Token', testNetworkUser.accessToken)
+        .attach('media', fs.readFileSync('./test/video.mp4'), 'media.mp4');
+    }).then(response => {
+      Object.assign(testNetworkUserAttachment, response.body);
       fatLog('Aggregating app module tests...');
 
       return globPromise('appModules/**/test/**/*.js');
@@ -289,6 +299,7 @@ function createAppModuleTestEnvironment(moduleName) {
     appModule: null,
     appModuleApiBaseUrl: null,
     networkUser: testNetworkUser,
+    networkUserAttachment: testNetworkUserAttachment,
     helpers,
   };
 

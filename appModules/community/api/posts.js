@@ -89,13 +89,13 @@ router.post('/', networkUserAuthorize);
 router.post('/', (request, response, next) => {
   const networkUserId = request.networkUser.id;
   const { appModuleId } = request.params;
-  const { content } = request.body;
+  const { networkUserAttachmentId, content } = request.body;
   const totalUpvotes = 1;
 
   let post = null;
 
   // TODO: This should be done as a transaction
-  PostModel.create({ appModuleId, networkUserId, content, totalUpvotes }).then(_post => {
+  PostModel.create({ appModuleId, networkUserId, networkUserAttachmentId, content, totalUpvotes }).then(_post => {
     post = _post;
 
     return PostVoteModel.create({ postId: post.id, networkUserId, vote: 1 });

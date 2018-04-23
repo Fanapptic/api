@@ -16,6 +16,9 @@ const PostCommentReplyModel = database.define('modules_community_postCommentRepl
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  networkUserAttachmentId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   content: {
     type: Sequelize.TEXT,
     allowNull: false,

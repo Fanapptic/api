@@ -3,6 +3,7 @@
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const NetworkUserAttachmentModel = rootRequire('/models/NetworkUserAttachment');
 const PostModel = require('../../models/Post');
 const PostCommentModel = require('../../models/PostComment');
 const PostCommentReplyModel = require('../../models/PostCommentReply');
@@ -47,7 +48,17 @@ router.get('/', (request, response, next) => {
         {
           model: PostCommentReplyModel,
           as: 'replies',
-          include: [ NetworkUserModel ],
+          include: [
+            NetworkUserModel,
+            {
+              model: NetworkUserAttachmentModel,
+              required: false,
+            },
+          ],
+        },
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
         },
       ],
     }).then(postComment => {
@@ -66,7 +77,17 @@ router.get('/', (request, response, next) => {
         {
           model: PostCommentReplyModel,
           as: 'replies',
-          include: [ NetworkUserModel ],
+          include: [
+            NetworkUserModel,
+            {
+              model: NetworkUserAttachmentModel,
+              required: false,
+            },
+          ],
+        },
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
         },
       ],
       order: [['totalUpvotes', 'DESC'], ['createdAt', 'DESC']],

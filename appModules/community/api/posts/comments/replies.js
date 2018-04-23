@@ -3,6 +3,7 @@
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const NetworkUserAttachmentModel = rootRequire('/models/NetworkUserAttachment');
 const PostCommentModel = require('../../../models/PostComment');
 const PostCommentReplyModel = require('../../../models/PostCommentReply');
 const AppNotificationModel = rootRequire('/models/AppNotification');
@@ -26,7 +27,13 @@ router.get('/', (request, response, next) => {
   if (postCommentReplyId) {
     PostCommentReplyModel.find({
       where: { id: postCommentReplyId, postCommentId },
-      include: [ NetworkUserModel ],
+      include: [
+        NetworkUserModel,
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
+        },
+      ],
     }).then(postCommentReply => {
       if (!postCommentReply) {
         throw new Error('The post comment reply does not exist.');
@@ -37,7 +44,13 @@ router.get('/', (request, response, next) => {
   } else {
     PostCommentReplyModel.findAll({
       where: { postCommentId },
-      include: [ NetworkUserModel ],
+      include: [
+        NetworkUserModel,
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
+        },
+      ],
       order: [['createdAt', 'ASC']],
     }).then(postCommentReplies => {
       response.success(postCommentReplies);

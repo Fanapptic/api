@@ -3,6 +3,7 @@
  */
 
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const NetworkUserAttachmentModel = rootRequire('/models/NetworkUserAttachment');
 const PostModel = require('../models/Post');
 const PostVoteModel = require('../models/PostVote');
 const networkUserAuthorize = rootRequire('/middlewares/networks/users/authorize');
@@ -38,7 +39,13 @@ router.get('/', (request, response, next) => {
     PostModel.find({
       attributes,
       where: { id: postId, appModuleId },
-      include: [ NetworkUserModel ],
+      include: [
+        NetworkUserModel,
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
+        },
+      ],
     }).then(post => {
       if (!post) {
         throw new Error('The post does not exist.');
@@ -60,7 +67,13 @@ router.get('/', (request, response, next) => {
     PostModel.findAll({
       attributes,
       where: { appModuleId },
-      include: [ NetworkUserModel ],
+      include: [
+        NetworkUserModel,
+        {
+          model: NetworkUserAttachmentModel,
+          required: false,
+        },
+      ],
       order,
     }).then(posts => {
       response.success(posts);

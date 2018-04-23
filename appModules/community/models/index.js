@@ -1,5 +1,6 @@
 const AppModuleModel = rootRequire('/models/AppModule');
 const NetworkUserModel = rootRequire('/models/NetworkUser');
+const NetworkUserAttachmentModel = rootRequire('/models/NetworkUserAttachment');
 const PostModel = require('./Post');
 const PostReportModel = require('./PostReport');
 const PostCommentModel = require('./PostComment');
@@ -11,8 +12,11 @@ const PostVoteModel = require('./PostVote');
 
 AppModuleModel.hasMany(PostModel);
 PostModel.belongsTo(NetworkUserModel);
+PostModel.belongsTo(NetworkUserAttachmentModel);
 PostCommentModel.belongsTo(NetworkUserModel);
+PostCommentModel.belongsTo(NetworkUserAttachmentModel);
 PostCommentReplyModel.belongsTo(NetworkUserModel);
+PostCommentReplyModel.belongsTo(NetworkUserAttachmentModel);
 PostCommentVoteModel.belongsTo(NetworkUserModel);
 PostVoteModel.belongsTo(NetworkUserModel);
 PostModel.hasMany(PostCommentModel, { as: 'comments', foreignKey: 'postId' });

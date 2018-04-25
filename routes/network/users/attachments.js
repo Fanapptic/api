@@ -62,7 +62,6 @@ router.post('/', (request, response, next) => {
   }
 
   if (url) {
-    url = (!url.includes('www.')) ? 'www.' + url : url;
     url = (!url.includes('http')) ? 'http://' + url : url;
 
     promise = requestPromise.get({

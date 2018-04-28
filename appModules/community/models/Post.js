@@ -21,13 +21,6 @@ const PostModel = database.define('modules_community_post', {
   },
   content: {
     type: Sequelize.TEXT,
-    validate: {
-      isValid(value) {
-        if (value.trim().length < 10) {
-          throw new Error('Post must be at least 10 characters long.');
-        }
-      },
-    },
   },
   totalUpvotes: {
     type: Sequelize.INTEGER(10).UNSIGNED,

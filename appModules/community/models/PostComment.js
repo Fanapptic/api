@@ -21,13 +21,6 @@ const PostCommentModel = database.define('modules_community_postComment', {
   },
   content: {
     type: Sequelize.TEXT,
-    validate: {
-      isValid(value) {
-        if (value.trim().length < 1) {
-          throw new Error('Comment must be at least one character long.');
-        }
-      },
-    },
   },
   totalUpvotes: {
     type: Sequelize.INTEGER(10).UNSIGNED,

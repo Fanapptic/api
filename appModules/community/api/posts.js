@@ -94,7 +94,7 @@ router.post('/', (request, response, next) => {
 
   let post = null;
 
-  if (!networkUserAttachmentId && !content) {
+  if (!networkUserAttachmentId && (!content || !content.trim().length)) {
     throw new Error('networkUserAttachmentId or content must be provided.');
   }
 

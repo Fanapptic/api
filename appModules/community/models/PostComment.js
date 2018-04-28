@@ -21,7 +21,6 @@ const PostCommentModel = database.define('modules_community_postComment', {
   },
   content: {
     type: Sequelize.TEXT,
-    allowNull: false,
     validate: {
       isValid(value) {
         if (value.trim().length < 1) {

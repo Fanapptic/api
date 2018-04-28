@@ -94,6 +94,10 @@ router.post('/', (request, response, next) => {
 
   let post = null;
 
+  if (!networkUserAttachmentId && !content) {
+    throw new Error('networkUserAttachmentId or content must be provided.');
+  }
+
   // TODO: This should be done as a transaction
   PostModel.create({ appModuleId, networkUserId, networkUserAttachmentId, content, totalUpvotes }).then(_post => {
     post = _post;

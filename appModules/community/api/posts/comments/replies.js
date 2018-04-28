@@ -74,6 +74,10 @@ router.post('/', (request, response, next) => {
 
   let postCommentReply = null;
 
+  if (!networkUserAttachmentId && !content) {
+    throw new Error('networkUserAttachmentId or content must be provided.');
+  }
+
   // TODO: use transaction
   PostCommentReplyModel.create({ postCommentId, networkUserId, networkUserAttachmentId, content }).then(_postCommentReply => {
     postCommentReply = _postCommentReply;

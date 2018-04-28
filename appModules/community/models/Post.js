@@ -21,7 +21,6 @@ const PostModel = database.define('modules_community_post', {
   },
   content: {
     type: Sequelize.TEXT,
-    allowNull: false,
     validate: {
       isValid(value) {
         if (value.trim().length < 10) {

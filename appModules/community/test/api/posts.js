@@ -4,9 +4,8 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts', () => {
-    it('200s with created post owned by app module with initial upvote', done => {
+    it('200s with created post owned by app module with initial upvote when passed content', done => {
       const fields = {
-        networkUserAttachmentId: environment.networkUserAttachment.id,
         content: 'This is an awesome test post!',
       };
 
@@ -21,6 +20,36 @@ module.exports = environment => {
           response.body.networkUserId.should.equal(environment.networkUser.id);
           response.body.content.should.equal(fields.content);
           response.body.loggedInNetworkUserVote.should.equal(1);
+          done();
+        });
+    });
+
+    it('200s with created post owned by app module with initial upvote when passed network user attachment', done => {
+      const fields = {
+        networkUserAttachmentId: environment.networkUserAttachment.id,
+      };
+
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.appModuleId.should.equal(environment.appModule.id + '');
+          response.body.networkUserId.should.equal(environment.networkUser.id);
+          response.body.networkUserAttachmentId.should.equal(fields.networkUserAttachmentId);
+          response.body.loggedInNetworkUserVote.should.equal(1);
+          done();
+        });
+    });
+
+    it('400s when not passed content or network user attachment', done => {
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
           done();
         });
     });

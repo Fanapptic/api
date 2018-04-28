@@ -6,10 +6,9 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts/{postId}/comments', () => {
-    it('200s with created post comment owned by post with initial upvote and updates post comments total', done => {
+    it('200s with created post comment owned by post with initial upvote and updates post comments total when passed content', done => {
       const fields = {
         content: 'This is a comment on an awesome post!',
-        networkUserAttachmentId: environment.networkUserAttachment.id,
       };
 
       chai.request(server)
@@ -28,6 +27,41 @@ module.exports = environment => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.totalComments.should.equal(1);
+          done();
+        });
+    });
+
+    it('200s with created post comment owned by post with initial upvote and updates post comments total when passed network user attachment', done => {
+      const fields = {
+        networkUserAttachmentId: environment.networkUserAttachment.id,
+      };
+
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .send(fields)
+        .then(response => {
+          response.body.should.be.an('object');
+          response.body.postId.should.equal('1');
+          response.body.networkUserId.should.equal(environment.networkUser.id);
+          response.body.networkUserAttachmentId.should.equal(fields.networkUserAttachmentId);
+          response.body.loggedInNetworkUserVote.should.equal(1);
+
+          return chai.request(server).get(`${environment.appModuleApiBaseUrl}/posts/1`);
+        }).then(response => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.totalComments.should.equal(2);
+          done();
+        });
+    });
+
+    it('400s when not passed content or network user attachment', done => {
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
           done();
         });
     });
@@ -91,7 +125,7 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.totalComments.should.equal(1); // 1, because POST test also creates a comment.
+          response.body.totalComments.should.equal(2); // 2, because POST test also creates 2 comments.
           done();
         });
     });

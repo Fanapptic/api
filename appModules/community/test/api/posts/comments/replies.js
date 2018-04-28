@@ -6,10 +6,9 @@ module.exports = environment => {
    */
 
   describe('POST {baseUrl}/posts/{postId}/comments/{postCommentId}/replies', () => {
-    it('200s with created post comment reply owned by post comment', done => {
+    it('200s with created post comment reply owned by post comment when passed content', done => {
       const fields = {
         content: 'This is a reply to an awesome comment!',
-        networkUserAttachmentId: environment.networkUserAttachment.id,
       };
 
       chai.request(server)
@@ -22,6 +21,35 @@ module.exports = environment => {
           response.body.postCommentId.should.equal('1');
           response.body.networkUserId.should.equal(environment.networkUser.id);
           response.body.content.should.equal(fields.content);
+          done();
+        });
+    });
+
+    it('200s with created post comment reply owned by post comment when passed network user attachment', done => {
+      const fields = {
+        networkUserAttachmentId: environment.networkUserAttachment.id,
+      };
+
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          response.body.postCommentId.should.equal('1');
+          response.body.networkUserId.should.equal(environment.networkUser.id);
+          response.body.networkUserAttachmentId.should.equal(fields.networkUserAttachmentId);
+          done();
+        });
+    });
+
+    it('400s when not passed content or network user attachment', done => {
+      chai.request(server)
+        .post(`${environment.appModuleApiBaseUrl}/posts/1/comments/1/replies`)
+        .set('X-Network-User-Access-Token', environment.networkUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
           done();
         });
     });
@@ -87,7 +115,7 @@ module.exports = environment => {
         }).then(response => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.totalReplies.should.equal(1); // 1, because POST test also creates a reply.
+          response.body.totalReplies.should.equal(2); // 2, because POST test also creates 2 replies.
           done();
         });
     });

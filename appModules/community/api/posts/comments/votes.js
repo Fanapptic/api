@@ -40,7 +40,7 @@ router.post('/', (request, response, next) => {
   }).then(postCommentVote => {
     upsertPostCommentVote = postCommentVote;
 
-    if (!existingPostCommentVote && vote === 1 &&& networkUserId != postCommentNetworkUserId) {
+    if (!existingPostCommentVote && vote === 1 && networkUserId != postCommentNetworkUserId) {
       AppNotificationModel.create({
         appId,
         appModuleId,

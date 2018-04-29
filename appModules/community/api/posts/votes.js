@@ -38,9 +38,7 @@ router.post('/', (request, response, next) => {
   }).then(postVote => {
     upsertPostVote = postVote;
 
-    if (!existingPostVote && networkUserId !== postNetworkUserId) {
-      const action = (vote === 1) ? 'upvoted' : 'downvoted';
-
+    if (!existingPostVote && vote === 1 && networkUserId !== postNetworkUserId) {
       AppNotificationModel.create({
         appId,
         appModuleId,
@@ -48,7 +46,7 @@ router.post('/', (request, response, next) => {
         moduleRelativeUrl: '/post',
         parameters: { postId },
         previewImageUrl: networkUser.avatarUrl,
-        content: `${networkUser.firstName} ${networkUser.lastName} ${action} your post!`,
+        content: `${networkUser.firstName} ${networkUser.lastName} upvoted your post!`,
       }).catch(error => console.log(error));
     }
 

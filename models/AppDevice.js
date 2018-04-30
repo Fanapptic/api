@@ -120,7 +120,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
             badge: 1,
             sound: 'default',
           },
-          notification: appNotification,
+          id: appNotification.id,
         }),
       }),
       TargetArn: this.apnsSnsArn,
@@ -137,7 +137,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
         GCM: JSON.stringify({
           notification: {
             message: appNotification.content,
-            notification: appNotification,
+            id: appNotification.id,
           },
         }),
       }),

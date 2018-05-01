@@ -20,7 +20,7 @@ describe('Apps', () => {
         keywords: 'some,really,great,keywords',
         website: 'http://www.website.com/',
         contentRating: '4+',
-        appleCategory: 'Social Networking',
+        appleCategory: 'SocialNetworking',
         googleCategory: 'Business',
         apnsSnsArn: 'arn:aws:sns:us-west-2:026971357:app/APNS/production-apns-app-com.fanapptic.deploymentTestApp',
         gcmSnsArn: 'arn:aws:sns:us-west-2:02697123357:app/GCM/production-gcm-app-com.fanapptic.deploymentTestApp',

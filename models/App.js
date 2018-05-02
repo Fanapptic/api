@@ -49,7 +49,7 @@ const AppModel = database.define('app', {
       },
       noControlCharacters(value) {
         if (value.match(/[^\x20-\x7E]/g)) {
-          throw new Error('Control characters are not allowed in app name.');
+          throw new Error('Control characters are not allowed in name.');
         }
 
         return true;

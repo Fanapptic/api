@@ -47,6 +47,13 @@ const AppModel = database.define('app', {
         args: 30,
         msg: 'Name cannot exceed a total of 30 characters.',
       },
+      noControlCharacters(value) {
+        if (value.match(/[^\x20-\x7E]/g)) {
+          throw new Error('Control characters are not allowed in app name.');
+        }
+
+        return true;
+      },
     },
   },
   displayName: {

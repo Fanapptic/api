@@ -151,6 +151,21 @@ describe('Apps', () => {
         });
     });
 
+    it('400s when passed name with control characters', done => {
+      const fields = {
+        name: 'Cats – For Cat Lovers',
+      };
+
+      chai.request(server)
+        .patch('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
     it('400s when passed invalid config', done => {
       const fields = {
         config: {

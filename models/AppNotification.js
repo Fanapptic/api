@@ -58,6 +58,7 @@ AppNotificationModel.afterBulkCreate(instances => {
 function afterCreate(instance) {
   let where = {
     $and: {
+      appId: instance.appId,
       $or: [
         { apnsSnsArn: { $ne: null } },
         { gcmSnsArn: { $ne: null } },
@@ -72,8 +73,6 @@ function afterCreate(instance) {
   }
 
   AppDeviceModel.findAll({ where }).then(appDevices => {
-    console.log('SENDING NOTIFICATION TO...');
-    console.log(appDevices);
     appDevices.forEach(appDevice => {
       appDevice.sendPushNotification(instance);
     });

@@ -16,7 +16,7 @@ class Shopify extends Module {
     super({
       name: Shopify.name,
       displayName: 'Shopify',
-      description: 'Sell product and merchandise by integrating with your Shopify account.',
+      description: 'Sell product and merchandise to your fans by integrating with your Shopify account. Simply hook up your Shopify account to generate a product feed in your app. Once they are finished shopping, the app will redirect fans to a Shopify window for checkout.',
       brandingColor: '#609042',
       defaultIcon: 'entypo-shop',
       url: `${process.env.APP_MODULES_BASE_URL}/shopify/`,

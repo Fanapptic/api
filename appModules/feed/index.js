@@ -16,7 +16,7 @@ class Feed extends Module {
     super({
       name: Feed.name,
       displayName: 'Social Feed',
-      description: 'Consolidate all of your social media accounts into a single feed.',
+      description: 'Consolidate all of your social media accounts into a single feed! You can hook up as many Twitter, Instagram, Facebook, and YouTube accounts as you like, and the feed will automatically funnel all content into a single feed for your fans.',
       brandingColor: '#387AA6',
       defaultIcon: 'entypo-layers',
       url: `${process.env.APP_MODULES_BASE_URL}/feed/`,

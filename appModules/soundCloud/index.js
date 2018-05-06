@@ -15,7 +15,7 @@ class SoundCloud extends Module {
     super({
       name: SoundCloud.name,
       displayName: 'SoundCloud',
-      description: 'Import your soundcloud tracks to allow your fans to listen in.',
+      description: 'Boost your listeners! Connect your SoundCloud account to create a mirror of your Soundcloud profile within your app, where fans can easily tune into your tracks.',
       brandingColor: '#F84403',
       defaultIcon: 'entypo-soundcloud',
       url: `${process.env.APP_MODULES_BASE_URL}/soundCloud/`,

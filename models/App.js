@@ -147,6 +147,9 @@ const AppModel = database.define('app', {
   gcmSnsArn: {
     type: Sequelize.STRING,
   },
+  gcmSenderId: {
+    type: Sequelize.STRING,
+  },
   config: {
     type: Sequelize.JSON,
     allowNull: false,
@@ -362,6 +365,7 @@ AppModel.prototype._generateSnapshot = function() {
       googleCategory: this.googleCategory,
       apnsSnsArn: this.apnsSnsArn,
       gcmSnsArn: this.gcmSnsArn,
+      gcmSenderId: this.gcmSenderId,
       packagedConfig: app.exportPackagedConfig(),
     });
   });

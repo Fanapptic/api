@@ -61,6 +61,7 @@ router.patch('/', (request, response, next) => {
     app.googleCategory = request.body.googleCategory || app.googleCategory;
     app.apnsSnsArn = request.body.apnsSnsArn || app.apnsSnsArn;
     app.gcmSnsArn = request.body.gcmSnsArn || app.gcmSnsArn;
+    app.gcmSenderId = request.body.gcmSenderId || app.gcmSenderId;
 
     if (request.body.config) {
       app.config = App.mergeImportable(app.config, request.body.config);

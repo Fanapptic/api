@@ -24,6 +24,7 @@ describe('Apps', () => {
         googleCategory: 'Business',
         apnsSnsArn: 'arn:aws:sns:us-west-2:026971357:app/APNS/production-apns-app-com.fanapptic.deploymentTestApp',
         gcmSnsArn: 'arn:aws:sns:us-west-2:02697123357:app/GCM/production-gcm-app-com.fanapptic.deploymentTestApp',
+        gcmSenderId: '12512411',
         config: {
           global: {
             fontFamily: 'Verdana',

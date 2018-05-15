@@ -29,6 +29,7 @@ class Snapshot {
       googleCategory: Joi.string().required(),
       apnsSnsArn: Joi.string().allow(null).optional(),
       gcmSnsArn: Joi.string().allow(null).optional(),
+      gcmSenderId: Joi.string().allow(null).optional(),
       packagedConfig: Joi.object().required(),
     });
 

@@ -129,21 +129,21 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   }
 
   if (this.gcmSnsArn) {
-    // TODO: Not sure what the correct usage of GCM params is to send notification &
-    // data to the android apps..
-/*    sns.publish({
+    sns.publish({
       Message: JSON.stringify({
         default: appNotification.content,
         GCM: JSON.stringify({
-          notification: {
+          data: {
             message: appNotification.content,
-            id: appNotification.id,
+            data: {
+              id: appNotification.id,
+            },
           },
         }),
       }),
       TargetArn: this.gcmSnsArn,
       MessageStructure: 'json',
-    });*/
+    }).promise().catch(err => console.log(err));
   }
 };
 

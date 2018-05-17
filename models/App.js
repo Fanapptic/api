@@ -141,6 +141,9 @@ const AppModel = database.define('app', {
     },
     defaultValue: 'Entertainment',
   },
+  googleServices: {
+    type: Sequelize.JSON,
+  },
   apnsSnsArn: {
     type: Sequelize.STRING,
   },

@@ -22,9 +22,51 @@ describe('Apps', () => {
         contentRating: '4+',
         appleCategory: 'SocialNetworking',
         googleCategory: 'Business',
+        googleServices: { // just a generic google-services.json, not related to tests.
+          'project_info': {
+            'project_number': '1030805393842',
+            'firebase_url': 'https://fanapptic-app-template.firebaseio.com',
+            'project_id': 'fanapptic-app-template',
+            'storage_bucket': 'fanapptic-app-template.appspot.com',
+          },
+          'client': [
+            {
+              'client_info': {
+                'mobilesdk_app_id': '1:1030805393842:android:c119b0085a33b38d',
+                'android_client_info': {
+                  'package_name': 'com.fanapptic.apptemplate',
+                },
+              },
+              'oauth_client': [
+                {
+                  'client_id': '1030805393842-nke4rbqtd8mru4n4ohte9qqqqdn5njv1.apps.googleusercontent.com',
+                  'client_type': 3,
+                },
+              ],
+              'api_key': [
+                {
+                  'current_key': 'AIzaSyDKx_-0_qzKggdntaTq1gI7JWu3HG19yjU',
+                },
+              ],
+              'services': {
+                'analytics_service': {
+                  'status': 1,
+                },
+                'appinvite_service': {
+                  'status': 1,
+                  'other_platform_oauth_client': [],
+                },
+                'ads_service': {
+                  'status': 2,
+                },
+              },
+            },
+          ],
+          'configuration_version': '1',
+        },
         apnsSnsArn: 'arn:aws:sns:us-west-2:026971357:app/APNS/production-apns-app-com.fanapptic.deploymentTestApp',
         gcmSnsArn: 'arn:aws:sns:us-west-2:02697123357:app/GCM/production-gcm-app-com.fanapptic.deploymentTestApp',
-        gcmSenderId: '12512411',
+        gcmSenderId: '1030805393842',
         config: {
           global: {
             fontFamily: 'Verdana',

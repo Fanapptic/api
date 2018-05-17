@@ -59,6 +59,7 @@ router.patch('/', (request, response, next) => {
     app.contentRating = request.body.contentRating || app.contentRating;
     app.appleCategory = request.body.appleCategory || app.appleCategory;
     app.googleCategory = request.body.googleCategory || app.googleCategory;
+    app.googleServices = request.body.googleServices || app.googleServices;
     app.apnsSnsArn = request.body.apnsSnsArn || app.apnsSnsArn;
     app.gcmSnsArn = request.body.gcmSnsArn || app.gcmSnsArn;
     app.gcmSenderId = request.body.gcmSenderId || app.gcmSenderId;

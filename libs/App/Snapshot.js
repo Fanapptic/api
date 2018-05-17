@@ -27,6 +27,7 @@ class Snapshot {
       contentRating: Joi.string().required(),
       appleCategory: Joi.string().required(),
       googleCategory: Joi.string().required(),
+      googleServices: Joi.object().allow(null).optional(),
       apnsSnsArn: Joi.string().allow(null).optional(),
       gcmSnsArn: Joi.string().allow(null).optional(),
       gcmSenderId: Joi.string().allow(null).optional(),

@@ -366,6 +366,7 @@ AppModel.prototype._generateSnapshot = function() {
       contentRating: this.contentRating,
       appleCategory: this.appleCategory,
       googleCategory: this.googleCategory,
+      googleServices: this.googleServices,
       apnsSnsArn: this.apnsSnsArn,
       gcmSnsArn: this.gcmSnsArn,
       gcmSenderId: this.gcmSenderId,

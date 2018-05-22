@@ -109,14 +109,16 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   }
 
   const sns = new aws.SNS();
+  const { content } = appNotification;
+  const message = (content.length > 128) ? `${content.substr(0, 128)} ...` : content;
 
   if (this.apnsSnsArn) {
     sns.publish({
       Message: JSON.stringify({
-        default: appNotification.content,
+        default: message,
         APNS: JSON.stringify({
           aps: {
-            alert: appNotification.content,
+            alert: message,
             badge: 1,
             sound: 'default',
           },
@@ -131,10 +133,10 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   if (this.gcmSnsArn) {
     sns.publish({
       Message: JSON.stringify({
-        default: appNotification.content,
+        default: message,
         GCM: JSON.stringify({
           data: {
-            message: appNotification.content,
+            message,
             data: {
               id: appNotification.id,
             },

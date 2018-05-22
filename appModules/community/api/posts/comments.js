@@ -122,6 +122,8 @@ router.post('/', (request, response, next) => {
     postComment = _postComment;
 
     if (networkUserId !== postNetworkUserId) {
+      const contentMessage = (postComment.content) ? `: ${postComment.content}` : 'with an attachment.';
+
       AppNotificationModel.create({
         appId,
         appModuleId,
@@ -129,7 +131,7 @@ router.post('/', (request, response, next) => {
         moduleRelativeUrl: '/post',
         parameters: { postId },
         previewImageUrl: networkUser.avatarUrl,
-        content: `${networkUser.firstName} ${networkUser.lastName} commented on your post!`,
+        content: `${networkUser.firstName} ${networkUser.lastName} commented on your post ${contentMessage}`,
       }).catch(error => console.log(error));
     }
 

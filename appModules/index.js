@@ -19,7 +19,7 @@ module.exports = {
     const ModuleClass = moduleClasses[name];
 
     if (!ModuleClass) {
-      throw new Error('The module name provided is invaid.');
+      throw new Error('The module name provided is invalid.');
     }
 
     const module = new ModuleClass();

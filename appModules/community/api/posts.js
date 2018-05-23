@@ -117,7 +117,7 @@ router.post('/', (request, response, next) => {
     const contentMessage = (post.content) ? `: ${post.content}` : ' an attachment.';
 
     appDevices.forEach(appDevice => {
-      if (appDevice.networkUser !== networkUser.id) {
+      if (appDevice.networkUser !== networkUserId) {
         bulkNotifications.push({
           appId,
           appDeviceId: (!appDevice.networkUserId) ? appDevice.id : null,

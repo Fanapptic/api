@@ -2,6 +2,8 @@
  * Route: /apps/:appId/modules/:appModuleId/api/community/posts/:postId?
  */
 
+const AppDeviceModel = rootRequire('/models/AppDevice');
+const AppNotificationModel = rootRequire('/models/AppNotification');
 const NetworkUserModel = rootRequire('/models/NetworkUser');
 const NetworkUserAttachmentModel = rootRequire('/models/NetworkUserAttachment');
 const PostModel = require('../models/Post');
@@ -87,9 +89,10 @@ router.get('/', (request, response, next) => {
 
 router.post('/', networkUserAuthorize);
 router.post('/', (request, response, next) => {
-  const networkUserId = request.networkUser.id;
-  const { appModuleId } = request.params;
+  const { networkUser } = request;
+  const { appId, appModuleId } = request.params;
   const { networkUserAttachmentId, content } = request.body;
+  const networkUserId = networkUser.id;
   const totalUpvotes = 1;
 
   let post = null;
@@ -107,6 +110,30 @@ router.post('/', (request, response, next) => {
     post = post.toJSON();
     post.loggedInNetworkUserVote = 1;
 
+    return AppDeviceModel.findAll({ where: { appId } });
+  }).then(appDevices => {
+    let bulkNotifications = [];
+
+    const contentMessage = (post.content) ? `: ${post.content}` : ' an attachment.';
+
+    appDevices.forEach(appDevice => {
+      if (appDevice.networkUser !== networkUser.id) {
+        bulkNotifications.push({
+          appId,
+          appDeviceId: (!appDevice.networkUserId) ? appDevice.id : null,
+          networkUserId: (appDevice.networkUserId) ? appDevice.networkUserId : null,
+          moduleRelativeUrl: '/post',
+          parameters: { postId: post.id },
+          previewImageUrl: networkUser.avatarUrl,
+          content: `${networkUser.firstName} ${networkUser.lastName} posted${contentMessage}`,
+        });
+      }
+    });
+
+    AppNotificationModel.bulkCreate(bulkNotifications);
+
+    return;
+  }).then(() => {
     response.success(post);
   }).catch(next);
 });

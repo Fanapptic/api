@@ -75,6 +75,8 @@ module.exports = class extends DataSource {
       return;
     }
 
+    // todo: send global notificaitons for new content! :D
+
     request.body.feed.entry.forEach(entry => {
       const channelId = entry['yt:channelid'][0];
       const videoId = entry['yt:videoid'][0];
@@ -99,6 +101,7 @@ module.exports = class extends DataSource {
           },
         });
       }).then(() => {
+        // can tell if it's new by whether or not a previous entry was destroyed.
         return AppModuleProviderModel.findAll({
           where: {
             dataSource: 'youtube',

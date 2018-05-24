@@ -94,7 +94,7 @@ module.exports = class extends DataSource {
       }).then(appModuleProviders => {
         appModuleProviders.forEach(appModuleProvider => {
           applicableChanges.forEach(applicableChange => {
-            const { verb } = applicableChange.value;
+            const { verb, sender_id } = applicableChange.value;
             const chain = (verb !== 'add') ? AppModuleDataModel.destroy({
               appModuleId: appModuleProvider.appModuleId,
               where: {
@@ -102,7 +102,7 @@ module.exports = class extends DataSource {
               },
             }) : Promise.resolve();
 
-            if (verb !== 'add' && verb !== 'edited') {
+            if (verb !== 'add' && verb !== 'edited' || sender_id !== appModuleProvider.accountId) {
               return;
             }
 

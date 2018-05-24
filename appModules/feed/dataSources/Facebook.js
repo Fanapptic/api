@@ -138,7 +138,7 @@ module.exports = class extends DataSource {
               });
             }).then(() => {
               if (verb === 'add') {
-                // send global notification.
+                // send global notification?
               }
             }).catch(error => {
               // this could be a place we check if we need to reauth the account?

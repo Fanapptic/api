@@ -34,7 +34,7 @@ class DataSource extends Configurable {
   }
 
   handleWebhookRequest(request) {
-    throw new Error('handleReceivedData must be overriden.');
+    throw new Error('handleWebhookRequest must be overriden.');
   }
 }
 

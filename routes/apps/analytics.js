@@ -30,6 +30,8 @@ router.get('/', (request, response, next) => {
   let totalRevenue = 0;
   let promises = [];
 
+  // TODO: Anything using appSession is not referencing by appId - it's getting everything.
+
   // Weekly Downloads - Total
   promises.push(AppDeviceModel.count({
     where: {

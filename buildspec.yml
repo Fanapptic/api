@@ -7,7 +7,6 @@ phases:
 
 artifacts:
   files:
-    - appModules/**/*
     - config/**/*
     - libs/**/*
     - middlewares/**/*

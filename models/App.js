@@ -107,6 +107,18 @@ const AppModel = database.define('app', {
       },
     },
   },
+  appleEmail: {
+    type: Sequelize.STRING,
+  },
+  applePassword: {
+    type: Sequelize.STRING,
+  },
+  appleTeamId: {
+    type: Sequelize.STRING,
+  },
+  appleTeamName: {
+    type: Sequelize.STRING,
+  },
   appleCategory: {
     type: Sequelize.STRING,
     validate: {
@@ -117,6 +129,18 @@ const AppModel = database.define('app', {
     },
     defaultValue: 'Entertainment',
   },
+  googleEmail: {
+    type: Sequelize.STRING,
+  },
+  googlePassword: {
+    type: Sequelize.STRING,
+  },
+  googleServiceAccount: {
+    type: Sequelize.JSON,
+  },
+  googleServices: {
+    type: Sequelize.JSON,
+  },
   googleCategory: {
     type: Sequelize.STRING,
     isIn: {
@@ -124,9 +148,6 @@ const AppModel = database.define('app', {
       msg: 'The google category provided is invalid.',
     },
     defaultValue: 'Entertainment',
-  },
-  googleServices: {
-    type: Sequelize.JSON,
   },
   apnsSnsArn: {
     type: Sequelize.STRING,

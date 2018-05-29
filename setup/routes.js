@@ -1,6 +1,8 @@
+const healthRouter = rootRequire('/routes/health');
+
 module.exports = app => {
   // Route Definitions
-  
+  app.use('/health', healthRouter);
 
   // Handle Various Errors
   app.use((error, request, response, next) => { // 4 params request to handle error.

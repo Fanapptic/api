@@ -1,8 +1,22 @@
+const appsRouter = rootRequire('/routes/apps');
+const appAnalyticsRouter = rootRequire('/routes/apps/analytics');
+const appDevicesRouter = rootRequire('/routes/apps/devices');
+const appDeviceSessionsRouter = rootRequire('/routes/apps/devices/sessions');
+const appNotificationsRouter = rootRequire('/routes/apps/notifications');
+const appUsersRouter = rootRequire('/routes/apps/users');
 const healthRouter = rootRequire('/routes/health');
+const usersRouter = rootRequire('/routes/users');
 
 module.exports = app => {
   // Route Definitions
+  app.use('/apps/:appId?', appsRouter);
+  app.use('/apps/:appId/analytics', appAnalyticsRouter);
+  app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);
+  app.use('/apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?', appDeviceSessionsRouter);
+  app.use('/apps/:appId/notifications/:appNotificationId?', appNotificationsRouter);
+  app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
   app.use('/health', healthRouter);
+  app.use('/users', usersRouter);
 
   // Handle Various Errors
   app.use((error, request, response, next) => { // 4 params request to handle error.

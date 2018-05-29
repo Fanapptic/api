@@ -158,13 +158,6 @@ const AppModel = database.define('app', {
   gcmSenderId: {
     type: Sequelize.STRING,
   },
-  colorScheme: {
-    type: Sequelize.JSON,
-    allowNull: false,
-    defaultValue: {
-
-    },
-  },
 });
 
 /*

@@ -28,16 +28,20 @@
   },
   "dependencies": {
     "aws-sdk": "^2.247.1",
+    "basic-auth": "^2.0.0",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
     "express-query-boolean": "^2.0.0",
     "express-xml-bodyparser": "^0.3.0",
     "joi": "^13.3.0",
     "mysql2": "^1.5.3",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
     "sequelize": "^4.37.10",
     "sharp": "^0.20.2"
   }

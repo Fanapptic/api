@@ -6,7 +6,7 @@
 const AppUserModel = rootRequire('/models/AppUser');
 
 module.exports = (request, response, next) => {
-  const accessToken = request.get('X-Network-User-Access-Token');
+  const accessToken = request.get('X-App-User-Access-Token');
 
   AppUserModel.find({ where: { accessToken } }).then(appUser => {
     request.appUser = appUser || {};

@@ -51,6 +51,7 @@ router.post('/', (request, response, next) => {
     facebookUser = _facebookUser;
 
     return AppUserModel.upsert({
+      appId,
       facebookId: facebookUser.id,
       facebookAccessToken: facebookAccessToken,
       facebookAccountLink: facebookUser.link,

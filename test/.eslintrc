@@ -1,0 +1,14 @@
+{
+  "globals": {
+    "it": true,
+    "before": true,
+    "describe": true,
+    "chai": true,
+    "chaiHttp": true,
+    "server": true,
+    "appId": true,
+    "testUser": true,
+    "testAppDevice": true,
+    "testAppUser": true,
+  },
+}

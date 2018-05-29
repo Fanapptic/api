@@ -13,6 +13,42 @@ const router = express.Router({
 });
 
 /*
+ * GET
+ */
+
+router.get('/', appDeviceAuthorize);
+router.get('/', (request, response, next) => {
+  const { appId, appNotificationId } = request.params;
+  const { appDevice } = request;
+
+  if (appNotificationId) {
+    AppNotificationModel.find({
+      where: {
+        id: appNotificationId,
+        appId,
+        appDeviceId: appDevice.id,
+      },
+    }).then(appNotification => {
+      if (!appNotification) {
+        throw new Error('The app notification does not exist.');
+      }
+
+      response.success(appNotification);
+    }).catch(next);
+  } else {
+    AppNotificationModel.findAll({
+      where: {
+        appId,
+        appDeviceId: appDevice.id,
+      },
+      order: [['id', 'DESC']],
+    }).then(appNotifications => {
+      response.success(appNotifications);
+    }).catch(next);
+  }
+});
+
+/*
  * POST
  */
 

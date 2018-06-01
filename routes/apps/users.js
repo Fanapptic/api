@@ -7,6 +7,7 @@ const requestPromise = require('request-promise');
 const AppUserModel = rootRequire('/models/AppUser');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appUserAuthorize = rootRequire('/middlewares/apps/users/authorize');
+const facebookConfig = rootRequire('/config/sources/facebook');
 
 const router = express.Router({
   mergeParams: true,
@@ -32,7 +33,7 @@ router.post('/', (request, response, next) => {
   let facebookUser = null;
 
   requestPromise.get({ // Should we get a long lived access token?
-    url: 'https://graph.facebook.com/v2.12/me/permissions?' +
+    url: `${facebookConfig.baseUrl}/me/permissions?` +
          `access_token=${facebookAccessToken}`,
     json: true,
   }).then(permissions => {
@@ -43,7 +44,7 @@ router.post('/', (request, response, next) => {
     });
 
     return requestPromise.get({
-      url: 'https://graph.facebook.com/v2.12/me?' +
+      url: `${facebookConfig.baseUrl}/me?` +
            `access_token=${facebookAccessToken}` +
            '&fields=id,link,email,first_name,last_name,age_range,gender,locale',
       json: true,
@@ -62,7 +63,7 @@ router.post('/', (request, response, next) => {
       ageRange: facebookUser.age_range,
       gender: facebookUser.gender,
       locale: facebookUser.locale,
-      avatarUrl: 'https://graph.facebook.com/v2.12/${facebookUser.id}/picture',
+      avatarUrl: `${facebookConfig.baseUrl}/${facebookUser.id}/picture`,
     });
   }).then(() => {
     return AppUserModel.find({ where: { appId, facebookId: facebookUser.id } });

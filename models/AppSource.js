@@ -19,7 +19,7 @@ const AppSourceModel = database.define('appSource', {
     allowNull: false,
     validate: {
       isIn: {
-        args: Object.keys(sources),
+        args: [ Object.keys(sources) ],
         msg: 'The type provided is invalid.',
       },
     },

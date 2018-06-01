@@ -1,7 +1,13 @@
+const AppSourceContentModel = rootRequire('/models/AppSourceContent');
+
 class Source {
   constructor(appSource) {
     if (new.target === Source) {
       throw new TypeError('Cannot construct Source instances directly.');
+    }
+
+    if (!appSource) {
+      throw new Error('A AppSource instance must be provided.');
     }
 
     this.appSource = appSource;
@@ -12,7 +18,11 @@ class Source {
   }
 
   disconnect() {
-    throw new Error('disconnect must be overriden.');
+    AppSourceContentModel.destroy({
+      where: {
+        appSourceId: this.appSource.id,
+      },
+    });
   }
 
   handleWebhookRequest(request) {

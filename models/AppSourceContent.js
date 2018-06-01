@@ -8,7 +8,10 @@ const AppSourceContent = database.define('appSourceContent', {
     primaryKey: true,
     autoIncrement: true,
   },
-  // appId for simpler queries?
+  appId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+    allowNull: false,
+  },
   appSourceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,

@@ -21,6 +21,11 @@ const AppModel = database.define('app', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  accessToken: {
+    type: Sequelize.UUID,
+    unique: true,
+    defaultValue: Sequelize.UUIDV1,
+  },
   bundleId: {
     type: Sequelize.STRING,
     unique: true,

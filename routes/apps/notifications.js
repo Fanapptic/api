@@ -5,7 +5,7 @@
 const AppNotificationModel = rootRequire('/models/AppNotification');
 const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
-const appAuthorize = rootRequire('/middlewares/apps/authorize');
+const appAuthorizeOwnership = rootRequire('/middlewares/apps/authorizeOwnership');
 const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
 
 const router = express.Router({
@@ -53,7 +53,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', userAuthorize);
-router.post('/', appAuthorize);
+router.post('/', appAuthorizeOwnership);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { url, message } = request.body;

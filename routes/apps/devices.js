@@ -5,6 +5,7 @@
 const AppDeviceModel = rootRequire('/models/AppDevice');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
+const appAuthorizeOwnership = rootRequire('/middlewares/apps/authorizeOwnership');
 const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
 
 const router = express.Router({
@@ -16,7 +17,7 @@ const router = express.Router({
  */
 
 router.get('/', userAuthorize);
-router.get('/', appAuthorize);
+router.get('/', appAuthorizeOwnership);
 router.get('/', (request, response, next) => {
   const { appId, appDeviceId } = request.params;
 
@@ -39,6 +40,7 @@ router.get('/', (request, response, next) => {
  * POST
  */
 
+router.post('/', appAuthorize);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { apnsToken, gcmRegistrationId, deviceDetails, platform } = request.body;

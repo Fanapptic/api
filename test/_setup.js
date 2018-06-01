@@ -27,6 +27,8 @@ global.server = `http://localhost:${process.env.PORT}`;
 
 global.appId = 1;
 
+global.testApp = {};
+
 global.testUser = {
   id: null,
   email: 'tester@fanapptic.com',
@@ -135,10 +137,15 @@ before(done => {
         website: 'http://www.mysite.com/',
         contentRating: '9+',
       });
-  }).then(() => {
+  }).then(response => {
     fatLog('Creating global test app device in DB...');
 
-    return chai.request(server).post('/apps/1/devices').send(testAppDevice);
+    Object.assign(testApp, response.body);
+
+    return chai.request(server)
+      .post('/apps/1/devices')
+      .set('X-App-Access-Token', testApp.accessToken)
+      .send(testAppDevice);
   }).then(response => {
     Object.assign(testAppDevice, response.body);
 
@@ -146,6 +153,7 @@ before(done => {
 
     return chai.request(server)
       .post(`/apps/${appId}/users`)
+      .set('X-App-Access-Token', testApp.accessToken)
       .send(testAppUser);
   }).then(response => {
     Object.assign(testAppUser, response.body);

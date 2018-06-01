@@ -8,6 +8,7 @@
     "server": true,
     "appId": true,
     "testUser": true,
+    "testApp": true,
     "testAppDevice": true,
     "testAppUser": true,
   },

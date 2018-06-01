@@ -1,4 +1,4 @@
-describe('Network Users', () => {
+describe('App Users', () => {
   /*
    * POST
    */
@@ -11,10 +11,21 @@ describe('Network Users', () => {
 
       chai.request(server)
         .post(`/apps/${appId}/users`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.facebookAccessToken.should.equal(fields.facebookAccessToken);
+          done();
+        });
+    });
+
+    it('401s when passed invalid app id', done => {
+      chai.request(server)
+        .post('/apps/9494949/users')
+        .set('X-App-Access-Token', testApp.accessToken)
+        .end((error, response) => {
+          response.should.have.status(401);
           done();
         });
     });
@@ -26,6 +37,7 @@ describe('Network Users', () => {
 
       chai.request(server)
         .post(`/apps/${appId}/users`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(400);

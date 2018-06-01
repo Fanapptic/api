@@ -3,7 +3,7 @@
  */
 
 const userAuthorize = rootRequire('/middlewares/users/authorize');
-const appAuthorize = rootRequire('/middlewares/apps/authorize');
+const appAuthorizeOwnership = rootRequire('/middlewares/apps/authorizeOwnership');
 
 const router = express.Router({
   mergeParams: true,
@@ -14,7 +14,7 @@ const router = express.Router({
  */
 
 router.get('/', userAuthorize);
-router.get('/', appAuthorize);
+router.get('/', appAuthorizeOwnership);
 router.get('/', (request, response, next) => {
   const { appId } = request.params;
   let promises = [];

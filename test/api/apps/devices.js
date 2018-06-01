@@ -25,6 +25,7 @@ describe('App Devices', () => {
 
       chai.request(server)
         .post(`/apps/${appId}/devices`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
@@ -36,11 +37,12 @@ describe('App Devices', () => {
         });
     });
 
-    it('400s when passed invalid app id', done => {
+    it('401s when passed invalid app id', done => {
       chai.request(server)
         .post('/apps/9494949/devices')
+        .set('X-App-Access-Token', testApp.accessToken)
         .end((error, response) => {
-          response.should.have.status(400);
+          response.should.have.status(401);
           done();
         });
     });
@@ -52,6 +54,7 @@ describe('App Devices', () => {
 
       chai.request(server)
         .post(`/apps/${appId}/devices`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
@@ -84,12 +87,12 @@ describe('App Devices', () => {
         });
     });
 
-    it('400s when passed invalid app device id', done => {
+    it('401s when passed invalid app device id', done => {
       chai.request(server)
         .post(`/apps/${appId}/devices/123132`)
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .end((error, response) => {
-          response.should.have.status(400);
+          response.should.have.status(401);
           done();
         });
     });

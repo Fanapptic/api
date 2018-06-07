@@ -4,6 +4,6 @@ describe('App Analytics', () => {
    */
 
   describe('GET /apps/{appId}/analytics', () => {
-    
+
   });
 });

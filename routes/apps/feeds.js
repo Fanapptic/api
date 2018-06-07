@@ -17,7 +17,23 @@ const router = express.Router({
 router.get('/', appAuthorize);
 router.get('/', appDeviceAuthorize);
 router.get('/', (request, response, next) => {
+  const { app } = request;
 
+  /*
+   * This should only return results for a given device
+   * that have no yet been seen by the device based on
+   * the content viewed in AppFeedActivity entries.
+   */
+
+  AppSourceContentModel.findAll({
+    where: {
+      appId: app.id,
+    },
+    limit: 20,
+    order: database.random(),
+  }).then(appSourceContents => {
+    response.success(appSourceContents);
+  }).catch(next);
 });
 
 /*

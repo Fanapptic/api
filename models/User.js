@@ -18,7 +18,9 @@ const UserModel = database.define('user', {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
+    unique: {
+      msg: 'An account already exists for the email address you provided.',
+    },
     validate: {
       isEmail: {
         msg: 'A valid email address must be provided.',

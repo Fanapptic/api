@@ -13,6 +13,17 @@ module.exports.it401sWhenUserAuthorizationIsInvalid = (method, route) => {
   });
 };
 
+module.exports.it401sWhenAppAuthorizationIsInvalid = (method, route) => {
+  it('401s when app authorization is invalid', done => {
+    chai.request(server)[method](route)
+      .set('X-App-Access-Token', 'bad token')
+      .end((error, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+};
+
 module.exports.it401sWhenAppDeviceAuthorizationIsInvalid = (method, route) => {
   it('401s when app device authorization is invalid', done => {
     chai.request(server)[method](route)

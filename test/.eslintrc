@@ -10,6 +10,8 @@
     "testUser": true,
     "testApp": true,
     "testAppDevice": true,
+    "testAppDeviceSession": true,
+    "testAppSource": true,
     "testAppUser": true,
   },
 }

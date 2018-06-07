@@ -47,6 +47,19 @@ global.testAppDevice = {
   platform: 'ios',
 };
 
+global.testAppDeviceSession = {};
+
+global.testAppSource = {
+  type: 'instagram',
+  avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/11809603_737295259710174_813805448_a.jpg',
+  accountId: '417616778',
+  accountName: 'braydo25',
+  accountUrl: 'https://www.instagram.com/braydo25',
+  accessToken: '417616778.20d8092.7c0160e2b09c4f598bb54f2e0274c3fc',
+  accessTokenSecret: null,
+  refreshToken: null,
+};
+
 global.testAppUser = {
   facebookAccessToken: 'EAAFfFpdEd8UBAJU0KZBELCD5zry7kxySSuG8sm8F0aLgB6xdXRjqil9EFnqmtZCFSqIWAGglkmPYFpZCZCs8Bn9KNdXLy6covzFweZCSfymqZAJUtGjor3YE4RDVt4r7qochm3zp78gBUp2ZAXJU950z9RPbOKkUjZCZCZCv0hGbZBCV0Illm9pPvv1',
 };
@@ -157,6 +170,24 @@ before(done => {
       .send(testAppUser);
   }).then(response => {
     Object.assign(testAppUser, response.body);
+
+    fatLog('Creating global test app device session in DB...');
+
+    return chai.request(server)
+      .post('/apps/1/devices/1/sessions')
+      .set('X-App-Device-Access-Token', testAppDevice.accessToken)
+      .send(testAppDeviceSession);
+  }).then(response => {
+    Object.assign(testAppDeviceSession, response.body);
+
+    fatLog('Creating global test app source in DB...');
+
+    return chai.request(server)
+      .post(`/apps/${appId}/sources`)
+      .set('X-Access-Token', testUser.accessToken)
+      .send(testAppSource);
+  }).then(response => {
+    Object.assign(testAppSource, response.body);
 
     fatLog('Starting tests...');
 

@@ -45,3 +45,13 @@ module.exports.it403sWhenPassedAppIdNotOwnedByUser = (method, route) => {
       });
   });
 };
+
+module.exports.it401sWhenPassedInvalidWebhookToken = (method, route) => {
+  it('401s when passed invalid webhook token', done => {
+    chai.request(server)[method](route)
+      .end((error, response) => {
+        response.should.have.status(401);
+        done();
+      });
+  });
+};

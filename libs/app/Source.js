@@ -25,7 +25,7 @@ class Source {
     });
   }
 
-  handleWebhookRequest(request) {
+  static handleWebhookRequest(request) {
     throw new Error('handleWebhookRequest must be overriden.');
   }
 }

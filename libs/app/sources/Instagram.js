@@ -4,6 +4,7 @@ const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const Source = require('../Source');
 const instagramConfig = rootRequire('/config/sources/instagram');
 
+// need to get more than first 100 posts.
 module.exports = class extends Source {
   connect() {
     return requestPromise.get({
@@ -23,7 +24,7 @@ module.exports = class extends Source {
     });
   }
 
-  handleWebhookRequest(request) {
+  static handleWebhookRequest(request) {
 
   }
 };

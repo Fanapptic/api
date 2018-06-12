@@ -2,6 +2,7 @@ const requestPromise = require('request-promise');
 
 const Source = require('../Source');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
+const serverConfig = rootRequire('/config/server');
 const youtubeConfig = rootRequire('/config/sources/youtube');
 
 // need to get more than first 50 videos
@@ -11,7 +12,7 @@ module.exports = class extends Source {
       url: 'https://pubsubhubbub.appspot.com/subscribe',
       form: {
         'hub.callback': `${process.env.API_BASE_URL}/apps/*/modules/*/providers/*/webhooks?webhookToken=${serverConfig.webhookToken}&dataSource=youtube`,
-        'hub.topic': `https://www.youtube.com/xml/feeds/videos.xml?channel_id=${appModuleProvider.accountId}`,
+        'hub.topic': `https://www.youtube.com/xml/feeds/videos.xml?channel_id=${this.appSource.accountId}`,
         'hub.mode': 'subscribe',
         'hub.verify': 'async',
         'hub.verify_token': 'noop',
@@ -22,7 +23,7 @@ module.exports = class extends Source {
              'part=contentDetails' +
              '&mine=true',
         headers: {
-          Authorization: `Bearer ${appModuleProvider.accessToken}`,
+          Authorization: `Bearer ${this.appSource.accessToken}`,
         },
         json: true,
       });
@@ -35,16 +36,15 @@ module.exports = class extends Source {
              '&part=snippet' +
              '&maxResults=50',
         headers: {
-          Authorization: `Bearer ${appModuleProvider.accessToken}`,
+          Authorization: `Bearer ${this.appSource.accessToken}`,
         },
         json: true,
       });
     }).then(playlistItems => {
-
-      AppModuleDataModel.bulkCreate(playlistItems.items.map(playlistItem => {
+      AppSourceContentModel.bulkCreate(playlistItems.items.map(playlistItem => {
         return {
-          appModuleId: appModuleProvider.appModuleId,
-          appModuleProviderId: appModuleProvider.id,
+          appId: this.appSource.appId,
+          appSourceId: this.appSource.id,
           data: playlistItem,
           publishedAt: playlistItem.snippet.publishedAt,
         };

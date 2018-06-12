@@ -25,4 +25,4 @@ AppUserModel.hasMany(AppFeedActivityModel);
 
 UserModel.hasMany(AppModel);
 
-module.exports = database.sync({ force: true });
+module.exports = database.sync({force:true});

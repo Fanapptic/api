@@ -29,6 +29,9 @@ router.get('/', (request, response, next) => {
     where: {
       appId: app.id,
     },
+    attributes: {
+      exclude: [ 'data' ],
+    },
     limit: 20,
     order: database.random(),
   }).then(appSourceContents => {

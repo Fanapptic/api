@@ -2,6 +2,7 @@
  * Route /apps/:appId/feed
  */
 
+const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
@@ -15,7 +16,7 @@ const router = express.Router({
  */
 
 router.get('/', appAuthorize);
-router.get('/', appDeviceAuthorize);
+//router.get('/', appDeviceAuthorize); disabled for testing..
 router.get('/', (request, response, next) => {
   const { app } = request;
 
@@ -26,9 +27,13 @@ router.get('/', (request, response, next) => {
    */
 
   AppSourceContentModel.findAll({
-    where: {
-      appId: app.id,
-    },
+    where: { appId: app.id },
+    include: [
+      {
+        model: AppSourceModel,
+        attributes: [ 'avatarUrl', 'accountName' ],
+      },
+    ],
     attributes: {
       exclude: [ 'data' ],
     },

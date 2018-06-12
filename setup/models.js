@@ -13,11 +13,12 @@ AppModel.hasMany(AppDeviceModel);
 AppModel.hasMany(AppFeedActivityModel);
 AppModel.hasMany(AppNotificationModel);
 AppModel.hasMany(AppSourceModel);
+AppModel.hasMany(AppSourceContentModel);
 AppDeviceModel.hasMany(AppDeviceSessionModel);
 AppDeviceModel.hasMany(AppFeedActivityModel);
 AppDeviceModel.hasMany(AppNotificationModel);
 AppDeviceSessionModel.hasMany(AppFeedActivityModel);
-AppSourceModel.hasMany(AppSourceContentModel);
+AppSourceContentModel.belongsTo(AppSourceModel);
 AppSourceContentModel.hasMany(AppFeedActivityModel);
 AppUserModel.hasMany(AppDeviceModel);
 AppUserModel.hasMany(AppDeviceSessionModel);
@@ -25,4 +26,4 @@ AppUserModel.hasMany(AppFeedActivityModel);
 
 UserModel.hasMany(AppModel);
 
-module.exports = database.sync({force:true});
+module.exports = database.sync();

@@ -44,6 +44,7 @@ router.patch('/', appUserAuthorizeOptional);
 router.patch('/', (request, response, next) => {
   const { appDevice } = request;
   const { appDeviceSessionId } = request.params;
+  const { location, ended } = request.body;
 
   let appDeviceSession = null;
 
@@ -64,8 +65,8 @@ router.patch('/', (request, response, next) => {
     }
 
     appDeviceSession.appUserId = request.appUser.id || null;
-    appDeviceSession.location = request.body.location || appDeviceSession.location;
-    appDeviceSession.endedAt = (request.body.ended) ? new Date() : appDeviceSession.endedAt;
+    appDeviceSession.location = location || appDeviceSession.location;
+    appDeviceSession.endedAt = (ended) ? new Date() : appDeviceSession.endedAt;
 
     return appDeviceSession.save();
   }).then(() => {

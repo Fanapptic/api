@@ -16,9 +16,9 @@ const router = express.Router({
  */
 
 router.get('/', appAuthorize);
-//router.get('/', appDeviceAuthorize); disabled for testing..
+router.get('/', appDeviceAuthorize);
 router.get('/', (request, response, next) => {
-  const { app } = request;
+  const { app, appDevice } = request;
 
   /*
    * This should only return results for a given device
@@ -35,10 +35,19 @@ router.get('/', (request, response, next) => {
       },
     ],
     attributes: {
+      include: [[database.literal(
+        '(SELECT COUNT(*) ' +
+        'FROM `appFeedActivities` ' +
+        'WHERE `appFeedActivities`.`appSourceContentId` = `appSourceContent`.`id` ' +
+        `AND appFeedActivities.appDeviceId = ${appDevice.id})`
+      ), 'viewCount']],
       exclude: [ 'data' ],
     },
     limit: 20,
-    order: database.random(),
+    order: [
+      [database.literal('viewCount'), 'ASC'],
+      database.literal('RAND()'),
+    ],
   }).then(appSourceContents => {
     response.success(appSourceContents);
   }).catch(next);

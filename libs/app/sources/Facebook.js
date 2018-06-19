@@ -5,7 +5,6 @@ const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const facebookConfig = rootRequire('/config/sources/facebook');
 
-// need to get more than first 100 posts.
 module.exports = class extends Source {
   connect() {
     return requestPromise.post({
@@ -21,24 +20,38 @@ module.exports = class extends Source {
         json: true,
       });
     }).then(posts => {
-      posts.data.forEach(post => {
-        requestPromise.get({
-          url: `${facebookConfig.baseUrl}/${post.id}/attachments?` +
-               `access_token=${this.appSource.accessToken}`,
-          json: true,
-        }).then(postAttachments => {
-          post.attachments = (postAttachments) ? postAttachments.data : null;
+      const paginate = posts => {
+        posts.data.forEach(post => {
+          requestPromise.get({
+            url: `${facebookConfig.baseUrl}/${post.id}/attachments?` +
+                 `access_token=${this.appSource.accessToken}`,
+            json: true,
+          }).then(postAttachments => {
+            post.attachments = (postAttachments) ? postAttachments.data : null;
 
-          const data = this.postToAppSourceContent(post);
+            const data = this.postToAppSourceContent(post);
 
-          if (!data) {
-            return;
-          }
+            if (!data) {
+              return;
+            }
 
-          // could bulk create, but we lose individual create validations.
-          AppSourceContentModel.create(data);
+            // could bulk create, but we lose individual create validations.
+            AppSourceContentModel.create(data).catch(e => {
+              console.log(e.message);
+              console.log(JSON.stringify(post));
+            });
+          });
         });
-      });
+
+        if (posts.paging && posts.paging.next) {
+          requestPromise.get({
+            url: posts.paging.next,
+            json: true,
+          }).then(paginate);
+        }
+      };
+
+      paginate(posts);
     });
   }
 
@@ -86,7 +99,7 @@ module.exports = class extends Source {
               return requestPromise.get({
                 url: `${facebookConfig.baseUrl}/${applicableChange.value.post_id}?` +
                      `access_token=${appSource.accessToken}` +
-                     '&fields=id,source,message,link,created_time',
+                     '&fields=id,source,message,source,link,created_time',
                 json: true,
               });
             }).then(_post => {
@@ -134,10 +147,21 @@ module.exports = class extends Source {
     if (post.attachments && post.attachments.length) {
       const attachment = post.attachments[0];
 
-      image = (attachment.type === 'photo') ? this.buildImageFromPost(post) : null;
-      video = (attachment.type === 'video_inline') ? this.buildVideoFromPost(post) : null;
-      link = (attachment.type === 'share') ? this.buildLinkFromPost(post) : null;
-      collection = (attachment.type === 'album') ? this.buildCollectionFromPost(post) : null;
+      if (attachment.type === 'photo') {
+        image = this.buildImageFromPost(post);
+      }
+
+      if (attachment.type === 'video_inline' && post.source) {
+        video = this.buildVideoFromPost(post);
+      }
+
+      if (attachment.type === 'share' || (attachment.type === 'video_inline' && !post.source && post.link)) {
+        link = this.buildLinkFromPost(post);
+      }
+
+      if (attachment.type === 'album') {
+        this.buildCollectionFromPost(post);
+      }
 
       if (!image && !video && !link && !collection) {
         return false;
@@ -175,12 +199,15 @@ module.exports = class extends Source {
   }
 
   buildLinkFromPost(post) {
+    const attachmentMedia = post.attachments[0].media;
+
     return {
       title: post.attachments[0].title,
-      url: post.link,
-      thumbnailUrl: post.attachments[0].media.image.src,
-      width: post.attachments[0].media.image.width,
-      height: post.attachments[0].media.image.height,
+      description: post.attachments[0].description,
+      url: post.link || post.attachments[0].url,
+      thumbnailUrl: (attachmentMedia) ? attachmentMedia.image.src : null,
+      width: (attachmentMedia) ? attachmentMedia.image.width : null,
+      height: (attachmentMedia) ? attachmentMedia.image.height : null,
     };
   }
 
@@ -192,6 +219,7 @@ module.exports = class extends Source {
         collection.push({
           type: 'image',
           url: subattachment.media.image.src,
+          thumbnailUrl: subattachment.media.image.src,
           width: subattachment.media.image.width,
           height: subattachment.media.image.height,
           title: subattachment.title,

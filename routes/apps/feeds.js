@@ -19,13 +19,7 @@ router.get('/', appAuthorize);
 router.get('/', appDeviceAuthorize);
 router.get('/', (request, response, next) => {
   const { app, appDevice } = request;
-
-  /*
-   * This should only return results for a given device
-   * that have no yet been seen by the device based on
-   * the content viewed in AppFeedActivity entries.
-   */
-
+  
   AppSourceContentModel.findAll({
     where: { appId: app.id },
     include: [

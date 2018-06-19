@@ -37,8 +37,8 @@ router.get('/', (request, response, next) => {
     attributes: {
       include: [[database.literal(
         '(SELECT COUNT(*) ' +
-        'FROM `appFeedActivities` ' +
-        'WHERE `appFeedActivities`.`appSourceContentId` = `appSourceContent`.`id` ' +
+        'FROM appFeedActivities ' +
+        'WHERE appFeedActivities.appSourceContentId = appSourceContent.id ' +
         `AND appFeedActivities.appDeviceId = ${appDevice.id})`
       ), 'viewCount']],
       exclude: [ 'data' ],

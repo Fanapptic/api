@@ -8,7 +8,7 @@ describe('OAuth Twitter Authorizations', () => {
   describe('GET /oauth/twitter/authorizations', () => {
     it('200s with authorization object containing authorization url', done => {
       chai.request(server)
-        .get('/oauth/twitter/authorizations?redirectUrl=https%3A%2F%2Fwww.portal.fanapptic.com%2Foauth')
+        .get('/oauth/twitter/authorizations?redirectUrl=https%3A%2F%2Fwww.manage.fanapptic.com%2Foauth')
         .set('X-Access-Token', testUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);

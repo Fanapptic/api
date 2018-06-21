@@ -5,7 +5,7 @@
 const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
-const appDeviceAuthorize = rootRequire('/middlewares/apps/devices/authorize');
+const appDeviceAuthorizeOptional = rootRequire('/middlewares/apps/devices/authorizeOptional');
 
 const router = express.Router({
   mergeParams: true,
@@ -16,11 +16,11 @@ const router = express.Router({
  */
 
 router.get('/', appAuthorize);
-router.get('/', appDeviceAuthorize);
+router.get('/', appDeviceAuthorizeOptional);
 router.get('/', (request, response, next) => {
   const { app, appDevice } = request;
-  
-  AppSourceContentModel.findAll({
+
+  let options = {
     where: { appId: app.id },
     include: [
       {
@@ -29,20 +29,29 @@ router.get('/', (request, response, next) => {
       },
     ],
     attributes: {
-      include: [[database.literal(
-        '(SELECT COUNT(*) ' +
-        'FROM appFeedActivities ' +
-        'WHERE appFeedActivities.appSourceContentId = appSourceContent.id ' +
-        `AND appFeedActivities.appDeviceId = ${appDevice.id})`
-      ), 'viewCount']],
       exclude: [ 'data' ],
     },
     limit: 20,
     order: [
-      [database.literal('viewCount'), 'ASC'],
       database.literal('RAND()'),
     ],
-  }).then(appSourceContents => {
+  };
+
+  if (appDevice.id) {
+    options.attributes.include = [[database.literal(
+      '(SELECT COUNT(*) ' +
+      'FROM appFeedActivities ' +
+      'WHERE appFeedActivities.appSourceContentId = appSourceContent.id ' +
+      `AND appFeedActivities.appDeviceId = ${appDevice.id})`
+    ), 'viewCount']];
+
+    options.order = [
+      [database.literal('viewCount'), 'ASC'],
+      database.literal('RAND()'),
+    ];
+  }
+
+  AppSourceContentModel.findAll(options).then(appSourceContents => {
     response.success(appSourceContents);
   }).catch(next);
 });

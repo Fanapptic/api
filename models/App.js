@@ -2,6 +2,7 @@ const Joi = require('joi');
 const uuidV1 = require('uuid/v1');
 const sharp = require('sharp');
 const aws = require('aws-sdk');
+const RuntimeConfig = rootRequire('/libs/app/RuntimeConfig');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
 const appleConfig = rootRequire('/config/apple');
@@ -162,6 +163,18 @@ const AppModel = database.define('app', {
   },
   gcmSenderId: {
     type: Sequelize.STRING,
+  },
+  runtimeConfig: {
+    type: Sequelize.JSON,
+    allowNull: false,
+    validate: {
+      isValid(value) {
+        this.setDataValue('runtimeConfig', new RuntimeConfig(value));
+
+        return true;
+      },
+    },
+    defaultValue: {},
   },
 });
 

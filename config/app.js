@@ -18,4 +18,13 @@ module.exports = {
   },
   iconContentType: 'image/png',
   version: '1.0',
+  defaults: {
+    runtimeConfig: {
+      css: {
+        body: {
+          background: 'linear-gradient(to bottom, #232526, #414345)',
+        },
+      },
+    },
+  },
 };

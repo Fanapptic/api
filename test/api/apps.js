@@ -80,6 +80,13 @@ describe('Apps', () => {
         apnsSnsArn: 'arn:aws:sns:us-west-2:026971357:app/APNS/production-apns-app-com.fanapptic.deploymentTestApp',
         gcmSnsArn: 'arn:aws:sns:us-west-2:02697123357:app/GCM/production-gcm-app-com.fanapptic.deploymentTestApp',
         gcmSenderId: '1030805393842',
+        runtimeConfig: {
+          css: {
+            body: {
+              background: '#212121',
+            },
+          },
+        },
       };
 
       chai.request(server)
@@ -108,6 +115,7 @@ describe('Apps', () => {
           response.body.apnsSnsArn.should.equal(fields.apnsSnsArn);
           response.body.gcmSnsArn.should.equal(fields.gcmSnsArn);
           response.body.gcmSenderId.should.equal(fields.gcmSenderId);
+          response.body.runtimeConfig.should.deep.equal(fields.runtimeConfig);
           done();
         });
     });
@@ -148,6 +156,23 @@ describe('Apps', () => {
       chai.request(server)
         .patch('/apps/1241253')
         .set('X-Access-Token', testUser.accessToken)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+
+    it('400s when passed invalid runtime config property', done => {
+      const fields = {
+        runtimeConfig: {
+          test: 'meep',
+        },
+      };
+
+      chai.request(server)
+        .patch('/apps/1')
+        .set('X-Access-Token', testUser.accessToken)
+        .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
           done();

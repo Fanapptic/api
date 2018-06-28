@@ -6,13 +6,13 @@ describe('App Sources', () => {
    */
 
   describe('POST /apps/{appId}/sources', () => {
-    const fields = {
+    const scopedAppSource = {
       type: 'instagram',
-      avatarUrl: 'https://scontent.cdninstagram.com/t51.2885-19/11809603_737295259710174_813805448_a.jpg',
-      accountId: '417616778',
-      accountName: 'braydo25',
-      accountUrl: 'https://www.instagram.com/braydo25',
-      accessToken: '417616778.20d8092.7c0160e2b09c4f598bb54f2e0274c3fc',
+      avatarUrl: 'https://scontent.cdninstagram.com/vp/40442df2e25460dc634c938ed525f039/5BD136E5/t51.2885-19/s150x150/23161741_371295803327277_1672749771627954176_n.jpg',
+      accountId: '6323900411',
+      accountName: 'fanapptic',
+      accountUrl: 'https://www.instagram.com/fanapptic',
+      accessToken: '6323900411.20d8092.0e030ca81339459daea5d3edadd78fde',
       accessTokenSecret: null,
       refreshToken: null,
     };
@@ -21,23 +21,34 @@ describe('App Sources', () => {
       chai.request(server)
         .post(`/apps/${appId}/sources`)
         .set('X-Access-Token', testUser.accessToken)
-        .send(fields)
+        .send(scopedAppSource)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.appId.should.equal('1');
-          response.body.type.should.equal(fields.type);
-          response.body.avatarUrl.should.equal(fields.avatarUrl);
-          response.body.accountId.should.equal(fields.accountId);
-          response.body.accountName.should.equal(fields.accountName);
-          response.body.accountUrl.should.equal(fields.accountUrl);
-          response.body.accessToken.should.equal(fields.accessToken);
+          response.body.type.should.equal(scopedAppSource.type);
+          response.body.avatarUrl.should.equal(scopedAppSource.avatarUrl);
+          response.body.accountId.should.equal(scopedAppSource.accountId);
+          response.body.accountName.should.equal(scopedAppSource.accountName);
+          response.body.accountUrl.should.equal(scopedAppSource.accountUrl);
+          response.body.accessToken.should.equal(scopedAppSource.accessToken);
+          done();
+        });
+    });
+
+    it('400s when connecting already connected app source', done => {
+      chai.request(server)
+        .post(`/apps/${appId}/sources`)
+        .set('X-Access-Token', testUser.accessToken)
+        .send(scopedAppSource)
+        .end((error, response) => {
+          response.should.have.status(400);
           done();
         });
     });
 
     it('400s when passed invalid type', done => {
-      const invalidFields = Object.assign({}, fields, {
+      const invalidFields = Object.assign({}, scopedAppSource, {
         type: 'badtype',
       });
 
@@ -52,7 +63,7 @@ describe('App Sources', () => {
     });
 
     it('400s when passed invalid access token', done => {
-      const invalidFields = Object.assign({}, fields, {
+      const invalidFields = Object.assign({}, scopedAppSource, {
         accessToken: 'badtoken',
       });
 

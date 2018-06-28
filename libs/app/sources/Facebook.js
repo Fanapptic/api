@@ -13,6 +13,19 @@ module.exports = class extends Source {
       json: true,
     }).then(() => {
       return requestPromise.get({
+        url: `${facebookConfig.baseUrl}/${this.appSource.accountId}?` +
+             `access_token=${this.appSource.accessToken}` +
+             '&fields=fan_count',
+        json: true,
+      });
+    }).then(page => {
+      const transaction = (this.sequelizeOptions) ? this.sequelizeOptions.transaction : null;
+
+      this.appSource.totalFans = page.fan_count;
+
+      return this.appSource.save({ transaction });
+    }).then(() => {
+      return requestPromise.get({
         url: `${facebookConfig.baseUrl}/${this.appSource.accountId}/posts?` +
              `access_token=${this.appSource.accessToken}` +
              '&fields=id,source,message,link,created_time' +

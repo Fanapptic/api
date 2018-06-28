@@ -1,7 +1,7 @@
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 
 class Source {
-  constructor(appSource) {
+  constructor(appSource, sequelizeOptions) {
     if (new.target === Source) {
       throw new TypeError('Cannot construct Source instances directly.');
     }
@@ -11,6 +11,7 @@ class Source {
     }
 
     this.appSource = appSource;
+    this.sequelizeOptions = sequelizeOptions;
   }
 
   connect() {

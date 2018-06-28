@@ -38,6 +38,9 @@ const AppSourceModel = database.define('appSource', {
   accountUrl: {
     type: Sequelize.STRING,
   },
+  totalFans: {
+    type: Sequelize.INTEGER,
+  },
   accessToken: {
     type: Sequelize.TEXT('small'),
     allowNull: false,
@@ -64,14 +67,14 @@ AppSourceModel.afterBulkDestroy(instances => {
   instances.forEach(instance => afterDestroy(instance));
 });
 
-function afterCreate(instance) {
-  const source = new sources[instance.type](instance);
+function afterCreate(instance, options) {
+  const source = new sources[instance.type](instance, options);
 
   return source.connect();
 }
 
-function afterDestroy(instance) {
-  const source = new sources[instance.type](instance);
+function afterDestroy(instance, options) {
+  const source = new sources[instance.type](instance, options);
 
   return source.disconnect();
 }

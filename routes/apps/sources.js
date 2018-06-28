@@ -44,18 +44,24 @@ router.post('/', (request, response, next) => {
   const { appId } = request.params;
   const { type, avatarUrl, accountId, accountName, accountUrl, accessToken, accessTokenSecret, refreshToken } = request.body;
 
-  database.transaction(transaction => {
-    return AppSourceModel.create({
-      appId,
-      type,
-      avatarUrl,
-      accountId,
-      accountName,
-      accountUrl,
-      accessToken,
-      accessTokenSecret,
-      refreshToken,
-    }, { transaction }).then(appSource => {
+  AppSourceModel.count({ where: { appId, accountId } }).then(appSourceExists => {
+    if (appSourceExists) {
+      throw new Error(`"${accountName}" is already connected to your app. You cannot connect it more than once.`);
+    }
+
+    return database.transaction(transaction => {
+      return AppSourceModel.create({
+        appId,
+        type,
+        avatarUrl,
+        accountId,
+        accountName,
+        accountUrl,
+        accessToken,
+        accessTokenSecret,
+        refreshToken,
+      }, { transaction });
+    }).then(appSource => {
       response.success(appSource);
     });
   }).catch(next);

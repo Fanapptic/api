@@ -12,6 +12,10 @@ const UserPayment = database.define('userCharge', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  type: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   details: {
     type: Sequelize.JSON,
     allowNull: false,

@@ -13,7 +13,6 @@ const oauthTwitterAuthorizationsRouter = rootRequire('/routes/oauth/twitter/auth
 const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
 const oauthYoutubeUsersRouter = rootRequire('/routes/oauth/youtube/users');
 const usersRouter = rootRequire('/routes/users');
-const userChargesRouter = rootRequire('/routes/users/charges');
 
 module.exports = app => {
   // Route Definitions
@@ -31,7 +30,6 @@ module.exports = app => {
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
   app.use('/oauth/youtube/users', oauthYoutubeUsersRouter);
-  app.use('/users/:userId/charges', userChargesRouter);
   app.use('/users', usersRouter);
 
   // Handle Various Errors

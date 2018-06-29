@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const states = ['onboarding', 'pending', 'active'];
 
 /*
  * Model Definition
@@ -42,6 +43,17 @@ const UserModel = database.define('user', {
         }
       },
     },
+  },
+  state: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isIn: {
+        args: [ states ],
+        msg: 'The state provided is invalid.',
+      },
+    },
+    defaultValue: 'onboarding',
   },
 });
 

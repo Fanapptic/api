@@ -20,6 +20,10 @@ const AppNotificationModel = database.define('appNotification', {
   url: {
     type: Sequelize.TEXT,
   },
+  title: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+  },
   message: {
     type: Sequelize.TEXT,
     allowNull: false,

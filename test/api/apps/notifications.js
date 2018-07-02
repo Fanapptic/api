@@ -9,6 +9,7 @@ describe('App Notifications', () => {
     it('204s and creates push notifications for app devices', done => {
       const fields = {
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        title: 'great title dawg',
         message: 'Open for a surprise!',
       };
 

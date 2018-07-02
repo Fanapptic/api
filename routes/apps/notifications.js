@@ -56,7 +56,7 @@ router.post('/', userAuthorize);
 router.post('/', appAuthorizeOwnership);
 router.post('/', (request, response, next) => {
   const { appId } = request.params;
-  const { url, message } = request.body;
+  const { url, title, message } = request.body;
 
   AppDeviceModel.findAll({ where: { appId } }).then(appDevices => {
     let bulkNotifications = [];
@@ -66,6 +66,7 @@ router.post('/', (request, response, next) => {
         appId,
         appDeviceId: appDevice.id,
         url,
+        title,
         message,
       });
     });

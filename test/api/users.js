@@ -3,6 +3,10 @@ const helpers = require('../helpers');
 let scopedUser = {
   email: 'aTestEmail@fanapptic.com',
   password: 'aTestPassword',
+  appleEmail: 'test@test.com',
+  applePassword: 'testing',
+  googleEmail: 'meh@google.com',
+  googlePassword: 'moretest',
 };
 
 describe('Users', () => {

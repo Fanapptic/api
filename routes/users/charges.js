@@ -40,7 +40,7 @@ router.post('/', (request, response, next) => {
       if (totalFans < userConfig.setupFansWaiveMinimum) {
         stripe.charges.create({
           source,
-          amount: 12500,
+          amount: 249900,
           description: 'Fanapptic Setup Fee',
           currency: 'usd',
         }, function(error, charge) {

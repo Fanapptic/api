@@ -42,7 +42,7 @@ module.exports = class extends Source {
           }).then(postAttachments => {
             post.attachments = (postAttachments) ? postAttachments.data : null;
 
-            const data = this.postToAppSourceContent(post);
+            const data = postToAppSourceContent(this.appSource, post);
 
             if (!data) {
               return;
@@ -126,7 +126,7 @@ module.exports = class extends Source {
             }).then(postAttachments => {
               post.attachments = (postAttachments) ? postAttachments.data : null;
 
-              const data = this.postToAppSourceContent(post);
+              const data = postToAppSourceContent(appSource, post);
 
               if (!data) {
                 return;
@@ -146,110 +146,110 @@ module.exports = class extends Source {
       });
     });
   }
+};
 
-  /*
-   * Helpers
-   */
+/*
+ * Helpers
+ */
 
-  postToAppSourceContent(post) {
-    let image = null;
-    let video = null;
-    let link = null;
-    let collection = null;
+function postToAppSourceContent(appSource, post) {
+  let image = null;
+  let video = null;
+  let link = null;
+  let collection = null;
 
-    if (post.attachments && post.attachments.length) {
-      const attachment = post.attachments[0];
+  if (post.attachments && post.attachments.length) {
+    const attachment = post.attachments[0];
 
-      if (attachment.type === 'photo') {
-        image = this.buildImageFromPost(post);
-      }
-
-      if (attachment.type === 'video_inline' && post.source) {
-        video = this.buildVideoFromPost(post);
-      }
-
-      if (attachment.type === 'share' || (attachment.type === 'video_inline' && !post.source && post.link)) {
-        link = this.buildLinkFromPost(post);
-      }
-
-      if (attachment.type === 'album') {
-        this.buildCollectionFromPost(post);
-      }
-
-      if (!image && !video && !link && !collection) {
-        return false;
-      }
+    if (attachment.type === 'photo') {
+      image = buildImageFromPost(post);
     }
 
-    return {
-      appId: this.appSource.appId,
-      appSourceId: this.appSource.id,
-      image,
-      video,
-      link,
-      collection,
-      description: post.message,
-      data: post,
-      publishedAt: post.created_time,
-    };
+    if (attachment.type === 'video_inline' && post.source) {
+      video = buildVideoFromPost(post);
+    }
+
+    if (attachment.type === 'share' || (attachment.type === 'video_inline' && !post.source && post.link)) {
+      link = buildLinkFromPost(post);
+    }
+
+    if (attachment.type === 'album') {
+      buildCollectionFromPost(post);
+    }
+
+    if (!image && !video && !link && !collection) {
+      return false;
+    }
   }
 
-  buildImageFromPost(post) {
-    return {
-      url: post.attachments[0].media.image.src,
-      width: post.attachments[0].media.image.width,
-      height: post.attachments[0].media.image.height,
-    };
-  }
+  return {
+    appId: appSource.appId,
+    appSourceId: appSource.id,
+    image,
+    video,
+    link,
+    collection,
+    description: post.message,
+    data: post,
+    publishedAt: post.created_time,
+  };
+}
 
-  buildVideoFromPost(post) {
-    return {
-      url: post.source,
-      thumbnailUrl: post.attachments[0].media.image.src,
-      width: post.attachments[0].media.image.width,
-      height: post.attachments[0].media.image.height,
-    };
-  }
+function buildImageFromPost(post) {
+  return {
+    url: post.attachments[0].media.image.src,
+    width: post.attachments[0].media.image.width,
+    height: post.attachments[0].media.image.height,
+  };
+}
 
-  buildLinkFromPost(post) {
-    const attachmentMedia = post.attachments[0].media;
+function buildVideoFromPost(post) {
+  return {
+    url: post.source,
+    thumbnailUrl: post.attachments[0].media.image.src,
+    width: post.attachments[0].media.image.width,
+    height: post.attachments[0].media.image.height,
+  };
+}
 
-    return {
-      title: post.attachments[0].title,
-      description: post.attachments[0].description,
-      url: post.link || post.attachments[0].url,
-      thumbnailUrl: (attachmentMedia) ? attachmentMedia.image.src : null,
-      width: (attachmentMedia) ? attachmentMedia.image.width : null,
-      height: (attachmentMedia) ? attachmentMedia.image.height : null,
-    };
-  }
+function buildLinkFromPost(post) {
+  const attachmentMedia = post.attachments[0].media;
 
-  buildCollectionFromPost(post) {
-    let collection = [];
+  return {
+    title: post.attachments[0].title,
+    description: post.attachments[0].description,
+    url: post.link || post.attachments[0].url,
+    thumbnailUrl: (attachmentMedia) ? attachmentMedia.image.src : null,
+    width: (attachmentMedia) ? attachmentMedia.image.width : null,
+    height: (attachmentMedia) ? attachmentMedia.image.height : null,
+  };
+}
 
-    post.attachments[0].subattachments.data.forEach(subattachment => {
-      if (subattachment.type === 'photo') {
-        collection.push({
-          type: 'image',
-          url: subattachment.media.image.src,
-          thumbnailUrl: subattachment.media.image.src,
-          width: subattachment.media.image.width,
-          height: subattachment.media.image.height,
-          title: subattachment.title,
-        });
-      }
+function buildCollectionFromPost(post) {
+  let collection = [];
 
-      if (subattachment.type === 'video') {
-        collection.push({
-          type: 'link',
-          url: subattachment.url,
-          thumbnailUrl: subattachment.media.image.src,
-          width: subattachment.media.image.width,
-          height: subattachment.media.image.height,
-        });
-      }
-    });
+  post.attachments[0].subattachments.data.forEach(subattachment => {
+    if (subattachment.type === 'photo') {
+      collection.push({
+        type: 'image',
+        url: subattachment.media.image.src,
+        thumbnailUrl: subattachment.media.image.src,
+        width: subattachment.media.image.width,
+        height: subattachment.media.image.height,
+        title: subattachment.title,
+      });
+    }
 
-    return collection;
-  }
-};
+    if (subattachment.type === 'video') {
+      collection.push({
+        type: 'link',
+        url: subattachment.url,
+        thumbnailUrl: subattachment.media.image.src,
+        width: subattachment.media.image.width,
+        height: subattachment.media.image.height,
+      });
+    }
+  });
+
+  return collection;
+}

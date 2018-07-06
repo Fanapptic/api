@@ -1,5 +1,5 @@
 module.exports = {
-  clientId: '20d80929800b4446842ea705a55f6920',
-  clientSecret: '80b7c76910e14681a98bc20550e82bbc',
+  clientId: 'f5f72cc432994c21af31892c5d47fa30',
+  clientSecret: '1d56a38aaea7498baf0bf549a3eb162f',
   postsUrl: 'https://api.instagram.com/v1/users/self/media/recent/',
 };

@@ -13,14 +13,18 @@ module.exports = class extends Source {
            '&count=100',
       json: true,
     }).then(posts => {
-      AppSourceContentModel.bulkCreate(posts.data.map(post => {
-        return {
-          appId: this.appSource.appId,
-          appSourceId: this.appSource.id,
-          data: post,
-          publishedAt: new Date(post.created_time * 1000),
-        };
-      }));
+      posts.data.forEach(post => {
+        const data = postToAppSourceContent(this.appSource, post);
+
+        if (post.type !== 'image') { // temp
+          return;
+        }
+
+        AppSourceContentModel.create(data).catch(e => {
+          console.log(e.message);
+          console.log(JSON.stringify(post));
+        });
+      });
     });
   }
 
@@ -32,3 +36,18 @@ module.exports = class extends Source {
 /*
  * Helpers
  */
+
+function postToAppSourceContent(appSource, post) {
+  return {
+    appId: appSource.appId,
+    appSourceId: appSource.id,
+    image: {
+      url: post.images.standard_resolution.url,
+      width: post.images.standard_resolution.width,
+      height: post.images.standard_resolution.height,
+    },
+    description: post.caption.text,
+    data: post,
+    publishedAt: post.created_time,
+  };
+}

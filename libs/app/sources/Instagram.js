@@ -46,7 +46,7 @@ function postToAppSourceContent(appSource, post) {
       width: post.images.standard_resolution.width,
       height: post.images.standard_resolution.height,
     },
-    description: post.caption.text,
+    description: (post.caption) ? post.caption.text : null,
     data: post,
     publishedAt: post.created_time,
   };

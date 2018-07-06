@@ -55,7 +55,7 @@ global.testAppSource = {
   accountId: '417616778',
   accountName: 'braydo25',
   accountUrl: 'https://www.instagram.com/braydo25',
-  accessToken: '417616778.20d8092.7c0160e2b09c4f598bb54f2e0274c3fc',
+  accessToken: '417616778.f5f72cc.78dcb5562ebe406a82921fe472ef4d65',
   accessTokenSecret: null,
   refreshToken: null,
 };

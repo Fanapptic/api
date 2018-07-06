@@ -12,7 +12,7 @@ describe('App Sources', () => {
       accountId: '6323900411',
       accountName: 'fanapptic',
       accountUrl: 'https://www.instagram.com/fanapptic',
-      accessToken: '6323900411.20d8092.0e030ca81339459daea5d3edadd78fde',
+      accessToken: '417616778.f5f72cc.78dcb5562ebe406a82921fe472ef4d65',
       accessTokenSecret: null,
       refreshToken: null,
     };

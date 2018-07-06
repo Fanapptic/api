@@ -29,6 +29,8 @@ module.exports = class extends Source {
         };
       }));
 
+
+
       // queue for polling new tweets? - no available api for subbing to new tweets.
     });
   }
@@ -37,3 +39,7 @@ module.exports = class extends Source {
 
   }
 };
+
+/*
+ * Helpers
+ */

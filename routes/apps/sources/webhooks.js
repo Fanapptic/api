@@ -38,7 +38,7 @@ router.get('/', (request, response) => {
 router.post('/', webhookAuthorize);
 router.post('/', (request,  response) => {
   const { type } = request.query;
-  const Source = sources[type];
+  const Source = sources.getSourceClass(type);
 
   if (!Source) {
     throw new Error('type is invalid.');

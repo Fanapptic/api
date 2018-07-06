@@ -19,7 +19,7 @@ const AppSourceModel = database.define('appSource', {
     allowNull: false,
     validate: {
       isIn: {
-        args: [ Object.keys(sources) ],
+        args: [ sources.sources ],
         msg: 'The type provided is invalid.',
       },
     },
@@ -68,13 +68,15 @@ AppSourceModel.afterBulkDestroy(instances => {
 });
 
 function afterCreate(instance, options) {
-  const source = new sources[instance.type](instance, options);
+  const SourceClass = sources.getSourceClass(instance.type);
+  const source = new SourceClass(instance, options);
 
   return source.connect();
 }
 
 function afterDestroy(instance, options) {
-  const source = new sources[instance.type](instance, options);
+  const SourceClass = sources.getSourceClass(instance.type);
+  const source = new SourceClass(instance, options);
 
   return source.disconnect();
 }

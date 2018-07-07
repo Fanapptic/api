@@ -2,6 +2,7 @@ const Joi = require('joi');
 const uuidV1 = require('uuid/v1');
 const sharp = require('sharp');
 const aws = require('aws-sdk');
+const hashids = new (require('hashids'))('fanapptic-salt');
 const RuntimeConfig = rootRequire('/libs/app/RuntimeConfig');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
@@ -21,6 +22,9 @@ const AppModel = database.define('app', {
   userId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
+  },
+  publicId: {
+    type: Sequelize.STRING,
   },
   accessToken: {
     type: Sequelize.UUID,
@@ -220,6 +224,21 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
     return this.save();
   });
 };
+
+/*
+ * Instance Hooks
+ */
+
+AppModel.afterCreate(afterCreate);
+AppModel.afterBulkCreate(instances => {
+  instances.forEach(instance => afterCreate(instance));
+});
+
+function afterCreate(instance, options) {
+  instance.publicId = hashids.encode(instance.id);
+
+  return instance.save({ transaction: options.transaction });
+}
 
 /*
  * Export

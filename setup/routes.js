@@ -1,5 +1,6 @@
 const appsRouter = rootRequire('/routes/apps');
 const appAnalyticsRouter = rootRequire('/routes/apps/analytics');
+const appBrandingsRouter = rootRequire('/routes/apps/brandings');
 const appDevicesRouter = rootRequire('/routes/apps/devices');
 const appDeviceSessionsRouter = rootRequire('/routes/apps/devices/sessions');
 const appFeedsRouter = rootRequire('/routes/apps/feeds');
@@ -19,6 +20,7 @@ module.exports = app => {
   // Route Definitions
   app.use('/apps/:appId?', appsRouter);
   app.use('/apps/:appId/analytics', appAnalyticsRouter);
+  app.use('/apps/:appPublicId/brandings', appBrandingsRouter);
   app.use('/apps/:appId/devices/:appDeviceId?', appDevicesRouter);
   app.use('/apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?', appDeviceSessionsRouter);
   app.use('/apps/:appId/feeds', appFeedsRouter);

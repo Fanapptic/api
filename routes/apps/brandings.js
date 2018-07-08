@@ -21,11 +21,13 @@ router.get('/', (request, response, next) => {
     }
 
     response.success({
+      id: app.id,
       accessToken: app.accessToken,
       name: app.name,
       subtitle: app.subtitle,
       description: app.description,
       icons: app.icons,
+      runtimeConfig: app.runtimeConfig,
       appleListingUrl: app.appleListingUrl,
       googleListingUrl: app.googleListingUrl,
     });

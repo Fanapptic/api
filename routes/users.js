@@ -60,7 +60,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { email, password, appleEmail, applePassword, googleEmail, googlePassword } = request.body;
+  const { email, password, appleEmail, applePassword, appleTeamId, appleTeamName, googleEmail, googlePassword, googleServiceAccount } = request.body;
 
   let user = null;
 
@@ -70,8 +70,11 @@ router.post('/', (request, response, next) => {
       password,
       appleEmail,
       applePassword,
+      appleTeamId,
+      appleTeamName,
       googleEmail,
       googlePassword,
+      googleServiceAccount,
     }, { transaction }).then(_user => {
       user = _user;
 
@@ -93,9 +96,12 @@ router.patch('/', (request, response, next) => {
   user.email = request.body.email || user.email;
   user.password = request.body.password || user.password;
   user.appleEmail = request.body.appleEmail || user.appleEmail;
-  user.googleEmail = request.body.googleEmail || user.googleEmail;
   user.applePassword = request.body.applePassword || user.applePassword;
+  user.appleTeamId = request.body.appleTeamId || user.appleTeamId;
+  user.appleTeamName = request.body.appleTeamName || user.appleTeamName;
+  user.googleEmail = request.body.googleEmail || user.googleEmail;
   user.googlePassword = request.body.googlePassword || user.googlePassword;
+  user.googleServiceAccount = request.body.googleServiceAccount || user.googleServiceAccount;
 
   user.save().then(() => {
     response.success(user);

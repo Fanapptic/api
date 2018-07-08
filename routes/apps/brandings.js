@@ -26,6 +26,8 @@ router.get('/', (request, response, next) => {
       subtitle: app.subtitle,
       description: app.description,
       icons: app.icons,
+      appleListingUrl: app.appleListingUrl,
+      googleListingUrl: app.googleListingUrl,
     });
   }).catch(next);
 });

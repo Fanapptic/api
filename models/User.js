@@ -58,6 +58,12 @@ const UserModel = database.define('user', {
       this.setDataValue('applePassword', encryptPassword(value));
     },
   },
+  appleTeamId: {
+    type: Sequelize.STRING,
+  },
+  appleTeamName: {
+    type: Sequelize.STRING,
+  },
   googleEmail: {
     type: Sequelize.STRING,
   },
@@ -69,6 +75,9 @@ const UserModel = database.define('user', {
     set(value) {
       this.setDataValue('googlePassword', encryptPassword(value));
     },
+  },
+  googleServiceAccount: {
+    type: Sequelize.JSON,
   },
   status: {
     type: Sequelize.STRING,

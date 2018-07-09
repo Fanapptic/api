@@ -13,10 +13,10 @@ module.exports.it401sWhenUserAuthorizationIsInvalid = (method, route) => {
   });
 };
 
-module.exports.it401sWhenInternalAuthorizationIsInvalid = (method, route) => {
-  it('401s when internal authorization is invalid', done => {
+module.exports.it401sWhenAppAuthorizationIsInvalid = (method, route) => {
+  it('401s when app authorization is invalid', done => {
     chai.request(server)[method](route)
-      .set('X-Internal-Token', 'some bad token')
+      .set('X-App-Access-Token', 'bad token')
       .end((error, response) => {
         response.should.have.status(401);
         done();
@@ -24,9 +24,10 @@ module.exports.it401sWhenInternalAuthorizationIsInvalid = (method, route) => {
   });
 };
 
-module.exports.it401sWhenPassedInvalidWebhookToken = (method, route) => {
-  it('401s when passed invalid webhook token', done => {
+module.exports.it401sWhenAppDeviceAuthorizationIsInvalid = (method, route) => {
+  it('401s when app device authorization is invalid', done => {
     chai.request(server)[method](route)
+      .set('X-App-Device-Access-Token', 'some bad token')
       .end((error, response) => {
         response.should.have.status(401);
         done();
@@ -45,23 +46,11 @@ module.exports.it403sWhenPassedAppIdNotOwnedByUser = (method, route) => {
   });
 };
 
-module.exports.it403sWhenPassedAppModuleIdNotOwnedByApp = (method, route) => {
-  it('403s when passed app module id not owned by app', done => {
+module.exports.it401sWhenPassedInvalidWebhookToken = (method, route) => {
+  it('401s when passed invalid webhook token', done => {
     chai.request(server)[method](route)
-      .set('X-Access-Token', testUser.accessToken)
       .end((error, response) => {
-        response.should.have.status(403);
-        done();
-      });
-  });
-};
-
-module.exports.it403sWhenPassedAppDeploymentIdNotOwnedByApp = (method, route) => {
-  it('403s when passed app deployment id not owned by app', done => {
-    chai.request(server)[method](route)
-      .set('X-Access-Token', testUser.accessToken)
-      .end((error, response) => {
-        response.should.have.status(403);
+        response.should.have.status(401);
         done();
       });
   });

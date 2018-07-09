@@ -1,20 +1,29 @@
 const bcrypt = require('bcrypt');
-const phone = require('phone');
+const crypto = require('crypto');
+const serverConfig = rootRequire('/config/server');
+const statuses = ['onboarding', 'pending', 'active'];
 
 /*
  * Model Definition
  */
 
-const UserModel = database.define('users', {
+const UserModel = database.define('user', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
+  accessToken: {
+    type: Sequelize.UUID,
+    unique: true,
+    defaultValue: Sequelize.UUIDV1,
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
+    unique: {
+      msg: 'An account already exists for the email address you provided.',
+    },
     validate: {
       isEmail: {
         msg: 'A valid email address must be provided.',
@@ -37,40 +46,49 @@ const UserModel = database.define('users', {
       },
     },
   },
-  accessToken: {
-    type: Sequelize.STRING,
-    unique: true,
-    defaultValue: Sequelize.UUIDV1,
-  },
-  firstName: {
+  appleEmail: {
     type: Sequelize.STRING,
   },
-  lastName: {
+  applePassword: {
     type: Sequelize.STRING,
-  },
-  phoneNumber: {
-    type: Sequelize.STRING,
-    validate: {
-      isPhoneNumber: function(value) {
-        this.setDataValue('phoneNumber', phone(value)[0]);
-
-        if (!this.phoneNumber) {
-          throw new Error('The phone number provided is invalid.');
-        }
-      },
+    get() {
+      return decryptPassword(this.getDataValue('applePassword'));
+    },
+    set(value) {
+      this.setDataValue('applePassword', encryptPassword(value));
     },
   },
-  paypalEmail: {
+  appleTeamId: {
     type: Sequelize.STRING,
-    validate: {
-      isEmail: {
-        msg: 'A valid PayPal email address must be provided.',
-      },
+  },
+  appleTeamName: {
+    type: Sequelize.STRING,
+  },
+  googleEmail: {
+    type: Sequelize.STRING,
+  },
+  googlePassword: {
+    type: Sequelize.STRING,
+    get() {
+      return decryptPassword(this.getDataValue('googlePassword'));
+    },
+    set(value) {
+      this.setDataValue('googlePassword', encryptPassword(value));
     },
   },
-  admin: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
+  googleServiceAccount: {
+    type: Sequelize.JSON,
+  },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isIn: {
+        args: [ statuses ],
+        msg: 'The status provided is invalid.',
+      },
+    },
+    defaultValue: 'onboarding',
   },
 });
 
@@ -85,11 +103,49 @@ UserModel.prototype.comparePassword = function(password) {
 UserModel.prototype.toJSON = function() {
   let user = this.get();
 
-  // We never want to return the user's password.
+  // We never want to return the user's passwords.
   delete user.password;
+  delete user.applePassword;
+  delete user.googlePassword;
 
   return user;
 };
+
+/*
+ * Helpers
+ */
+
+function encryptPassword(value) {
+  if (!value || value.includes('encrypted|')) {
+    return value;
+  }
+
+  let iv = crypto.randomBytes(16);
+  let cipher = crypto.createCipheriv('aes-256-cbc', new Buffer(serverConfig.aesPassword), iv);
+  let encrypted = cipher.update(value);
+
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+
+  return `encrypted|${iv.toString('hex')}:${encrypted.toString('hex')}`;
+}
+
+function decryptPassword(value) {
+  if (!value) {
+    return;
+  }
+
+  value = value.replace('encrypted|', '');
+
+  let parts = value.split(':');
+  let iv = new Buffer(parts.shift(), 'hex');
+  let encryptedText = new Buffer(parts.join(':'), 'hex');
+  let decipher = crypto.createDecipheriv('aes-256-cbc', new Buffer(serverConfig.aesPassword), iv);
+  let decrypted = decipher.update(encryptedText);
+
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+  return decrypted.toString();
+}
 
 /*
  * Export

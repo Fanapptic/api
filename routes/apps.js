@@ -3,7 +3,6 @@
  */
 
 const fileUpload = require('express-fileupload');
-const App = rootRequire('/libs/App');
 const AppModel = rootRequire('/models/App');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
@@ -56,10 +55,17 @@ router.patch('/', (request, response, next) => {
     app.description = request.body.description || app.description;
     app.keywords = request.body.keywords || app.keywords;
     app.website = request.body.website || app.website;
-    app.contentRating = request.body.contentRating || app.contentRating;
+    app.appleCategory = request.body.appleCategory || app.appleCategory;
+    app.appleListingUrl = request.body.appleListingUrl || app.appleListingUrl;
+    app.googleCategory = request.body.googleCategory || app.googleCategory;
+    app.googleListingUrl = request.body.googleListingUrl || app.googleListingUrl;
+    app.googleServices = request.body.googleServices || app.googleServices;
+    app.apnsSnsArn = request.body.apnsSnsArn || app.apnsSnsArn;
+    app.gcmSnsArn = request.body.gcmSnsArn || app.gcmSnsArn;
+    app.gcmSenderId = request.body.gcmSenderId || app.gcmSenderId;
 
-    if (request.body.config) {
-      app.config = App.mergeImportable(app.config, request.body.config);
+    if (request.body.runtimeConfig) {
+      app.runtimeConfig = Object.assign({}, app.runtimeConfig, request.body.runtimeConfig);
     }
 
     if (request.files && request.files.icon) {

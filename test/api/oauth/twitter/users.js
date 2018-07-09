@@ -2,7 +2,7 @@ const helpers = require('../../../helpers');
 
 describe('OAuth Twitter Users', () => {
   /*
-   * GET
+   * POST
    */
 
   describe('POST /oauth/twitter/users', () => {

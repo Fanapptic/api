@@ -3,7 +3,7 @@
  */
 
 const requestPromise = require('request-promise');
-const youtubeConfig = rootRequire('/config/dataSources/youtube');
+const youtubeConfig = rootRequire('/config/sources/youtube');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
 const router = express.Router({

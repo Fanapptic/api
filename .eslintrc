@@ -10,6 +10,7 @@
     "globals": {
       "database": true,
       "express": true,
+      "rootPath": true,
       "rootRequire": true,
       "Sequelize": true
     },

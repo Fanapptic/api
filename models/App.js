@@ -2,21 +2,18 @@ const Joi = require('joi');
 const uuidV1 = require('uuid/v1');
 const sharp = require('sharp');
 const aws = require('aws-sdk');
-const App = rootRequire('/libs/App');
-const AppDeploymentModel = rootRequire('/models/AppDeployment');
-const AppModuleModel = rootRequire('/models/AppModule');
-const UserModel = rootRequire('/models/User');
-const UserAgreementModel = rootRequire('/models/UserAgreement');
-const Snapshot = rootRequire('/libs/App/Snapshot');
+const hashids = new (require('hashids'))('fanapptic-salt');
+const RuntimeConfig = rootRequire('/libs/app/RuntimeConfig');
 const awsConfig = rootRequire('/config/aws');
 const appConfig = rootRequire('/config/app');
-const contentRatings = ['4+', '9+', '12+', '17+'];
+const appleConfig = rootRequire('/config/apple');
+const googleConfig = rootRequire('/config/google');
 
 /*
  * Model Definition
  */
 
-const AppModel = database.define('apps', {
+const AppModel = database.define('app', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -26,17 +23,41 @@ const AppModel = database.define('apps', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
+  publicId: {
+    type: Sequelize.STRING,
+  },
+  accessToken: {
+    type: Sequelize.UUID,
+    unique: true,
+    defaultValue: Sequelize.UUIDV1,
+  },
   bundleId: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
     defaultValue() {
-      return `com.fanapptic.${uuidV1().split('-').join('')}`;
+      // All final bundle id segments are prefixed with 'f'.
+      // uuidV1() can generate a uuid that starts with
+      // an integer, this causes android deployments to break.
+
+      return `com.fanapptic.f${uuidV1().split('-').join('')}`;
     },
   },
   name: {
     type: Sequelize.STRING,
-    defaultValue: 'My App',
+    validate: {
+      max: {
+        args: 30,
+        msg: 'Name cannot exceed a total of 30 characters.',
+      },
+      noControlCharacters(value) {
+        if (value.match(/[^\x20-\x7E]/g)) {
+          throw new Error('Control characters are not allowed in name.');
+        }
+
+        return true;
+      },
+    },
   },
   displayName: {
     type: Sequelize.STRING,
@@ -46,10 +67,9 @@ const AppModel = database.define('apps', {
         msg: 'Display name cannot exceed a total of 11 characters.',
       },
     },
-    defaultValue: 'My App',
   },
   subtitle: {
-    type: Sequelize.STRING(80),
+    type: Sequelize.STRING,
     validate: {
       max: {
         args: 80,
@@ -97,32 +117,63 @@ const AppModel = database.define('apps', {
       },
     },
   },
-  contentRating: {
-    type: Sequelize.ENUM(...contentRatings),
+  appleCategory: {
+    type: Sequelize.STRING,
     validate: {
       isIn: {
-        args: [contentRatings],
-        msg: 'The content rating provided is invalid.',
+        args: [appleConfig.categories],
+        msg: 'The apple category provided is invalid.',
+      },
+    },
+    defaultValue: 'Entertainment',
+  },
+  appleListingUrl: {
+    type: Sequelize.STRING,
+    validate: {
+      isUrl: {
+        msg: 'The apple listing url provided is invalid.',
       },
     },
   },
-  config: {
+  googleCategory: {
+    type: Sequelize.STRING,
+    isIn: {
+      args: [googleConfig.categories],
+      msg: 'The google category provided is invalid.',
+    },
+    defaultValue: 'Entertainment',
+  },
+  googleListingUrl: {
+    type: Sequelize.STRING,
+    validate: {
+      isUrl: {
+        msg: 'The google listing url provided is invalid.',
+      },
+    },
+  },
+  googleServices: {
+    type: Sequelize.JSON,
+  },
+  apnsSnsArn: {
+    type: Sequelize.STRING,
+  },
+  gcmSnsArn: {
+    type: Sequelize.STRING,
+  },
+  gcmSenderId: {
+    type: Sequelize.STRING,
+  },
+  runtimeConfig: {
     type: Sequelize.JSON,
     allowNull: false,
     validate: {
       isValid(value) {
-        const app = new App();
-
-        // import throws when passed an invalid config.
-        app.import(value);
-
-        // export returns a sanitized config object.
-        this.setDataValue('config', app.export());
+        this.setDataValue('runtimeConfig', new RuntimeConfig(value));
 
         return true;
       },
     },
-    defaultValue: '',
+    defaultValue: {},
   },
 });
 
@@ -130,70 +181,12 @@ const AppModel = database.define('apps', {
  * Instance Methods / Overrides
  */
 
-AppModel.prototype.generateAppObject = function() {
-  const app = new App();
-
-  app.import(this.config);
-
-  return app;
-};
-
-AppModel.prototype.generateChecklist = function() {
-  let brandingMarketing = Object.assign({ completed: false }, appConfig.checklist.brandingMarketing);
-  let payout = Object.assign({ completed: false }, appConfig.checklist.payout);
-  let releaseAgreement = Object.assign({ completed: false }, appConfig.checklist.releaseAgreement);
-  let tabs = Object.assign({ completed: false }, appConfig.checklist.tabs);
-
-  let promises = [];
-
-  // Branding & Marketing
-  if (this.name && this.displayName && this.subtitle &&
-      this.description && this.keywords /*&& this.icons TODO: THIS BREAKS TEST, ADD DEFAULT ICON GENERATION */ &&
-      this.website && this.contentRating && this.config) {
-    brandingMarketing.completed = true;
-  }
-
-  // Payout Settings
-  promises.push(UserModel.count({
-    where: {
-      id: this.userId,
-      paypalEmail: {
-        $ne: null,
-      },
-    },
-  }).then(count => {
-    payout.completed = (count) ? true : false;
-  }));
-
-  // Release Agreement Signature
-  promises.push(UserAgreementModel.count({
-    where: {
-      userId: this.userId,
-      agreement: 'release',
-      signedAgreementUrl: {
-        $ne: null,
-      },
-    },
-  }).then(count => {
-    releaseAgreement.completed = (count) ? true : false;
-  }));
-
-  // At Least 2 Tabs
-  promises.push(AppModuleModel.count({ where: { appId: this.id } }).then(count => {
-    tabs.completed = (count >= 2) ? true : false;
-  }));
-
-  // Return Checklist
-  return Promise.all(promises).then(() => {
-    return [ brandingMarketing, payout, releaseAgreement, tabs ];
-  });
-};
-
 AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
   Joi.assert(iconImageBuffer, Joi.binary());
 
   const s3 = new aws.S3();
   const requiredIcons = appConfig.requiredIcons;
+  const sharpImage = sharp(iconImageBuffer).background({r: 255, g: 255, b:255, alpha: 0}).flatten();
 
   let promises = [];
   let icons = [];
@@ -202,7 +195,7 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
     const size = requiredIcons[iconName].size;
 
     promises.push(
-      sharp(iconImageBuffer).resize(size).toBuffer().then(buffer => {
+      sharpImage.resize(size, size).toBuffer().then(buffer => {
         return s3.upload({
           ACL: 'public-read',
           Body: buffer,
@@ -227,78 +220,20 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
   });
 };
 
-AppModel.prototype.deploy = function() {
-  let previousDeployment = null;
-  let snapshot = null;
+/*
+ * Instance Hooks
+ */
 
-  return AppDeploymentModel.find({
-    where: { appId: this.id },
-    order: [['createdAt', 'DESC']],
-  }).then(_previousDeployment => {
-    previousDeployment = _previousDeployment;
+AppModel.afterCreate(afterCreate);
+AppModel.afterBulkCreate(instances => {
+  instances.forEach(instance => afterCreate(instance));
+});
 
-    return this._generateSnapshot();
-  }).then(generatedSnapshot => {
-    snapshot = generatedSnapshot;
+function afterCreate(instance, options) {
+  instance.publicId = hashids.encode(instance.id);
 
-    if (!previousDeployment || snapshot.requiresHardDeploy(previousDeployment.snapshot)) {
-      return Snapshot.DEPLOYMENT_TYPES.HARD;
-    }
-
-    if (snapshot.requiresSoftDeploy(previousDeployment.snapshot)) {
-      return Snapshot.DEPLOYMENT_TYPES.SOFT;
-    }
-
-    throw new Error('No changes have been made since your most recent deployment.');
-  }).then(deploymentType => {
-    return database.transaction(transaction => {
-      let appDeployment = null;
-
-      return AppDeploymentModel.create({
-        appId: this.id,
-        type: deploymentType,
-        snapshot,
-      }, { transaction }).then(_appDeployment => {
-        appDeployment = _appDeployment;
-
-        return appDeployment.softDeploy();
-      }).then(() => {
-        if (deploymentType === Snapshot.DEPLOYMENT_TYPES.HARD) {
-          return appDeployment.hardDeploy();
-        }
-      }).then(() => {
-        return appDeployment;
-      }).catch(error => {
-        throw error;
-      });
-    });
-  });
-};
-
-AppModel.prototype._generateSnapshot = function() {
-  const id = this.id;
-  const app = this.generateAppObject();
-
-  return AppModuleModel.findAll({ where: { appId: id } }).then(appModules => {
-    appModules.forEach(appModule => {
-      app.addModule(appModule.generateModuleObject());
-    });
-
-    return new Snapshot({
-      bundleId: this.bundleId,
-      name: this.name,
-      displayName: this.displayName,
-      subtitle: this.subtitle,
-      description: this.description,
-      keywords: this.keywords,
-      icons: this.icons,
-      website: this.website,
-      contentRating: this.contentRating,
-      launchConfig: app.exportLaunchConfig(),
-      packagedConfig: app.exportPackagedConfig(),
-    });
-  });
-};
+  return instance.save({ transaction: options.transaction });
+}
 
 /*
  * Export

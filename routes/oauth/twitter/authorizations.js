@@ -3,7 +3,7 @@
  */
 
 const requestPromise = require('request-promise');
-const twitterConfig = rootRequire('/config/dataSources/twitter');
+const twitterConfig = rootRequire('/config/sources/twitter');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
 const router = express.Router({

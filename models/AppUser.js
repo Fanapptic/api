@@ -1,10 +1,8 @@
-const platforms = ['android', 'ios'];
-
 /*
  * Model Definition
  */
 
-const AppUserModel = database.define('appUsers', {
+const AppUserModel = database.define('appUser', {
   id: {
     type: Sequelize.INTEGER(10).UNSIGNED,
     primaryKey: true,
@@ -14,20 +12,43 @@ const AppUserModel = database.define('appUsers', {
     type: Sequelize.INTEGER(10).UNSIGNED,
     allowNull: false,
   },
-  uuid: {
+  accessToken: {
     type: Sequelize.UUID,
     unique: true,
     defaultValue: Sequelize.UUIDV1,
   },
-  platform: {
-    type: Sequelize.ENUM(...platforms),
+  facebookId: {
+    type: Sequelize.BIGINT.UNSIGNED,
+    unique: true,
     allowNull: false,
-    validate: {
-      isIn: {
-        args: [platforms],
-        msg: 'The platform provided is invalid.',
-      },
-    },
+  },
+  facebookAccessToken: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  facebookAccountLink: {
+    type: Sequelize.STRING,
+  },
+  email: {
+    type: Sequelize.STRING,
+  },
+  firstName: {
+    type: Sequelize.STRING,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+  },
+  ageRange: {
+    type: Sequelize.JSON,
+  },
+  gender: {
+    type: Sequelize.STRING,
+  },
+  locale: {
+    type: Sequelize.STRING,
+  },
+  avatarUrl: {
+    type: Sequelize.STRING,
   },
 });
 

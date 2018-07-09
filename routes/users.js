@@ -5,7 +5,6 @@
 const auth = require('basic-auth');
 
 const UserModel = rootRequire('/models/User');
-const UserAgreementModel = rootRequire('/models/UserAgreement');
 const AppModel = rootRequire('/models/App');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
 
@@ -61,35 +60,27 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { email, password, firstName, lastName, phoneNumber, paypalEmail } = request.body;
+  const { email, password, appleEmail, applePassword, appleTeamId, appleTeamName, googleEmail, googlePassword, googleServiceAccount } = request.body;
 
   let user = null;
-  let userAgreement = null;
 
   database.transaction(transaction => {
     return UserModel.create({
       email,
       password,
-      firstName,
-      lastName,
-      phoneNumber,
-      paypalEmail,
+      appleEmail,
+      applePassword,
+      appleTeamId,
+      appleTeamName,
+      googleEmail,
+      googlePassword,
+      googleServiceAccount,
     }, { transaction }).then(_user => {
       user = _user;
-
-      return UserAgreementModel.create({
-        userId: user.id,
-        agreement: 'release',
-        email,
-      }, { transaction });
-    }).then(_userAgreement => {
-      userAgreement = _userAgreement;
 
       return AppModel.create({ userId: user.id }, { transaction });
     });
   }).then(() => {
-    userAgreement.sendSignatureRequestOrReminder();
-    
     response.success(user);
   }).catch(next);
 });
@@ -100,14 +91,17 @@ router.post('/', (request, response, next) => {
 
 router.patch('/', userAuthorize);
 router.patch('/', (request, response, next) => {
-  const user = request.user;
+  const { user } = request;
 
   user.email = request.body.email || user.email;
   user.password = request.body.password || user.password;
-  user.firstName = request.body.firstName || user.firstName;
-  user.lastName = request.body.lastName || user.lastName;
-  user.phoneNumber = request.body.phoneNumber || user.phoneNumber;
-  user.paypalEmail = request.body.paypalEmail || user.paypalEmail;
+  user.appleEmail = request.body.appleEmail || user.appleEmail;
+  user.applePassword = request.body.applePassword || user.applePassword;
+  user.appleTeamId = request.body.appleTeamId || user.appleTeamId;
+  user.appleTeamName = request.body.appleTeamName || user.appleTeamName;
+  user.googleEmail = request.body.googleEmail || user.googleEmail;
+  user.googlePassword = request.body.googlePassword || user.googlePassword;
+  user.googleServiceAccount = request.body.googleServiceAccount || user.googleServiceAccount;
 
   user.save().then(() => {
     response.success(user);

@@ -1,35 +1,31 @@
 const AppModel = rootRequire('/models/App');
-const AppDeploymentModel = rootRequire('/models/AppDeployment');
-const AppDeploymentStepModel = rootRequire('/models/AppDeploymentStep');
-const AppRevenueModel = rootRequire('/models/AppRevenue');
-const AppModuleModel = rootRequire('/models/AppModule');
-const AppModuleDataModel = rootRequire('/models/AppModuleData');
-const AppModuleProviderModel = rootRequire('/models/AppModuleProvider');
-const AppPushNotificationModel = rootRequire('/models/AppPushNotification');
-const AppSessionModel = rootRequire('/models/AppSession');
+const AppDeviceModel = rootRequire('/models/AppDevice');
+const AppDeviceSessionModel = rootRequire('/models/AppDeviceSession');
+const AppFeedActivityModel = rootRequire('/models/AppFeedActivity');
+const AppNotificationModel = rootRequire('/models/AppNotification');
+const AppSourceModel = rootRequire('/models/AppSource');
+const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const AppUserModel = rootRequire('/models/AppUser');
-
-const ArticleModel = rootRequire('/models/Article');
-const CurrencyModel = rootRequire('/models/Currency');
 const UserModel = rootRequire('/models/User');
-const UserAgreementModel = rootRequire('/models/UserAgreement');
+const UserChargeModel = rootRequire('/models/UserCharge');
 
-AppModel.hasMany(AppDeploymentModel);
-AppModel.hasMany(AppModuleModel);
-AppModel.hasMany(AppPushNotificationModel);
-AppModel.hasMany(AppRevenueModel);
-AppModel.hasMany(AppSessionModel);
 AppModel.hasMany(AppUserModel);
-AppDeploymentModel.hasMany(AppDeploymentStepModel);
-AppModuleModel.hasMany(AppModuleDataModel);
-AppModuleModel.hasMany(AppModuleProviderModel);
-AppModuleProviderModel.hasMany(AppModuleDataModel);
-AppUserModel.hasMany(AppSessionModel);
+AppModel.hasMany(AppDeviceModel);
+AppModel.hasMany(AppFeedActivityModel);
+AppModel.hasMany(AppNotificationModel);
+AppModel.hasMany(AppSourceModel);
+AppModel.hasMany(AppSourceContentModel);
+AppDeviceModel.hasMany(AppDeviceSessionModel);
+AppDeviceModel.hasMany(AppFeedActivityModel);
+AppDeviceModel.hasMany(AppNotificationModel);
+AppDeviceSessionModel.hasMany(AppFeedActivityModel);
+AppSourceContentModel.belongsTo(AppSourceModel);
+AppSourceContentModel.hasMany(AppFeedActivityModel);
+AppUserModel.hasMany(AppDeviceModel);
+AppUserModel.hasMany(AppDeviceSessionModel);
+AppUserModel.hasMany(AppFeedActivityModel);
 
-CurrencyModel.hasMany(AppRevenueModel);
 UserModel.hasMany(AppModel);
-UserModel.hasMany(UserAgreementModel);
+UserModel.hasMany(UserChargeModel);
 
-module.exports = database.sync({
-  force: (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'local'),
-});
+module.exports = database.sync();

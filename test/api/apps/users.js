@@ -1,43 +1,43 @@
-const helpers = require('../../helpers');
-
 describe('App Users', () => {
   /*
    * POST
    */
 
   describe('POST /apps/{appId}/users', () => {
-    it('200s with created app user object owned by app', done => {
+    it('200s with created or updated app user', done => {
       const fields = {
-        platform: 'android',
+        facebookAccessToken: 'EAAFfFpdEd8UBAJU0KZBELCD5zry7kxySSuG8sm8F0aLgB6xdXRjqil9EFnqmtZCFSqIWAGglkmPYFpZCZCs8Bn9KNdXLy6covzFweZCSfymqZAJUtGjor3YE4RDVt4r7qochm3zp78gBUp2ZAXJU950z9RPbOKkUjZCZCZCv0hGbZBCV0Illm9pPvv1',
       };
 
       chai.request(server)
         .post(`/apps/${appId}/users`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('object');
-          response.body.appId.should.equal(appId + '');
+          response.body.facebookAccessToken.should.equal(fields.facebookAccessToken);
           done();
         });
     });
 
-    it('400s when passed invalid app id', done => {
+    it('401s when passed invalid app id', done => {
       chai.request(server)
         .post('/apps/9494949/users')
+        .set('X-App-Access-Token', testApp.accessToken)
         .end((error, response) => {
-          response.should.have.status(400);
+          response.should.have.status(401);
           done();
         });
     });
 
-    it('400s when passed invalid platform', done => {
+    it('400s when passed invalid facebook access token', done => {
       const fields = {
-        platform: 'windows',
+        facebookAccessToken: 'somebadtoken',
       };
 
       chai.request(server)
         .post(`/apps/${appId}/users`)
+        .set('X-App-Access-Token', testApp.accessToken)
         .send(fields)
         .end((error, response) => {
           response.should.have.status(400);
@@ -51,45 +51,15 @@ describe('App Users', () => {
    */
 
   describe('GET /apps/{appId}/users', () => {
-    it('200s with an array of app user objects owned by app', done => {
+    it('200s with app user', done => {
       chai.request(server)
         .get(`/apps/${appId}/users`)
-        .set('X-Access-Token', testUser.accessToken)
+        .set('X-App-User-Access-Token', testAppUser.accessToken)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body.length.should.be.at.least(1);
-          response.body.forEach(appUserObject => {
-            appUserObject.should.be.an('object');
-            appUserObject.appId.should.equal(appId);
-          });
+          response.body.id.should.equal(testAppUser.id);
           done();
         });
     });
-
-    it('200s with app user object owned by app when passed app user id', done => {
-      chai.request(server)
-        .get(`/apps/${appId}/users/1`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(200);
-          response.body.should.be.an('object');
-          response.body.appId.should.equal(appId);
-          done();
-        });
-    });
-
-    it('400s when passed invalid app user id', done => {
-      chai.request(server)
-        .get(`/apps/${appId}/users/1241241`)
-        .set('X-Access-Token', testUser.accessToken)
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-
-    helpers.it401sWhenUserAuthorizationIsInvalid('get', '/apps/1/users');
-    helpers.it403sWhenPassedAppIdNotOwnedByUser('get', '/apps/124124/users');
   });
 });

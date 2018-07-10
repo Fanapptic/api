@@ -66,7 +66,7 @@ router.get('/', (request, response, next) => {
         },
       },
       group: [ 'appDeviceId' ],
-    }).then(_dailyActiveUsers => dailyActiveUsers = _dailyActiveUsers)
+    }).then(_dailyActiveUsers => dailyActiveUsers = _dailyActiveUsers.length)
   );
 
   // Weekly Active Users
@@ -79,7 +79,7 @@ router.get('/', (request, response, next) => {
         },
       },
       group: [ 'appDeviceId' ],
-    }).then(_weeklyActiveUsers => weeklyActiveUsers = _weeklyActiveUsers)
+    }).then(_weeklyActiveUsers => weeklyActiveUsers = _weeklyActiveUsers.length)
   );
 
   // Daily Usage

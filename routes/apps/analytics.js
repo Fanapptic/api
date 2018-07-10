@@ -165,20 +165,20 @@ router.get('/', (request, response, next) => {
   Promise.all(promises).then(() => {
     response.success({
       downloads: {
-        weeklyDownloads,
-        totalDownloads,
+        weekly: weeklyDownloads,
+        total: totalDownloads,
       },
       activeUsers: {
-        dailyActiveUsers,
-        weeklyActiveUsers,
+        daily: dailyActiveUsers,
+        weekly: weeklyActiveUsers,
       },
       usage: {
-        dailyUsage,
-        totalUsage,
+        daily: dailyUsage,
+        total: totalUsage,
       },
       contentViews: {
-        dailyContentViews,
-        totalContentViews,
+        daily: dailyContentViews,
+        total: totalContentViews,
       },
     });
   }).catch(next);

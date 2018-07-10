@@ -23,6 +23,7 @@ router.post('/', (request, response, next) => {
   let appDeviceSession = null;
 
   return AppDeviceSessionModel.create({
+    appId: appDevice.appId,
     appDeviceId: appDevice.id,
     appUserId: appUser.id,
     location,

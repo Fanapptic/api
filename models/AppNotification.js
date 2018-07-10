@@ -1,5 +1,3 @@
-const AppDeviceModel = rootRequire('/models/AppDevice');
-
 /*
  * Model Definition
  */
@@ -45,7 +43,7 @@ AppNotificationModel.afterBulkCreate(instances => {
 });
 
 function afterCreate(instance) {
-  AppDeviceModel.findAll({
+  database.models.appDevice.findAll({
     where: {
       id: instance.appDeviceId,
       $or: [

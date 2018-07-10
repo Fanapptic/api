@@ -1,6 +1,7 @@
 const requestPromise = require('request-promise');
 
 const Source = require('../Source');
+const AppModel = rootRequire('/models/App');
 const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const serverConfig = rootRequire('/config/server');
@@ -97,8 +98,9 @@ module.exports = class extends Source {
       const videoId = entry['yt:videoid'][0];
 
       let video = null;
+      let isNew = false;
 
-      return requestPromise.get({
+      requestPromise.get({
         url: `${youtubeConfig.videosUrl}?` +
              `id=${videoId}` +
              '&part=snippet,status' +
@@ -115,8 +117,9 @@ module.exports = class extends Source {
             ],
           },
         });
-      }).then(() => {
-        // can tell if it's new by whether or not a previous entry was destroyed.
+      }).then(affectedRows => {
+        isNew = (!affectedRows) ? true : false;
+
         return AppSourceModel.findAll({
           where: {
             type: 'youtube',
@@ -135,7 +138,13 @@ module.exports = class extends Source {
         appSources.forEach(appSource => {
           const data = playlistItemToAppSourceContent(appSource, video);
 
-          AppSourceContentModel.create(data);
+          AppSourceContentModel.create(data).then(() => {
+            if (isNew) {
+              AppModel.find({ where: { id: appSource.appId } }).then(app => {
+                app.sendGlobalNotification('', 'yt', 'message here'); // TODO:
+              });
+            }
+          });
         });
       });
     });

@@ -220,6 +220,24 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
   });
 };
 
+AppModel.prototype.sendGlobalNotification = function(url, title, message) {
+  return database.models.appDevice.findAll({ where: { appId: this.id } }).then(appDevices => {
+    let bulkNotifications = [];
+
+    appDevices.forEach(appDevice => {
+      bulkNotifications.push({
+        appId: this.id,
+        appDeviceId: appDevice.id,
+        url,
+        title,
+        message,
+      });
+    });
+
+    return database.models.appNotification.bulkCreate(bulkNotifications);
+  });
+};
+
 /*
  * Instance Hooks
  */

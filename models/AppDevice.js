@@ -1,5 +1,4 @@
 const aws = require('aws-sdk');
-const AppModel = rootRequire('/models/App');
 const platforms = ['android', 'ios'];
 
 /*
@@ -66,7 +65,7 @@ function setPlatformArn(instance) {
     return;
   }
 
-  return AppModel.find({ where: { id: instance.appId } }).then(app => {
+  return database.models.app.find({ where: { id: instance.appId } }).then(app => {
     const sns = new aws.SNS();
     let snsPromises = [];
 

@@ -11,6 +11,7 @@ const UserChargeModel = rootRequire('/models/UserCharge');
 
 AppModel.hasMany(AppUserModel);
 AppModel.hasMany(AppDeviceModel);
+AppModel.hasMany(AppDeviceSessionModel);
 AppModel.hasMany(AppFeedActivityModel);
 AppModel.hasMany(AppNotificationModel);
 AppModel.hasMany(AppSourceModel);

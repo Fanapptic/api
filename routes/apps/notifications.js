@@ -55,24 +55,10 @@ router.get('/', (request, response, next) => {
 router.post('/', userAuthorize);
 router.post('/', appAuthorizeOwnership);
 router.post('/', (request, response, next) => {
-  const { appId } = request.params;
+  const { app } = request;
   const { url, title, message } = request.body;
 
-  AppDeviceModel.findAll({ where: { appId } }).then(appDevices => {
-    let bulkNotifications = [];
-
-    appDevices.forEach(appDevice => {
-      bulkNotifications.push({
-        appId,
-        appDeviceId: appDevice.id,
-        url,
-        title,
-        message,
-      });
-    });
-
-    return AppNotificationModel.bulkCreate(bulkNotifications);
-  }).then(() => {
+  app.sendGlobalNotification(url, title, message).then(() => {
     response.success();
   }).catch(next);
 });

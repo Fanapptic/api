@@ -1,6 +1,7 @@
 const requestPromise = require('request-promise');
 
 const Source = require('../Source');
+const AppModel = rootRequire('/models/App');
 const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const facebookConfig = rootRequire('/config/sources/facebook');
@@ -135,7 +136,9 @@ module.exports = class extends Source {
               AppSourceContentModel.create(data);
             }).then(() => {
               if (verb === 'add') {
-                // send global notification?
+                AppModel.find({ where: { id: appSource.appId } }).then(app => {
+                  app.sendGlobalNotification('', 'fb', 'message here'); // TODO:
+                });
               }
             }).catch(error => {
               // this could be a place we check if we need to reauth the account?

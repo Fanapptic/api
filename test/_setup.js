@@ -55,7 +55,7 @@ global.testAppSource = {
   accountId: '417616778',
   accountName: 'braydo25',
   accountUrl: 'https://www.instagram.com/braydo25',
-  accessToken: '417616778.f5f72cc.78dcb5562ebe406a82921fe472ef4d65',
+  accessToken: '417616778.ccb2f19.bf188e1e42b94bdaa4f74a24de0822b4',
   accessTokenSecret: null,
   refreshToken: null,
 };
@@ -191,7 +191,7 @@ before(done => {
 
     fatLog('Starting tests...');
 
-    done();
+    setTimeout(done, 2000);
   });
 });
 

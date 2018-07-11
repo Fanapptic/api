@@ -76,7 +76,7 @@ const AppSourceContent = database.define('appSourceContent', {
         Joi.assert(value, Joi.array().items(Joi.object({
           type: Joi.string().valid('image', 'video', 'link').required(),
           url: Joi.string().required(),
-          thumbnailUrl: Joi.string().required(),
+          thumbnailUrl: Joi.string().allow(null),
           width: Joi.number().allow(null),
           height: Joi.number().allow(null),
           title: Joi.string().allow(null),

@@ -34,7 +34,7 @@ module.exports = app => {
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
   app.use('/oauth/youtube/users', oauthYoutubeUsersRouter);
   app.use('/users/:userId/charges', userChargesRouter);
-  app.use('/users', usersRouter);
+  app.use('/users/:userId?', usersRouter);
 
   // Handle Various Errors
   app.use((error, request, response, next) => { // 4 params request to handle error.

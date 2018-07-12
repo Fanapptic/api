@@ -3,6 +3,7 @@ const helpers = require('../helpers');
 let scopedUser = {
   email: 'aTestEmail@fanapptic.com',
   password: 'aTestPassword',
+  publisherName: 'tester test',
   appleEmail: 'test@test.com',
   applePassword: 'testing',
   googleEmail: 'meh@google.com',
@@ -25,6 +26,7 @@ describe('Users', () => {
           response.body.id.should.be.a('number');
           response.body.accessToken.should.be.a('string');
           response.body.email.should.equal(scopedUser.email);
+          response.body.publisherName.should.equal(scopedUser.publisherName);
           response.body.should.not.have.property('password');
 
           scopedUser.id = response.body.id;
@@ -53,6 +55,7 @@ describe('Users', () => {
       const fields = {
         email: 'aNewEmail@gmail.com',
         password: 'aNewPassword',
+        publisherName: 'other names',
         appleEmail: 'me@braydonb.com',
         applePassword: 'testPassword',
         appleTeamId: '7G6A3SWDG83',
@@ -82,6 +85,7 @@ describe('Users', () => {
           response.body.should.be.an('object');
           response.body.id.should.be.a('number');
           response.body.email.should.equal(fields.email);
+          response.body.publisherName.should.equal(fields.publisherName);
           response.body.appleEmail.should.equal(fields.appleEmail);
           response.body.appleTeamId.should.equal(fields.appleTeamId);
           response.body.appleTeamName.should.equal(fields.appleTeamName);

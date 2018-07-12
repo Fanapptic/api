@@ -60,7 +60,7 @@ router.get('/', (request, response, next) => {
  */
 
 router.post('/', (request, response, next) => {
-  const { email, password, appleEmail, applePassword, appleTeamId, appleTeamName, googleEmail, googlePassword, googleServiceAccount } = request.body;
+  const { email, password, publisherName, appleEmail, applePassword, appleTeamId, appleTeamName, googleEmail, googlePassword, googleServiceAccount } = request.body;
 
   let user = null;
 
@@ -68,6 +68,7 @@ router.post('/', (request, response, next) => {
     return UserModel.create({
       email,
       password,
+      publisherName,
       appleEmail,
       applePassword,
       appleTeamId,
@@ -95,6 +96,7 @@ router.patch('/', (request, response, next) => {
 
   user.email = request.body.email || user.email;
   user.password = request.body.password || user.password;
+  user.publisherName = request.body.publisherName || user.publisherName;
   user.appleEmail = request.body.appleEmail || user.appleEmail;
   user.applePassword = request.body.applePassword || user.applePassword;
   user.appleTeamId = request.body.appleTeamId || user.appleTeamId;

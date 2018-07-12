@@ -46,6 +46,9 @@ const UserModel = database.define('user', {
       },
     },
   },
+  publisherName: {
+    type: Sequelize.STRING,
+  },
   appleEmail: {
     type: Sequelize.STRING,
   },

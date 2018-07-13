@@ -16,6 +16,10 @@ const UserEmail = database.define('userEmail', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  recipient: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+  },
   subject: {
     type: Sequelize.TEXT,
     allowNull: false,

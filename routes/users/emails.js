@@ -43,7 +43,7 @@ router.get('/', (request, response, next) => {
 router.post('/', internalAuthorize);
 router.post('/', (request, response, next) => {
   const { Type, Token, TopicArn } = request.body;
-
+console.log(Type, Token, TopicArn);
   if (Type === 'SubscriptionConfirmation') {
     const sns = new aws.SNS();
 
@@ -51,8 +51,10 @@ router.post('/', (request, response, next) => {
       Token,
       TopicArn,
       AuthenticateOnUnsubscribe: 'true',
+    }, (err, res) => {
+      console.log(err, res);
     });
-
+console.log('???');
     return response.success();
   }
 

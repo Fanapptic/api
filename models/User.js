@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const uuidV1 = require('uuid/v1');
 const serverConfig = rootRequire('/config/server');
 const statuses = ['onboarding', 'pending', 'active'];
 
@@ -38,7 +39,7 @@ const UserModel = database.define('user', {
         msg: 'A password must be provided.',
       },
       isBcrypt: function(value) {
-        if (!value.startsWith('$2a')) {
+        if (!value.startsWith('$2a') && !value.startsWith('$2b') && !value.startsWith('$2y')) {
           return bcrypt.hash(value, 10).then(password => {
             this.setDataValue('password', password);
           });
@@ -113,6 +114,28 @@ UserModel.prototype.toJSON = function() {
 
   return user;
 };
+
+/*
+ * Instance Hooks
+ */
+
+UserModel.afterCreate(afterCreate);
+UserModel.afterBulkCreate(instances => {
+  instances.forEach(instance => afterCreate(instance));
+});
+
+function afterCreate(instance, options) {
+  const internalEmail = uuidV1().split('-').join('') + '@fanappticinternal.com';
+  const internalPassword = uuidV1().split('-').join('');
+
+  instance.appleEmail = internalEmail;
+  instance.applePassword = internalPassword;
+
+  instance.googleEmail = internalEmail;
+  instance.googlePassword = internalPassword;
+
+  return instance.save({ transaction: options.transaction });
+}
 
 /*
  * Helpers

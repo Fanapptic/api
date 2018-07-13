@@ -8,6 +8,7 @@ const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const AppUserModel = rootRequire('/models/AppUser');
 const UserModel = rootRequire('/models/User');
 const UserChargeModel = rootRequire('/models/UserCharge');
+const UserEmailModel = rootRequire('/models/UserEmail');
 
 AppModel.hasMany(AppUserModel);
 AppModel.hasMany(AppDeviceModel);
@@ -28,5 +29,6 @@ AppUserModel.hasMany(AppFeedActivityModel);
 
 UserModel.hasMany(AppModel);
 UserModel.hasMany(UserChargeModel);
+UserModel.hasMany(UserEmailModel);
 
 module.exports = database.sync();

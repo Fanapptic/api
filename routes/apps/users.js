@@ -3,7 +3,6 @@
  */
 
 const requestPromise = require('request-promise');
-
 const AppUserModel = rootRequire('/models/AppUser');
 const appAuthorize = rootRequire('/middlewares/apps/authorize');
 const appUserAuthorize = rootRequire('/middlewares/apps/users/authorize');

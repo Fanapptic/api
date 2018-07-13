@@ -3,7 +3,6 @@
  */
 
 const auth = require('basic-auth');
-
 const UserModel = rootRequire('/models/User');
 const AppModel = rootRequire('/models/App');
 const userAuthorize = rootRequire('/middlewares/users/authorize');

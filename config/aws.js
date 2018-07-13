@@ -16,5 +16,6 @@ module.exports.s3AppsBucket = process.env.S3_APPS_BUCKET;
  * SQS
  */
 
+module.exports.sqsAccountSetupQueue = process.env.SQS_ACCOUNT_SETUP_QUEUE_URL;
 module.exports.sqsAndroidAppDeploymentQueue = process.env.SQS_ANDROID_APP_DEPLOYMENT_QUEUE_URL;
 module.exports.sqsIosAppDeploymentQueue = process.env.SQS_IOS_APP_DEPLOYMENT_QUEUE_URL;

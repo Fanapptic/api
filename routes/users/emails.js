@@ -3,7 +3,6 @@
  */
 
 const aws = require('aws-sdk');
-const AppModel = rootRequire('/models/App');
 const UserModel = rootRequire('/models/User');
 const UserEmailModel = rootRequire('/models/UserEmail');
 const userAuthorize = rootRequire('/middlewares/users/authorize');

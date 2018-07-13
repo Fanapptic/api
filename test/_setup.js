@@ -129,6 +129,13 @@ before(done => {
   }).then(response => {
     Object.assign(testUser, response.body);
 
+    fatLog('Creating global test user email in DB...');
+
+    return database.query(`
+      INSERT INTO userEmails (userId, source, recipient, subject, content, plainContent, htmlContent)
+      VALUES('1', 'test@apple.com', 'test@fanapticinternal.com', 'test', 'test', 'test', 'test')
+    `);
+  }).then(() => {
     fatLog('Adding icon to global test app...');
 
     return chai.request(server)

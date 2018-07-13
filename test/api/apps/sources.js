@@ -94,9 +94,9 @@ describe('App Sources', () => {
           response.should.have.status(200);
           response.body.should.be.an('array');
           response.body.length.should.be.at.least(1);
-          response.body.forEach(appModuleProviderObject => {
-            appModuleProviderObject.should.be.an('object');
-            appModuleProviderObject.appId.should.equal(1);
+          response.body.forEach(appSourceObject => {
+            appSourceObject.should.be.an('object');
+            appSourceObject.appId.should.equal(1);
           });
           done();
         });

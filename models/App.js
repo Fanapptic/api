@@ -168,9 +168,11 @@ const AppModel = database.define('app', {
     allowNull: false,
     validate: {
       isValid(value) {
-        this.setDataValue('runtimeConfig', new RuntimeConfig(value));
+        const runtimeConfig = new RuntimeConfig(value);
+        
+        this.setDataValue('runtimeConfig', runtimeConfig);
 
-        return true;
+        return runtimeConfig.uploadToS3(this);
       },
     },
     defaultValue: {},

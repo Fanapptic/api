@@ -1,5 +1,7 @@
 const Joi = require('joi');
+const aws = require('aws-sdk');
 const appConfig = rootRequire('/config/app');
+const awsConfig = rootRequire('/config/aws');
 
 class RuntimeConfig {
   constructor(initObject) {
@@ -10,6 +12,18 @@ class RuntimeConfig {
     }));
 
     Object.assign(this, runtimeConfig);
+  }
+
+  uploadToS3(app) {
+    const s3 = new aws.S3();
+
+    return s3.upload({
+      ACL: 'public-read',
+      Body: JSON.stringify(this),
+      Bucket: awsConfig.s3AppsBucket,
+      ContentType: 'application/json',
+      Key: `${app.bundleId}/runtimeConfig.json`,
+    }).promise();
   }
 }
 

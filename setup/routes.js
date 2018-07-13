@@ -15,6 +15,7 @@ const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
 const oauthYoutubeUsersRouter = rootRequire('/routes/oauth/youtube/users');
 const usersRouter = rootRequire('/routes/users');
 const userChargesRouter = rootRequire('/routes/users/charges');
+const userEmailsRouter = rootRequire('/routes/users/emails');
 
 module.exports = app => {
   // Route Definitions
@@ -34,6 +35,7 @@ module.exports = app => {
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);
   app.use('/oauth/youtube/users', oauthYoutubeUsersRouter);
   app.use('/users/:userId/charges', userChargesRouter);
+  app.use('/users/:userId/emails/:userEmailId?', userEmailsRouter);
   app.use('/users/:userId?', usersRouter);
 
   // Handle Various Errors

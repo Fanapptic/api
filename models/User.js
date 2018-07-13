@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const uuidV1 = require('uuid/v1');
+const aws = require('aws-sdk');
+const awsConfig = rootRequire('/config/aws');
 const serverConfig = rootRequire('/config/server');
 const statuses = ['onboarding', 'pending', 'active'];
 
@@ -102,6 +104,16 @@ const UserModel = database.define('user', {
 
 UserModel.prototype.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
+};
+
+UserModel.prototype.queueAccountSetup = function() {
+  const sqs = new aws.SQS();
+
+  return sqs.sendMessage({
+    MessageBody: JSON.stringify(this),
+    MessageGroupId: `account-setup-user-${this.id}`,
+    QueueUrl: awsConfig.sqsAccountSetupQueue,
+  }).promise();
 };
 
 UserModel.prototype.toJSON = function() {

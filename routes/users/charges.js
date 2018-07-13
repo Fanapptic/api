@@ -63,6 +63,8 @@ router.post('/', (request, response, next) => {
   }).then(_userCharge => {
     userCharge = _userCharge;
 
+    return user.queueAccountSetup();
+  }).then(() => {
     user.status = 'pending';
 
     return user.save();

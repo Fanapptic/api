@@ -9,7 +9,7 @@ module.exports = (request, response, next) => {
   const { internalToken } = request.query;
 
   if (serverConfig.internalToken !== internalToken) {
-    return response.response(401, 'Invalid internal token.');
+    return response.respond(401, 'Invalid internal token.');
   }
 
   next();

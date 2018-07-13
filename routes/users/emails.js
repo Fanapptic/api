@@ -51,7 +51,7 @@ router.post('/', (request, response, next) => {
       Token,
       TopicArn,
       AuthenticateOnUnsubscribe: 'true',
-    }, () => {});
+    }, function(error, data) {});
 
     return response.success();
   }

@@ -125,7 +125,7 @@ UserModel.afterBulkCreate(instances => {
 });
 
 function afterCreate(instance, options) {
-  const internalEmail = uuidV1().split('-').join('') + '@fanappticinternal.com';
+  const internalEmail = `${uuidV1().split('-').join('')}@${process.env.INTERNAL_EMAIL_DOMAIN}`;
   const internalPassword = uuidV1().split('-').join('');
 
   instance.appleEmail = internalEmail;

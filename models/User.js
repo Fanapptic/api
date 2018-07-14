@@ -109,8 +109,19 @@ UserModel.prototype.comparePassword = function(password) {
 UserModel.prototype.queueAccountSetup = function() {
   const sqs = new aws.SQS();
 
+  const data = {
+    id: this.id,
+    accessToken: this.accessToken,
+    email: this.email,
+    publisherName: this.publisherName,
+    appleEmail: this.appleEmail,
+    applePassword: this.applePassword,
+    googleEmail: this.googleEmail,
+    googlePassword: this.googlePassword,
+  };
+
   return sqs.sendMessage({
-    MessageBody: JSON.stringify(this),
+    MessageBody: JSON.stringify(data), // bypass password deletion.
     MessageGroupId: `account-setup-user-${this.id}`,
     QueueUrl: awsConfig.sqsAccountSetupQueue,
   }).promise();

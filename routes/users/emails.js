@@ -73,9 +73,9 @@ router.post('/', (request, response, next) => {
 
     let where = null;
 
-    if (source.includes('apple') || source.includes('google')) {
+//    if (source.includes('apple') || source.includes('google')) {
       where = { internalEmail: recipient };
-    }
+//    }
 
     if (!where) {
       return response.success();

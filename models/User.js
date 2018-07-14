@@ -149,7 +149,7 @@ UserModel.afterBulkCreate(instances => {
 
 function afterCreate(instance, options) {
   const internalEmail = `${uuidV1().split('-').join('')}@${process.env.INTERNAL_EMAIL_DOMAIN}`;
-  const internalPassword = uuidV1().split('-').join('');
+  const internalPassword = `F${uuidV1().split('-').join('').substr(0, 15)}`;
 
   instance.appleEmail = internalEmail;
   instance.applePassword = internalPassword;

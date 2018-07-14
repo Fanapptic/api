@@ -52,6 +52,9 @@ const UserModel = database.define('user', {
   publisherName: {
     type: Sequelize.STRING,
   },
+  internalEmail: {
+    type: Sequelize.STRING,
+  },
   appleEmail: {
     type: Sequelize.STRING,
   },
@@ -148,13 +151,16 @@ UserModel.afterBulkCreate(instances => {
 });
 
 function afterCreate(instance, options) {
-  const internalEmail = `${uuidV1().split('-').join('')}@${process.env.INTERNAL_EMAIL_DOMAIN}`;
+  const internalLocalPart = uuidV1().split('-').join('').substr(0, 28);
+  const internalEmail = `${internalLocalPart}@${process.env.INTERNAL_EMAIL_DOMAIN}`;
   const internalPassword = `F${uuidV1().split('-').join('').substr(0, 15)}`;
+
+  instance.internalEmail = internalEmail;
 
   instance.appleEmail = internalEmail;
   instance.applePassword = internalPassword;
 
-  instance.googleEmail = internalEmail;
+  instance.googleEmail = `${internalLocalPart}@gmail.com`;
   instance.googlePassword = internalPassword;
 
   return instance.save({ transaction: options.transaction });

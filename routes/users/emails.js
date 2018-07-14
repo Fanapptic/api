@@ -73,17 +73,7 @@ router.post('/', (request, response, next) => {
       return contentPart.indexOf('Content-Type: text/html') !== -1;
     }) || content;
 
-    let where = null;
-
-    if (source.includes('apple') || source.includes('google')) {
-      where = { internalEmail: recipient };
-    }
-
-    if (!where) {
-      return response.success();
-    }
-
-    return UserModel.find({ where }).then(user => {
+    return UserModel.find({ internalEmail: recipient }).then(user => {
       if (user) {
         return UserEmailModel.create({
           userId: user.id,

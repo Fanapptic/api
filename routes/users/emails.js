@@ -62,20 +62,22 @@ router.post('/', (request, response, next) => {
     const recipient = message.mail.destination[0];
     const subject = message.mail.commonHeaders.subject;
     const content = message.content;
-    const boundary = content.match(/boundary="(.*)"/)[1];
-    const contentParts = message.content.split(boundary);
+    const boundary = content.match(/boundary="(.*)"/);
+    const contentParts = (boundary) ? message.content.split(boundary[1]) : [ content ];
+
     const plainContent = contentParts.find(contentPart => {
       return contentPart.indexOf('Content-Type: text/plain') !== -1;
-    });
+    }) || content;
+
     const htmlContent = contentParts.find(contentPart => {
       return contentPart.indexOf('Content-Type: text/html') !== -1;
-    });
+    }) || content;
 
     let where = null;
 
-//    if (source.includes('apple') || source.includes('google')) {
+    if (source.includes('apple') || source.includes('google')) {
       where = { internalEmail: recipient };
-//    }
+    }
 
     if (!where) {
       return response.success();

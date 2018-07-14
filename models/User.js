@@ -4,7 +4,7 @@ const uuidV1 = require('uuid/v1');
 const aws = require('aws-sdk');
 const awsConfig = rootRequire('/config/aws');
 const serverConfig = rootRequire('/config/server');
-const statuses = ['onboarding', 'pending', 'active'];
+const statuses = ['onboarding', 'pending setup', 'pending processing', 'pending release', 'active'];
 
 /*
  * Model Definition

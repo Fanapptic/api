@@ -65,7 +65,7 @@ router.post('/', (request, response, next) => {
 
     return user.queueAccountSetup();
   }).then(() => {
-    user.status = 'pending';
+    user.status = 'pending setup';
 
     return user.save();
   }).then(() => {

@@ -71,6 +71,7 @@ describe('Apps', () => {
             },
           },
           displayName: 'Some display name',
+          bundleId: testApp.bundleId,
         },
       };
 
@@ -95,9 +96,7 @@ describe('Apps', () => {
           response.body.apnsSnsArn.should.equal(fields.apnsSnsArn);
           response.body.gcmSnsArn.should.equal(fields.gcmSnsArn);
           response.body.gcmSenderId.should.equal(fields.gcmSenderId);
-          response.body.runtimeConfig.css.should.deep.equal(fields.runtimeConfig.css);
-          response.body.runtimeConfig.displayName.should.equal(fields.runtimeConfig.displayName);
-          response.body.runtimeConfig.icons.should.be.an('array');
+          response.body.runtimeConfig.should.deep.equal(fields.runtimeConfig);
           done();
         });
     });

@@ -168,7 +168,7 @@ const AppModel = database.define('app', {
     allowNull: false,
     validate: {
       isValid(value) {
-        value.icons = this.getDataValue('icons');
+        value.bundleId = this.getDataValue('bundleId');
         value.displayName = this.getDataValue('displayName');
 
         const runtimeConfig = new RuntimeConfig(value);

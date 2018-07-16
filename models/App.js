@@ -226,7 +226,19 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
 };
 
 AppModel.prototype.sendGlobalNotification = function(url, title, message) {
-  return database.models.appDevice.findAll({ where: { appId: this.id } }).then(appDevices => {
+  return database.models.appDevice.findAll({
+    where: {
+      appId: this.id,
+      $or: {
+        apnsSnsArn: {
+          $ne: null,
+        },
+        gcmSnsArn: {
+          $ne: null,
+        },
+      },
+    },
+  }).then(appDevices => {
     let bulkNotifications = [];
 
     appDevices.forEach(appDevice => {

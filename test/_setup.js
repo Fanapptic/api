@@ -158,9 +158,9 @@ before(done => {
         contentRating: '9+',
       });
   }).then(response => {
-    fatLog('Creating global test app device in DB...');
-
     Object.assign(testApp, response.body);
+
+    fatLog('Creating global test app device in DB...');
 
     return chai.request(server)
       .post('/apps/1/devices')
@@ -169,6 +169,10 @@ before(done => {
   }).then(response => {
     Object.assign(testAppDevice, response.body);
 
+    fatLog('Updating global test app device with fake apnsSnsArn...');
+
+    return database.query('UPDATE appDevices SET apnsSnsArn = "dummyarn" WHERE id = 1');
+  }).then(() => {
     fatLog('Creating global test app user in DB...');
 
     return chai.request(server)

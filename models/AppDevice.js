@@ -111,11 +111,15 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
         default: appNotification.message,
         APNS: JSON.stringify({
           aps: {
-            alert: appNotification.message,
+            alert: {
+              title: appNotification.title,
+              body: appNotification.message,
+            },
             badge: 1,
             sound: 'default',
           },
           id: appNotification.id,
+          url: appNotification.url,
         }),
       }),
       TargetArn: this.apnsSnsArn,

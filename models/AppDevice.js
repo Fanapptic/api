@@ -121,6 +121,18 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
           id: appNotification.id,
           url: appNotification.url,
         }),
+        APNS_SANDBOX: JSON.stringify({
+          aps: {
+            alert: {
+              title: appNotification.title,
+              body: appNotification.message,
+            },
+            badge: 1,
+            sound: 'default',
+          },
+          id: appNotification.id,
+          url: appNotification.url,
+        }),
       }),
       TargetArn: this.apnsSnsArn,
       MessageStructure: 'json',

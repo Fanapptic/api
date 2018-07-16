@@ -70,6 +70,7 @@ describe('Apps', () => {
               background: '#212121',
             },
           },
+          displayName: 'Some display name',
         },
       };
 
@@ -94,7 +95,9 @@ describe('Apps', () => {
           response.body.apnsSnsArn.should.equal(fields.apnsSnsArn);
           response.body.gcmSnsArn.should.equal(fields.gcmSnsArn);
           response.body.gcmSenderId.should.equal(fields.gcmSenderId);
-          response.body.runtimeConfig.should.deep.equal(fields.runtimeConfig);
+          response.body.runtimeConfig.css.should.deep.equal(fields.runtimeConfig.css);
+          response.body.runtimeConfig.displayName.should.equal(fields.runtimeConfig.displayName);
+          response.body.runtimeConfig.icons.should.be.an('array');
           done();
         });
     });

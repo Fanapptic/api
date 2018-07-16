@@ -168,8 +168,11 @@ const AppModel = database.define('app', {
     allowNull: false,
     validate: {
       isValid(value) {
+        value.icons = this.getDataValue('icons');
+        value.displayName = this.getDataValue('displayName');
+
         const runtimeConfig = new RuntimeConfig(value);
-        
+
         this.setDataValue('runtimeConfig', runtimeConfig);
 
         return runtimeConfig.uploadToS3(this);

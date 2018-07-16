@@ -8,6 +8,12 @@ class RuntimeConfig {
     const runtimeConfig = Object.assign({}, appConfig.defaults.runtimeConfig, initObject);
 
     Joi.assert(runtimeConfig, Joi.object({
+      icons: Joi.array().items(Joi.object({
+        url: Joi.string().required(),
+        name: Joi.string().required(),
+        size: Joi.number().required(),
+      })).allow(null),
+      displayName: Joi.string().allow(null),
       css: Joi.object().required(),
     }));
 

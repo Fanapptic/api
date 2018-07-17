@@ -106,33 +106,24 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
   const sns = new aws.SNS();
 
   if (this.apnsSnsArn) {
+    const apnsPayload = JSON.stringify({
+      aps: {
+        alert: {
+          title: appNotification.title,
+          body: appNotification.message,
+        },
+        badge: 1,
+        sound: 'default',
+      },
+      id: appNotification.id,
+      url: appNotification.url,
+    });
+
     sns.publish({
       Message: JSON.stringify({
         default: appNotification.message,
-        APNS: JSON.stringify({
-          aps: {
-            alert: {
-              title: appNotification.title,
-              body: appNotification.message,
-            },
-            badge: 1,
-            sound: 'default',
-          },
-          id: appNotification.id,
-          url: appNotification.url,
-        }),
-        APNS_SANDBOX: JSON.stringify({
-          aps: {
-            alert: {
-              title: appNotification.title,
-              body: appNotification.message,
-            },
-            badge: 1,
-            sound: 'default',
-          },
-          id: appNotification.id,
-          url: appNotification.url,
-        }),
+        APNS: apnsPayload,
+        APNS_SANDBOX: apnsPayload,
       }),
       TargetArn: this.apnsSnsArn,
       MessageStructure: 'json',

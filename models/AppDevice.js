@@ -140,6 +140,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
             message: appNotification.message,
             data: {
               id: appNotification.id,
+              url: appNotification.url,
             },
           },
         }),

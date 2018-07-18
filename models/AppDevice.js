@@ -136,6 +136,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
         default: appNotification.message,
         GCM: JSON.stringify({
           data: {
+            title: appNotification.title,
             message: appNotification.message,
             data: {
               id: appNotification.id,

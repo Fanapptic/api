@@ -31,7 +31,7 @@ router.get('/', (request, response, next) => {
     attributes: {
       exclude: [ 'data' ],
     },
-    limit: 20,
+    limit: 10,
     order: [
       database.literal('RAND()'),
     ],

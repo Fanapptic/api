@@ -1,7 +1,11 @@
 const requestPromise = require('request-promise');
+const aws = require('aws-sdk');
+const uuidV1 = require('uuid/v1');
+const path = require('path');
 
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const Source = require('../Source');
+const awsConfig = rootRequire('/config/aws');
 const instagramConfig = rootRequire('/config/sources/instagram');
 
 // need to get more than first 100 posts.
@@ -32,11 +36,14 @@ module.exports = class extends Source {
           json: true,
         }).then(posts => {
           posts.data.forEach(post => {
-            const data = postToAppSourceContent(this.appSource, post);
-
-            AppSourceContentModel.create(data).catch(e => {
+            postToAppSourceContent(this.appSource, post).then(data => {
+              AppSourceContentModel.create(data).catch(e => {
+                console.log(e.message);
+                console.log(JSON.stringify(post));
+              });
+            }).catch(e => {
+              console.log('Instagram conversion error');
               console.log(e.message);
-              console.log(JSON.stringify(post));
             });
           });
 
@@ -64,64 +71,113 @@ function postToAppSourceContent(appSource, post) {
   let video = null;
   let collection = null;
 
-  if (post.type === 'image') {
-    image = buildImageFromPost(post);
-  }
+  return Promise.resolve().then(() => {
+    if (post.type === 'image') {
+      return buildImageFromPost(post).then(_image => {
+        image = _image;
+      });
+    }
 
-  if (post.type === 'video') {
-    video = buildVideoFromPost(post);
-  }
+    if (post.type === 'video') {
+      return buildVideoFromPost(post).then(_video => {
+        video = _video;
+      });
+    }
 
-  if (post.type === 'carousel') {
-    collection = buildCollectionFromPost(post);
-  }
+    if (post.type === 'carousel') {
+      return buildCollectionFromPost(post).then(_collection => {
+        collection = _collection;
+      });
+    }
 
-  return {
-    appId: appSource.appId,
-    appSourceId: appSource.id,
-    image,
-    video,
-    collection,
-    description: (post.caption) ? post.caption.text : null,
-    data: post,
-    publishedAt: post.created_time,
-  };
+    throw new Error('Invalid content type');
+  }).then(() => {
+    return {
+      appId: appSource.appId,
+      appSourceId: appSource.id,
+      image,
+      video,
+      collection,
+      description: (post.caption) ? post.caption.text : null,
+      data: post,
+      publishedAt: post.created_time,
+    };
+  });
 }
 
 function buildImageFromPost(post) {
-  return {
-    url: post.images.standard_resolution.url,
-    width: post.images.standard_resolution.width,
-    height: post.images.standard_resolution.height,
-  };
+  return uploadFromUrlToS3(post.images.standard_resolution.url).then(imageUrl => {
+    return {
+      url: imageUrl,
+      width: post.images.standard_resolution.width,
+      height: post.images.standard_resolution.height,
+    };
+  });
 }
 
 function buildVideoFromPost(post) {
-  return {
-    url: post.videos.standard_resolution.url,
-    thumbnailUrl: (post.images) ? post.images.standard_resolution.url : null,
-    width: post.videos.standard_resolution.width,
-    height: post.videos.standard_resolution.height,
-  };
+  let videoUrl = null;
+
+  return uploadFromUrlToS3(post.videos.standard_resolution.url).then(_videoUrl => {
+    videoUrl = _videoUrl;
+
+    if (post.images) {
+      return uploadFromUrlToS3(post.images.standard_resolution.url);
+    }
+  }).then(thumbnailUrl => {
+    return {
+      url: videoUrl,
+      thumbnailUrl: (thumbnailUrl) ? thumbnailUrl : null,
+      width: post.videos.standard_resolution.width,
+      height: post.videos.standard_resolution.height,
+    };
+  });
 }
 
 function buildCollectionFromPost(post) {
   let collection = [];
+  let promises = [];
 
   post.carousel_media.forEach(media => {
     if (media.type === 'image') {
-      collection.push(Object.assign({}, buildImageFromPost(media), {
-        type: 'image',
-        thumbnailUrl: media.images.thumbnail.url,
-      }));
+      promises.push(
+        buildImageFromPost(media).then(image => {
+          image.type = 'image';
+          image.thumbnailUrl = image.url;
+
+          collection.push(image);
+        })
+      );
     }
 
     if (media.type === 'video') {
-      collection.push(Object.assign({}, buildVideoFromPost(media), {
-        type: 'video',
-      }));
+      promises.push(
+        buildVideoFromPost(media).then(video => {
+          video.type = 'video';
+
+          collection.push(video);
+        })
+      );
     }
   });
 
-  return collection;
+  return Promise.all(promises).then(() => collection);
+}
+
+function uploadFromUrlToS3(url) {
+  const s3 = new aws.S3();
+
+  return requestPromise.get({
+    url,
+    encoding: null,
+  }).then(buffer => {
+    return s3.upload({
+      ACL: 'public-read',
+      Body: buffer,
+      Bucket: awsConfig.s3AppsContentBucket,
+      Key: `${uuidV1()}${path.extname(url)}`,
+    }).promise();
+  }).then(result => {
+    return result.Location;
+  });
 }

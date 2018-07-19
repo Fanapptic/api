@@ -11,6 +11,7 @@ module.exports.region = process.env.REGION;
  */
 
 module.exports.s3AppsBucket = process.env.S3_APPS_BUCKET;
+module.exports.s3AppsContentBucket = process.env.S3_APPS_CONTENT_BUCKET;
 
 /*
  * SQS

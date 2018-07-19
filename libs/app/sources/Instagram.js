@@ -35,21 +35,27 @@ module.exports = class extends Source {
           url,
           json: true,
         }).then(posts => {
+          const batchPromises = [];
+
           posts.data.forEach(post => {
-            postToAppSourceContent(this.appSource, post).then(data => {
-              AppSourceContentModel.create(data).catch(e => {
+            batchPromises.push(
+              postToAppSourceContent(this.appSource, post).then(data => {
+                AppSourceContentModel.create(data).catch(e => {
+                  console.log(e.message);
+                  console.log(JSON.stringify(post));
+                });
+              }).catch(e => {
+                console.log('Instagram conversion error');
                 console.log(e.message);
-                console.log(JSON.stringify(post));
-              });
-            }).catch(e => {
-              console.log('Instagram conversion error');
-              console.log(e.message);
-            });
+              })
+            );
           });
 
-          if (posts.pagination && posts.pagination.next_max_id) {
-            paginate(posts.pagination.next_max_id);
-          }
+          Promise.all(batchPromises).then(() => {
+            if (posts.pagination && posts.pagination.next_max_id) {
+              paginate(posts.pagination.next_max_id);
+            }
+          });
         });
       };
 

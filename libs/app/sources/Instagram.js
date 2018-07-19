@@ -40,13 +40,11 @@ module.exports = class extends Source {
           posts.data.forEach(post => {
             batchPromises.push(
               postToAppSourceContent(this.appSource, post).then(data => {
-                AppSourceContentModel.create(data).catch(e => {
-                  console.log(e.message);
-                  console.log(JSON.stringify(post));
-                });
+                AppSourceContentModel.create(data);
               }).catch(e => {
                 console.log('Instagram conversion error');
                 console.log(e.message);
+                console.log(JSON.stringify(post));
               })
             );
           });

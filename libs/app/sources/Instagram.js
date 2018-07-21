@@ -3,6 +3,8 @@ const aws = require('aws-sdk');
 const uuidV1 = require('uuid/v1');
 const path = require('path');
 
+const AppModel = rootRequire('/models/App');
+const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const Source = require('../Source');
 const awsConfig = rootRequire('/config/aws');
@@ -62,7 +64,47 @@ module.exports = class extends Source {
   }
 
   static handleWebhookRequest(request) {
+    // we poll here instead for now and use lambda to trigger this on a 60 second interval.
+    AppSourceModel.findAll({ where: { type: 'instagram' } }).then(appSources => {
+      appSources.forEach(appSource => {
+        let app = null;
 
+        AppModel.find({ where: { id: appSource.appId } }).then(_app => {
+          app = _app;
+
+          requestPromise.get({
+            url: `${instagramConfig.postsUrl}?` +
+                 `access_token=${appSource.accessToken}` +
+                 '&count=50',
+            json: true,
+          }).then(posts => {
+            const traversePosts = index => {
+              const post = posts.data[index];
+
+              AppSourceContentModel.count({ where: { 'data.id': post.id } }).then(exists => {
+                if (exists) {
+                  return;
+                }
+
+                postToAppSourceContent(appSource, post).then(data => {
+                  AppSourceContentModel.create(data);
+                }).then(() => {
+                  app.sendGlobalNotification(
+                    post.link,
+                    post.caption.text,
+                    `${appSource.accountName} posted to Instagram.`
+                  );
+                });
+
+                traversePosts(index + 1);
+              });
+            };
+
+            traversePosts(0);
+          });
+        });
+      });
+    });
   }
 };
 

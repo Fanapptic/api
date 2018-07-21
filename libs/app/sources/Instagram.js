@@ -91,8 +91,8 @@ module.exports = class extends Source {
                 }).then(() => {
                   app.sendGlobalNotification(
                     post.link,
-                    post.caption.text,
-                    `${appSource.accountName} posted to Instagram.`
+                    `${appSource.accountName} posted to Instagram.`,
+                    post.caption.text
                   );
                 });
 

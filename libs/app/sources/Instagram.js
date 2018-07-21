@@ -103,8 +103,8 @@ module.exports = class extends Source {
             traversePosts(0);
           }).catch(e => {
             console.log('Error for instagram polling on app source:');
-            console.log(appSource);
-            console.log(e);
+            console.log(`ID: ${appSource.id} | Name ${appSource.accountName} | ${appSource.accessToken}`);
+            console.log(e.message);
           });
         });
       });

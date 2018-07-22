@@ -106,7 +106,7 @@ router.get('/', (request, response, next) => {
             $gte: dayAgoDate,
           },
           endedAt: {
-            $ne: null,
+            $gt: 0,
           },
         },
       });
@@ -123,7 +123,7 @@ router.get('/', (request, response, next) => {
       where: {
         appId,
         endedAt: {
-          $ne: null,
+          $gt: 0,
         },
       },
     }).then(_totalUsageSumStartedAt => {
@@ -133,7 +133,7 @@ router.get('/', (request, response, next) => {
         where: {
           appId,
           endedAt: {
-            $ne: null,
+            $gt: 0,
           },
         },
       });

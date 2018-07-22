@@ -117,6 +117,7 @@ UserModel.prototype.queueAccountSetup = function() {
     accessToken: this.accessToken,
     email: this.email,
     publisherName: this.publisherName,
+    internalEmail: this.internalEmail,
     appleEmail: this.appleEmail,
     applePassword: this.applePassword,
     googleEmail: this.googleEmail,

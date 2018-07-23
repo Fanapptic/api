@@ -83,62 +83,27 @@ router.get('/', (request, response, next) => {
   );
 
   // Daily Usage
-  let dailyUsageSumStartedAt = 0;
-
   promises.push(
-    AppDeviceSessionModel.sum('startedAt', {
-      where: {
-        appId,
-        startedAt: {
-          $gte: dayAgoDate,
-        },
-        endedAt: {
-          $gt: 0,
-        },
-      },
-    }).then(_dailyUsageSumStartedAt => {
-      dailyUsageSumStartedAt = _dailyUsageSumStartedAt;
-
-      return AppDeviceSessionModel.sum('endedAt', {
-        where: {
-          appId,
-          startedAt: {
-            $gte: dayAgoDate,
-          },
-          endedAt: {
-            $gt: 0,
-          },
-        },
-      });
-    }).then(dailyUsageSumEndedAt => {
-      dailyUsage =  dailyUsageSumEndedAt - dailyUsageSumStartedAt;
+    database.query(
+      'SELECT (SUM(endedAt) - SUM(startedAt)) AS dailyUsage ' +
+      'FROM appDeviceSessions ' +
+      `WHERE appId = ${appId} ` +
+      'AND startedAt > NOW() - INTERVAL 1 DAY ' +
+      'AND endedAt > 0'
+    ).then(result => {
+      dailyUsage = result[0][0].dailyUsage / 60;
     })
   );
 
   // Total Usage
-  let totalUsageSumStartedAt = 0;
-
   promises.push(
-    AppDeviceSessionModel.sum('startedAt', {
-      where: {
-        appId,
-        endedAt: {
-          $gt: 0,
-        },
-      },
-    }).then(_totalUsageSumStartedAt => {
-      totalUsageSumStartedAt = _totalUsageSumStartedAt;
-
-      return AppDeviceSessionModel.sum('endedAt', {
-        where: {
-          appId,
-          endedAt: {
-            $gt: 0,
-          },
-        },
-      });
-    }).then(totalUsageSumEndedAt => {
-      dailyUsage =  totalUsageSumEndedAt - totalUsageSumStartedAt;
+    database.query(
+      'SELECT (SUM(endedAt) - SUM(startedAt)) AS totalUsage ' +
+      'FROM appDeviceSessions ' +
+      `WHERE appId = ${appId} ` +
+      'AND endedAt > 0'
+    ).then(result => {
+      totalUsage = result[0][0].totalUsage / 60;
     })
   );
 

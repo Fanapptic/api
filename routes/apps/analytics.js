@@ -93,7 +93,7 @@ router.get('/', (request, response, next) => {
           $gte: dayAgoDate,
         },
         endedAt: {
-          $ne: null,
+          $gt: 0,
         },
       },
     }).then(_dailyUsageSumStartedAt => {

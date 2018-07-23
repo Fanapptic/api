@@ -32,4 +32,4 @@ UserModel.hasMany(AppModel);
 UserModel.hasMany(UserChargeModel);
 UserModel.hasMany(UserEmailModel);
 
-module.exports = database.sync({alter: true});
+module.exports = database.sync();

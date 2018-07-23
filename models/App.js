@@ -225,7 +225,7 @@ AppModel.prototype.processIconUploadAndSave = function(iconImageBuffer) {
   });
 };
 
-AppModel.prototype.sendGlobalNotification = function(url, title, message) {
+AppModel.prototype.sendGlobalNotification = function(appSourceContentId, url, title, message) {
   return database.models.appDevice.findAll({
     where: {
       appId: this.id,
@@ -245,6 +245,7 @@ AppModel.prototype.sendGlobalNotification = function(url, title, message) {
       bulkNotifications.push({
         appId: this.id,
         appDeviceId: appDevice.id,
+        appSourceContentId,
         url,
         title,
         message,

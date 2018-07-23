@@ -59,7 +59,7 @@ router.post('/', (request, response, next) => {
   const { title, message } = request.body;
   let url = (!request.body.url.includes('http')) ? `http://${request.body.url}` : request.body.url;
 
-  app.sendGlobalNotification(url, title, message).then(() => {
+  app.sendGlobalNotification(null, url, title, message).then(() => {
     response.success();
   }).catch(next);
 });

@@ -15,6 +15,9 @@ const AppNotificationModel = database.define('appNotification', {
   appDeviceId: {
     type: Sequelize.INTEGER(10).UNSIGNED,
   },
+  appSourceContentId: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
+  },
   url: {
     type: Sequelize.TEXT,
   },

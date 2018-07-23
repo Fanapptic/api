@@ -138,10 +138,15 @@ module.exports = class extends Source {
         appSources.forEach(appSource => {
           const data = playlistItemToAppSourceContent(appSource, video);
 
-          AppSourceContentModel.create(data).then(() => {
+          AppSourceContentModel.create(data).then(appSourceContent => {
             if (isNew) {
               AppModel.find({ where: { id: appSource.appId } }).then(app => {
-                app.sendGlobalNotification('', 'yt', 'message here'); // TODO:
+                app.sendGlobalNotification(
+                  appSourceContent.id,
+                  null,
+                  `${appSource.accountName} posted new content!`,
+                  appSourceContent.description
+                );
               });
             }
           });

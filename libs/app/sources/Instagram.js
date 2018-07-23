@@ -96,17 +96,11 @@ module.exports = class extends Source {
                 postToAppSourceContent(appSource, post).then(data => {
                   return AppSourceContentModel.create(data);
                 }).then(appSourceContent => {
-                  let url = (appSourceContent.image) ? appSourceContent.image.url : null;
-                      url = (appSourceContent.video) ? appSourceContent.video.url : null;
-
-                  if (!url) {
-                    return;
-                  }
-
                   app.sendGlobalNotification(
-                    url,
+                    appSourceContent.id,
+                    null,
                     `${appSource.accountName} posted new content!`,
-                    post.caption.text
+                    appSourceContent.description
                   );
                 });
 

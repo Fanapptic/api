@@ -133,11 +133,16 @@ module.exports = class extends Source {
                 return;
               }
 
-              AppSourceContentModel.create(data);
-            }).then(() => {
-              if (verb === 'add') {
+              return AppSourceContentModel.create(data);
+            }).then(appSourceContent => {
+              if (verb === 'add' && appSourceContent) {
                 AppModel.find({ where: { id: appSource.appId } }).then(app => {
-                  app.sendGlobalNotification('', 'fb', 'message here'); // TODO:
+                  app.sendGlobalNotification(
+                    appSourceContent.id,
+                    null,
+                    `${appSource.accountName} posted new content!`,
+                    appSourceContent.description
+                  );
                 });
               }
             }).catch(error => {

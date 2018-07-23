@@ -116,6 +116,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
         sound: 'default',
       },
       id: appNotification.id,
+      appSourceContentId: appNotification.appSourceContentId,
       url: appNotification.url,
     });
 
@@ -140,6 +141,7 @@ AppDeviceModel.prototype.sendPushNotification = function(appNotification) {
             message: appNotification.message,
             data: {
               id: appNotification.id,
+              appSourceContentId: appNotification.appSourceContentId,
               url: appNotification.url,
             },
           },

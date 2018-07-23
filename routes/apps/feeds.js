@@ -18,6 +18,7 @@ const router = express.Router({
 router.get('/', appAuthorize);
 router.get('/', appDeviceAuthorizeOptional);
 router.get('/', (request, response, next) => {
+  const { appSourceContentId } = request.query;
   const { app, appDevice } = request;
 
   let options = {
@@ -37,7 +38,7 @@ router.get('/', (request, response, next) => {
     ],
   };
 
-  if (appDevice.id) {
+  if (appDevice.id && !appSourceContentId) {
     options.attributes.include = [[database.literal(
       '(SELECT COUNT(*) ' +
       'FROM appFeedActivities ' +
@@ -51,9 +52,21 @@ router.get('/', (request, response, next) => {
     ];
   }
 
-  AppSourceContentModel.findAll(options).then(appSourceContents => {
-    response.success(appSourceContents);
-  }).catch(next);
+  if (appSourceContentId) {
+    options.where.id = appSourceContentId;
+
+    AppSourceContentModel.find(options).then(appSourceContent => {
+      if (!appSourceContent) {
+        throw new Error('The app source content does not exist.');
+      }
+
+      response.success(appSourceContent);
+    }).catch(next);
+  } else {
+    AppSourceContentModel.findAll(options).then(appSourceContents => {
+      response.success(appSourceContents);
+    }).catch(next);
+  }
 });
 
 /*

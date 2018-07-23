@@ -39,6 +39,18 @@ describe('App Feeds', () => {
         });
     });
 
+    it('200s with app source content object when passed app source content id', done => {
+      chai.request(server)
+        .get(`/apps/${appId}/feeds?appSourceContentId=3`)
+        .set('X-App-Access-Token', testApp.accessToken)
+        .end((error, response) => {
+          console.log(response.body);
+          response.should.have.status(200);
+          response.body.should.be.an('object');
+          done();
+        });
+    });
+
     helpers.it401sWhenAppAuthorizationIsInvalid('get', `/apps/${appId}/feeds`);
     helpers.it401sWhenAppDeviceAuthorizationIsInvalid('get', `/apps/${appId}/feeds`);
   });

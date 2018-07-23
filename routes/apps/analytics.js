@@ -91,7 +91,7 @@ router.get('/', (request, response, next) => {
       'AND startedAt > NOW() - INTERVAL 1 DAY ' +
       'AND endedAt > 0'
     ).then(result => {
-      dailyUsage = result[0][0].dailyUsage / 60;
+      dailyUsage = Math.floor(result[0][0].dailyUsage / 60);
     })
   );
 
@@ -103,7 +103,7 @@ router.get('/', (request, response, next) => {
       `WHERE appId = ${appId} ` +
       'AND endedAt > 0'
     ).then(result => {
-      totalUsage = result[0][0].totalUsage / 60;
+      totalUsage = Math.floor(result[0][0].totalUsage / 60);
     })
   );
 

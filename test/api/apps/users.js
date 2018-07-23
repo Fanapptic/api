@@ -6,7 +6,7 @@ describe('App Users', () => {
   describe('POST /apps/{appId}/users', () => {
     it('200s with created or updated app user', done => {
       const fields = {
-        facebookAccessToken: 'EAABxOp5SDWABAIbvzRnZCeLlx5tleU2OtTT1JfFClPsXW5l5AQhPZAse0shTtiPcFlAjyXDpNQtqPZB5l2NrQAj0Eyqy5e61HmxGDYtLofEFm7l440MCeqa3uknrUA47LO1tUSGAFNx8qulznqyJ22ddhdPzDKZADKKl2D0NSZB7WJxDsJFWCEQ0UQlTgJPgzxNU4Y2iMqwZDZD',
+        facebookAccessToken: 'EAABxOp5SDWABAJQe11ZBEmNjs1yfYg1jCE7miUd82vUmGlVjyFnmdUxN7ZB1Bknr8V0GZAVbvrNMjsJt4mbPXL0uxE5QSED0lHhVBmHNyM73tUeFZCYHHN3pifSJZBNQw0KvJdEbyiegu9vx0D2sjCE6BZBIQ9ji0n8YZCsTMAEw2vQV0S5iZBrdFlcI8f80MUWwOitYd9frKAZDZD',
       };
 
       chai.request(server)

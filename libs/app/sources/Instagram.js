@@ -79,6 +79,13 @@ module.exports = class extends Source {
             json: true,
           }).then(posts => {
             const traversePosts = index => {
+              if (!posts.data) {
+                console.log('no posts!!');
+                console.log(posts);
+                
+                return;
+              }
+
               const post = posts.data[index];
 
               AppSourceContentModel.count({ where: { 'data.id': post.id } }).then(exists => {

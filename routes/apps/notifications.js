@@ -56,7 +56,8 @@ router.post('/', userAuthorize);
 router.post('/', appAuthorizeOwnership);
 router.post('/', (request, response, next) => {
   const { app } = request;
-  const { url, title, message } = request.body;
+  const { title, message } = request.body;
+  let url = (!request.body.url.includes('http')) ? `http://${request.body.url}` : request.body.url;
 
   app.sendGlobalNotification(url, title, message).then(() => {
     response.success();

@@ -82,7 +82,7 @@ module.exports = class extends Source {
               if (!posts.data) {
                 console.log('no posts!!');
                 console.log(posts);
-                
+
                 return;
               }
 
@@ -94,10 +94,17 @@ module.exports = class extends Source {
                 }
 
                 postToAppSourceContent(appSource, post).then(data => {
-                  AppSourceContentModel.create(data);
-                }).then(() => {
+                  return AppSourceContentModel.create(data);
+                }).then(appSourceContent => {
+                  let url = (appSourceContent.image) ? appSourceContent.image.url : null;
+                      url = (appSourceContent.video) ? appSourceContent.video.url : null;
+
+                  if (!url) {
+                    return;
+                  }
+
                   app.sendGlobalNotification(
-                    post.link,
+                    url,
                     `${appSource.accountName} posted to Instagram.`,
                     post.caption.text
                   );

@@ -78,14 +78,14 @@ module.exports = class extends Source {
                  '&count=50',
             json: true,
           }).then(posts => {
+            if (!posts.data) {
+              console.log('no posts!!');
+              console.log(posts);
+
+              return;
+            }
+
             const traversePosts = index => {
-              if (!posts.data) {
-                console.log('no posts!!');
-                console.log(posts);
-
-                return;
-              }
-
               const post = posts.data[index];
 
               AppSourceContentModel.count({ where: { 'data.id': post.id } }).then(exists => {
@@ -96,15 +96,15 @@ module.exports = class extends Source {
                 postToAppSourceContent(appSource, post).then(data => {
                   return AppSourceContentModel.create(data);
                 }).then(appSourceContent => {
-                  app.sendGlobalNotification(
+                  return app.sendGlobalNotification(
                     appSourceContent.id,
                     null,
                     `${appSource.accountName} posted new content!`,
                     appSourceContent.description
                   );
+                }).then(() => {
+                  traversePosts(index + 1);
                 });
-
-                traversePosts(index + 1);
               });
             };
 

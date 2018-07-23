@@ -105,7 +105,7 @@ module.exports = class extends Source {
 
                   app.sendGlobalNotification(
                     url,
-                    `${appSource.accountName} posted to Instagram.`,
+                    `${appSource.accountName} posted new content!`,
                     post.caption.text
                   );
                 });

@@ -38,20 +38,6 @@ router.get('/', (request, response, next) => {
     ],
   };
 
-  if (appDevice.id && !appSourceContentId) {
-    options.attributes.include = [[database.literal(
-      '(SELECT COUNT(*) ' +
-      'FROM appFeedActivities ' +
-      'WHERE appFeedActivities.appSourceContentId = appSourceContent.id ' +
-      `AND appFeedActivities.appDeviceId = ${appDevice.id})`
-    ), 'viewCount']];
-
-    options.order = [
-      [database.literal('viewCount'), 'ASC'],
-      database.literal('RAND()'),
-    ];
-  }
-
   if (appSourceContentId) {
     options.where.id = appSourceContentId;
 
@@ -63,6 +49,20 @@ router.get('/', (request, response, next) => {
       response.success(appSourceContent);
     }).catch(next);
   } else {
+    if (appDevice.id) {
+      options.attributes.include = [[database.literal(
+        '(SELECT COUNT(*) ' +
+        'FROM appFeedActivities ' +
+        'WHERE appFeedActivities.appSourceContentId = appSourceContent.id ' +
+        `AND appFeedActivities.appDeviceId = ${appDevice.id})`
+      ), 'viewCount']];
+
+      options.order = [
+        [database.literal('viewCount'), 'ASC'],
+        database.literal('RAND()'),
+      ];
+    }
+
     AppSourceContentModel.findAll(options).then(appSourceContents => {
       response.success(appSourceContents);
     }).catch(next);

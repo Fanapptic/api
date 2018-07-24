@@ -158,7 +158,7 @@ function postToAppSourceContent(appSource, post) {
       collection,
       description: (post.caption) ? post.caption.text : null,
       data: post,
-      publishedAt: post.created_time,
+      publishedAt: new Date(post.created_time * 1000),
     };
   });
 }

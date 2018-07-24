@@ -61,7 +61,7 @@ global.testAppSource = {
 };
 
 global.testAppUser = {
-  facebookAccessToken: 'EAABxOp5SDWABAB8tCbN9N5MOLPsMF3COOiqzzrp2kOM9ZANyPAiUjKLIxdoZBuDppFRPEqMiwsezuCnVkbt7LTTDiMadZB0L9ywJU4X9qiQdIo8mgSDsPHuGz5tLZAAZBTwpvLT4rO79X8LyCvTa7Rj60She4GZAickRVHidLdX6Bdj5MG1Ouye1JizNmFNz0ZD',
+  facebookAccessToken: 'EAABxOp5SDWABANa490f9x52uAqP76eCEeGH7v7hm7iZCjAYuqPlV8Ewp5nmIONISlRpQqom82XrKUIiZBqcDZCVlcCAdnLZBjxf053uW6mdRvalVFnQPiKeMZC1oy1m9NGGMHx5S4US9ySZB0BZCVNOQy4pGiWF0mhTZBmGrsyZCpLkQk7g5pFc7AqykwNyP8yzsZD',
 };
 
 /*

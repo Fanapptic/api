@@ -44,7 +44,6 @@ describe('App Feeds', () => {
         .get(`/apps/${appId}/feeds?appSourceContentId=3`)
         .set('X-App-Access-Token', testApp.accessToken)
         .end((error, response) => {
-          console.log(response.body);
           response.should.have.status(200);
           response.body.should.be.an('object');
           done();

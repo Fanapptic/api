@@ -70,6 +70,7 @@ describe('Apps', () => {
               background: '#212121',
             },
           },
+          name: 'My cool app',
           displayName: 'Some display name',
           bundleId: testApp.bundleId,
           publicId: testApp.publicId,

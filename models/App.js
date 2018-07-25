@@ -170,6 +170,7 @@ const AppModel = database.define('app', {
       isValid(value) {
         value.publicId = this.getDataValue('publicId');
         value.bundleId = this.getDataValue('bundleId');
+        value.name = this.getDataValue('name');
         value.displayName = this.getDataValue('displayName');
 
         const runtimeConfig = new RuntimeConfig(value);

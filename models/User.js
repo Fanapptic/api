@@ -113,7 +113,7 @@ UserModel.prototype.queueAccountSetup = function() {
   const sqs = new aws.SQS();
 
   const data = {
-    id: this.id,
+    userId: this.id,
     accessToken: this.accessToken,
     email: this.email,
     publisherName: this.publisherName,

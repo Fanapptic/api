@@ -168,6 +168,7 @@ const AppModel = database.define('app', {
     allowNull: false,
     validate: {
       isValid(value) {
+        value.publicId = this.getDataValue('publicId');
         value.bundleId = this.getDataValue('bundleId');
         value.displayName = this.getDataValue('displayName');
 

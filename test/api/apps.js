@@ -72,6 +72,7 @@ describe('Apps', () => {
           },
           displayName: 'Some display name',
           bundleId: testApp.bundleId,
+          publicId: testApp.publicId,
         },
       };
 

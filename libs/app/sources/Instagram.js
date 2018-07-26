@@ -1,13 +1,10 @@
 const requestPromise = require('request-promise');
-const aws = require('aws-sdk');
-const uuidV1 = require('uuid/v1');
-const path = require('path');
 
 const AppModel = rootRequire('/models/App');
 const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
 const Source = require('../Source');
-const awsConfig = rootRequire('/config/aws');
+const awsHelpers = rootRequire('/libs/awsHelpers');
 const instagramConfig = rootRequire('/config/sources/instagram');
 
 // need to get more than first 100 posts.
@@ -164,7 +161,7 @@ function postToAppSourceContent(appSource, post) {
 }
 
 function buildImageFromPost(post) {
-  return uploadFromUrlToS3(post.images.standard_resolution.url).then(imageUrl => {
+  return awsHelpers.uploadFromUrlToS3(post.images.standard_resolution.url).then(imageUrl => {
     return {
       url: imageUrl,
       width: post.images.standard_resolution.width,
@@ -176,11 +173,11 @@ function buildImageFromPost(post) {
 function buildVideoFromPost(post) {
   let videoUrl = null;
 
-  return uploadFromUrlToS3(post.videos.standard_resolution.url).then(_videoUrl => {
+  return awsHelpers.uploadFromUrlToS3(post.videos.standard_resolution.url).then(_videoUrl => {
     videoUrl = _videoUrl;
 
     if (post.images) {
-      return uploadFromUrlToS3(post.images.standard_resolution.url);
+      return awsHelpers.uploadFromUrlToS3(post.images.standard_resolution.url);
     }
   }).then(thumbnailUrl => {
     return {
@@ -220,22 +217,4 @@ function buildCollectionFromPost(post) {
   });
 
   return Promise.all(promises).then(() => collection);
-}
-
-function uploadFromUrlToS3(url) {
-  const s3 = new aws.S3();
-
-  return requestPromise.get({
-    url,
-    encoding: null,
-  }).then(buffer => {
-    return s3.upload({
-      ACL: 'public-read',
-      Body: buffer,
-      Bucket: awsConfig.s3AppsContentBucket,
-      Key: `${uuidV1()}${path.extname(url)}`,
-    }).promise();
-  }).then(result => {
-    return result.Location;
-  });
 }

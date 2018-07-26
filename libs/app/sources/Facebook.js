@@ -4,6 +4,7 @@ const Source = require('../Source');
 const AppModel = rootRequire('/models/App');
 const AppSourceModel = rootRequire('/models/AppSource');
 const AppSourceContentModel = rootRequire('/models/AppSourceContent');
+const awsHelpers = rootRequire('/libs/awsHelpers');
 const facebookConfig = rootRequire('/config/sources/facebook');
 
 module.exports = class extends Source {
@@ -35,34 +36,35 @@ module.exports = class extends Source {
       });
     }).then(posts => {
       const paginate = posts => {
+        const batchPromises = [];
+
         posts.data.forEach(post => {
-          requestPromise.get({
-            url: `${facebookConfig.baseUrl}/${post.id}/attachments?` +
-                 `access_token=${this.appSource.accessToken}`,
-            json: true,
-          }).then(postAttachments => {
-            post.attachments = (postAttachments) ? postAttachments.data : null;
+          batchPromises.push(
+            requestPromise.get({
+              url: `${facebookConfig.baseUrl}/${post.id}/attachments?` +
+                   `access_token=${this.appSource.accessToken}`,
+              json: true,
+            }).then(postAttachments => {
+              post.attachments = (postAttachments) ? postAttachments.data : null;
 
-            const data = postToAppSourceContent(this.appSource, post);
-
-            if (!data) {
-              return;
-            }
-
-            // could bulk create, but we lose individual create validations.
-            AppSourceContentModel.create(data).catch(e => {
+              return postToAppSourceContent(this.appSource, post);
+            }).then(data => {
+              AppSourceContentModel.create(data);
+            }).catch(e => {
               console.log(e.message);
               console.log(JSON.stringify(post));
-            });
-          });
+            })
+          );
         });
 
-        if (posts.paging && posts.paging.next) {
-          requestPromise.get({
-            url: posts.paging.next,
-            json: true,
-          }).then(paginate);
-        }
+        Promise.all(batchPromises).then(() => {
+          if (posts.paging && posts.paging.next) {
+            requestPromise.get({
+              url: posts.paging.next,
+              json: true,
+            }).then(paginate);
+          }
+        });
       };
 
       paginate(posts);
@@ -127,12 +129,8 @@ module.exports = class extends Source {
             }).then(postAttachments => {
               post.attachments = (postAttachments) ? postAttachments.data : null;
 
-              const data = postToAppSourceContent(appSource, post);
-
-              if (!data) {
-                return;
-              }
-
+              return postToAppSourceContent(appSource, post);
+            }).then(data => {
               return AppSourceContentModel.create(data);
             }).then(appSourceContent => {
               if (verb === 'add' && appSourceContent) {
@@ -166,98 +164,130 @@ function postToAppSourceContent(appSource, post) {
   let link = null;
   let collection = null;
 
-  if (post.attachments && post.attachments.length) {
-    const attachment = post.attachments[0];
+  return Promise.resolve().then(() => {
+    if (post.attachments && post.attachments.length) {
+      const attachment = post.attachments[0];
 
-    if (attachment.type === 'photo') {
-      image = buildImageFromPost(post);
+      if (attachment.type === 'photo') {
+        return buildImageFromPost(post).then(_image => {
+          image = _image;
+        });
+      }
+
+      if (attachment.type === 'video_inline' && post.source) {
+        return buildVideoFromPost(post).then(_video => {
+          video = _video;
+        });
+      }
+
+      if (attachment.type === 'share' || (attachment.type === 'video_inline' && !post.source && post.link)) {
+        return buildLinkFromPost(post).then(_link => {
+          link = _link;
+        });
+      }
+
+      if (attachment.type === 'album') {
+        return buildCollectionFromPost(post).then(_collection => {
+          collection = _collection;
+        });
+      }
     }
-
-    if (attachment.type === 'video_inline' && post.source) {
-      video = buildVideoFromPost(post);
-    }
-
-    if (attachment.type === 'share' || (attachment.type === 'video_inline' && !post.source && post.link)) {
-      link = buildLinkFromPost(post);
-    }
-
-    if (attachment.type === 'album') {
-      buildCollectionFromPost(post);
-    }
-
-    if (!image && !video && !link && !collection) {
-      return false;
-    }
-  }
-
-  return {
-    appId: appSource.appId,
-    appSourceId: appSource.id,
-    image,
-    video,
-    link,
-    collection,
-    description: post.message,
-    data: post,
-    publishedAt: post.created_time,
-  };
+  }).then(() => {
+    return {
+      appId: appSource.appId,
+      appSourceId: appSource.id,
+      image,
+      video,
+      link,
+      collection,
+      description: post.message,
+      data: post,
+      publishedAt: post.created_time,
+    };
+  });
 }
 
 function buildImageFromPost(post) {
-  return {
-    url: post.attachments[0].media.image.src,
-    width: post.attachments[0].media.image.width,
-    height: post.attachments[0].media.image.height,
-  };
+  return awsHelpers.uploadFromUrlToS3(post.attachments[0].media.image.src).then(imageUrl => {
+    return {
+      url: imageUrl,
+      width: post.attachments[0].media.image.width,
+      height: post.attachments[0].media.image.height,
+    };
+  });
 }
 
 function buildVideoFromPost(post) {
-  return {
-    url: post.source,
-    thumbnailUrl: post.attachments[0].media.image.src,
-    width: post.attachments[0].media.image.width,
-    height: post.attachments[0].media.image.height,
-  };
+  let videoUrl = null;
+
+  return awsHelpers.uploadFromUrlToS3(post.source).then(_videoUrl => {
+    videoUrl = _videoUrl;
+
+    if (post.attachments[0]) {
+      return awsHelpers.uploadFromUrlToS3(post.attachments[0].media.image.src);
+    }
+  }).then(thumbnailUrl => {
+    return {
+      url: videoUrl,
+      thumbnailUrl: (thumbnailUrl) ? thumbnailUrl : null,
+      width: post.attachments[0].media.image.width,
+      height: post.attachments[0].media.image.height,
+    };
+  });
 }
 
 function buildLinkFromPost(post) {
   const attachmentMedia = post.attachments[0].media;
 
-  return {
-    title: post.attachments[0].title,
-    description: post.attachments[0].description,
-    url: post.link || post.attachments[0].url,
-    thumbnailUrl: (attachmentMedia) ? attachmentMedia.image.src : null,
-    width: (attachmentMedia) ? attachmentMedia.image.width : null,
-    height: (attachmentMedia) ? attachmentMedia.image.height : null,
-  };
+  return Promise.resolve().then(() => {
+    if (attachmentMedia) {
+      return awsHelpers.uploadFromUrlToS3(attachmentMedia.image.src);
+    }
+  }).then(thumbnailUrl => {
+    return {
+      title: post.attachments[0].title,
+      description: post.attachments[0].description,
+      url: post.link || post.attachments[0].url,
+      thumbnailUrl,
+      width: (attachmentMedia) ? attachmentMedia.image.width : null,
+      height: (attachmentMedia) ? attachmentMedia.image.height : null,
+    };
+  });
 }
 
 function buildCollectionFromPost(post) {
   let collection = [];
+  let promises = [];
 
   post.attachments[0].subattachments.data.forEach(subattachment => {
     if (subattachment.type === 'photo') {
-      collection.push({
-        type: 'image',
-        url: subattachment.media.image.src,
-        thumbnailUrl: subattachment.media.image.src,
-        width: subattachment.media.image.width,
-        height: subattachment.media.image.height,
-        title: subattachment.title,
-      });
+      promises.push(
+        awsHelpers.uploadFromUrlToS3(subattachment.media.image.src).then(imageUrl => {
+          collection.push({
+            url: imageUrl,
+            thumbnailUrl: imageUrl,
+            width: subattachment.media.image.width,
+            height: subattachment.media.image.height,
+            type: 'image',
+          });
+        })
+      );
     }
 
     if (subattachment.type === 'video') {
-      collection.push({
-        type: 'link',
-        url: subattachment.url,
-        thumbnailUrl: subattachment.media.image.src,
-        width: subattachment.media.image.width,
-        height: subattachment.media.image.height,
-      });
+      promises.push(
+        awsHelpers.uploadFromUrlToS3(subattachment.media.image.src).then(imageUrl => {
+          collection.push({
+            url: subattachment.url,
+            thumbnailUrl: imageUrl,
+            width: subattachment.media.image.width,
+            height: subattachment.media.image.height,
+            type: 'link',
+          });
+        })
+      );
     }
   });
 
-  return collection;
+  return Promise.all(promises).then(() => collection);
 }

@@ -5,6 +5,7 @@ const appDevicesRouter = rootRequire('/routes/apps/devices');
 const appDeviceSessionsRouter = rootRequire('/routes/apps/devices/sessions');
 const appFeedsRouter = rootRequire('/routes/apps/feeds');
 const appFeedActivitesRouter = rootRequire('/routes/apps/feeds/activities');
+const appMessagesRouter = rootRequire('/routes/apps/messages');
 const appNotificationsRouter = rootRequire('/routes/apps/notifications');
 const appSourcesRouter = rootRequire('/routes/apps/sources');
 const appSourceContentLikesRouter = rootRequire('/routes/apps/sources/contents/likes');
@@ -27,6 +28,7 @@ module.exports = app => {
   app.use('/apps/:appId/devices/:appDeviceId/sessions/:appDeviceSessionId?', appDeviceSessionsRouter);
   app.use('/apps/:appId/feeds', appFeedsRouter);
   app.use('/apps/:appId/feeds/:appFeedId/activities/:appFeedActivityId?', appFeedActivitesRouter);
+  app.use('/apps/:appId/messages/:appMessageId?', appMessagesRouter);
   app.use('/apps/:appId/notifications/:appNotificationId?', appNotificationsRouter);
   app.use('/apps/:appId/sources/:appSourceId?', appSourcesRouter);
   app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId/likes/:appSourceContentLikeId?', appSourceContentLikesRouter);

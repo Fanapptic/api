@@ -12,7 +12,6 @@ describe('App Source Content Likes', () => {
         .set('X-App-Access-Token', testApp.accessToken)
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .end((error, response) => {
-          console.log(response.body);
           response.should.have.status(200);
           response.body.should.be.an('object');
           done();

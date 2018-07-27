@@ -42,7 +42,7 @@ router.get('/', (request, response, next) => {
       response.success(appMessage);
     }).catch(next);
   } else {
-    options.limit = 10;
+    options.limit = 25;
 
     AppMessageModel.findAll(options).then(appMessages => {
       response.success(appMessages);

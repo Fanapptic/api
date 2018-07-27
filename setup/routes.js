@@ -7,6 +7,7 @@ const appFeedsRouter = rootRequire('/routes/apps/feeds');
 const appFeedActivitesRouter = rootRequire('/routes/apps/feeds/activities');
 const appNotificationsRouter = rootRequire('/routes/apps/notifications');
 const appSourcesRouter = rootRequire('/routes/apps/sources');
+const appSourceContentLikesRouter = rootRequire('/routes/apps/sources/contents/likes');
 const appSourceWebhooksRouter = rootRequire('/routes/apps/sources/webhooks');
 const appUsersRouter = rootRequire('/routes/apps/users');
 const healthRouter = rootRequire('/routes/health');
@@ -28,6 +29,7 @@ module.exports = app => {
   app.use('/apps/:appId/feeds/:appFeedId/activities/:appFeedActivityId?', appFeedActivitesRouter);
   app.use('/apps/:appId/notifications/:appNotificationId?', appNotificationsRouter);
   app.use('/apps/:appId/sources/:appSourceId?', appSourcesRouter);
+  app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId/likes/:appSourceContentLikeId?', appSourceContentLikesRouter);
   app.use('/apps/:appId/sources/:appSourceId/webhooks', appSourceWebhooksRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
   app.use('/health', healthRouter);

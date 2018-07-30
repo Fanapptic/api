@@ -84,7 +84,7 @@ router.post('/', (request, response, next) => {
     }).then(app => {
       return AppSourceModel.create({
         appId: app.id,
-        type: 'fanapptic', 
+        type: 'fanapptic',
         avatarUrl: `https://${awsConfig.s3AppsBucket}.s3.${awsConfig.region}.amazonaws.com/${app.bundleId}/Icon-192x192.png`,
         accountId: user.id,
         accountName: '{APP_DISPLAY_NAME}',

@@ -19,7 +19,7 @@ const AppSourceModel = database.define('appSource', {
     allowNull: false,
     validate: {
       isIn: {
-        args: [ sources.sources ],
+        args: [ sources.sources.concat([ 'fanapptic' ]) ],
         msg: 'The type provided is invalid.',
       },
     },
@@ -69,6 +69,10 @@ AppSourceModel.afterBulkDestroy(instances => {
 });
 
 function afterCreate(instance, options) {
+  if (instance.type === 'fanapptic') {
+    return;
+  }
+
   const SourceClass = sources.getSourceClass(instance.type);
   const source = new SourceClass(instance, options);
 
@@ -76,6 +80,10 @@ function afterCreate(instance, options) {
 }
 
 function afterDestroy(instance, options) {
+  if (instance.type === 'fanapptic') {
+    return;
+  }
+
   const SourceClass = sources.getSourceClass(instance.type);
   const source = new SourceClass(instance, options);
 

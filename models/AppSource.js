@@ -1,4 +1,4 @@
-const sources = rootRequire('/libs/App/sources');
+const sources = rootRequire('/libs/app/sources');
 
 /*
  * Model Definition

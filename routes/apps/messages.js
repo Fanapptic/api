@@ -42,6 +42,7 @@ router.get('/', (request, response, next) => {
       response.success(appMessage);
     }).catch(next);
   } else {
+    options.order = [ ['id', 'DESC'] ];
     options.limit = 25;
 
     AppMessageModel.findAll(options).then(appMessages => {

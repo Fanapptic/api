@@ -15,6 +15,7 @@ module.exports = (request, response, next) => {
     }
 
     request.app = app;
+
     next();
   });
 };

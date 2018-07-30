@@ -1,5 +1,5 @@
 /*
- * Route /apps/:appId/feed
+ * Route: /apps/:appId/feed
  */
 
 const AppSourceModel = rootRequire('/models/AppSource');

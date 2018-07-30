@@ -1,5 +1,5 @@
 /*
- * Route /apps/:appPublicId/branding
+ * Route: /apps/:appPublicId/branding
  */
 
 const AppModel = rootRequire('/models/App');

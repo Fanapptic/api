@@ -1,5 +1,5 @@
 /*
- * Route /apps/:appId/messages/:appMessageId?
+ * Route: /apps/:appId/messages/:appMessageId?
  */
 
 const AppMessageModel = rootRequire('/models/AppMessage');

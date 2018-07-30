@@ -3,7 +3,7 @@
  */
 
 const webhookAuthorize = rootRequire('/middlewares/webhooks/authorize');
-const sources = rootRequire('/libs/app/sources');
+const sources = rootRequire('/libs/App/sources');
 
 const router = express.Router({
   mergeParams: true,

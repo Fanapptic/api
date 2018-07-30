@@ -1,4 +1,4 @@
-const sources = rootRequire('/libs/app/sources');
+const sources = rootRequire('/libs/App/sources');
 
 /*
  * Model Definition
@@ -40,6 +40,7 @@ const AppSourceModel = database.define('appSource', {
   },
   totalFans: {
     type: Sequelize.INTEGER,
+    defaultValue: 0,
   },
   accessToken: {
     type: Sequelize.TEXT('small'),

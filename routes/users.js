@@ -5,7 +5,9 @@
 const auth = require('basic-auth');
 const UserModel = rootRequire('/models/User');
 const AppModel = rootRequire('/models/App');
+const AppSourceModel = rootRequire('/models/AppSource');
 const userAuthorize = rootRequire('/middlewares/users/authorize');
+const awsConfig = rootRequire('/config/aws');
 
 const router = express.Router({
   mergeParams: true,
@@ -79,6 +81,16 @@ router.post('/', (request, response, next) => {
       user = _user;
 
       return AppModel.create({ userId: user.id }, { transaction });
+    }).then(app => {
+      return AppSourceModel.create({
+        appId: app.id,
+        type: 'fanapptic',
+        avatarUrl: `https://${awsConfig.s3AppsBucket}.s3.${awsConfig.region}.amazonaws.com/${app.bundleId}/Icon-192x192.png`,
+        accountId: user.id,
+        accountName: '{APP_DISPLAY_NAME}',
+        accountUrl: `https://fanapptic.com/app/?a=${app.publicId}`,
+        accessToken: app.accessToken,
+      }, { transaction });
     });
   }).then(() => {
     response.success(user);

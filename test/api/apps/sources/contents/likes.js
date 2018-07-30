@@ -8,7 +8,7 @@ describe('App Source Content Likes', () => {
   describe('POST /apps/{appId}/sources/{appSourceId}/contents/{appSourceContentId}/likes', () => {
     it('200s with created app source content like owned by app source content', done => {
       chai.request(server)
-        .post(`/apps/${appId}/sources/1/contents/1/likes`)
+        .post(`/apps/${appId}/sources/2/contents/1/likes`)
         .set('X-App-Access-Token', testApp.accessToken)
         .set('X-App-Device-Access-Token', testAppDevice.accessToken)
         .end((error, response) => {

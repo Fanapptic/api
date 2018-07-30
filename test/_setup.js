@@ -203,6 +203,9 @@ before(done => {
     fatLog('Starting tests...');
 
     setTimeout(done, 2000);
+  }).catch(e => {
+    console.log(e);
+    throw e;
   });
 });
 

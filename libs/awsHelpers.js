@@ -16,13 +16,11 @@ function _uploadFromUrlToS3(url) {
 function _uploadBufferToS3(filename, buffer) {
   const s3 = new aws.S3();
 
-  filename = filename.split('?')[0].split('%')[0];
-
   return s3.upload({
     ACL: 'public-read',
     Body: buffer,
     Bucket: awsConfig.s3AppsContentBucket,
-    Key: `${uuidV1()}${path.extname(filename)}`,
+    Key: `${uuidV1()}${path.extname(filename).split('?')[0].split('%')[0]}`,
   }).promise().then(result => {
     return result.Location;
   });

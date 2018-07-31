@@ -34,7 +34,7 @@ module.exports = app => {
   app.use('/apps/:appId/messages/:appMessageId?', appMessagesRouter);
   app.use('/apps/:appId/notifications/:appNotificationId?', appNotificationsRouter);
   app.use('/apps/:appId/sources/:appSourceId?', appSourcesRouter);
-  app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId', appSourceContentsRouter);
+  app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId?', appSourceContentsRouter);
   app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId/likes/:appSourceContentLikeId?', appSourceContentLikesRouter);
   app.use('/apps/:appId/sources/:appSourceId/webhooks', appSourceWebhooksRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);

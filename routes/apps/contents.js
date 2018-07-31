@@ -21,13 +21,17 @@ router.post('/', userAuthorize);
 router.post('/', appAuthorizeOwnership);
 router.post('/', fileUpload());
 router.post('/', (request, response, next) => {
-  const { files } = request;
+  const { file } = request.files;
 
-  if (!files || !files.file) {
+  if (!file) {
     throw new Error('File must be provided.');
   }
 
-  awsHelpers.uploadBufferToS3(files.file.name, files.file.data).then(url => {
+  if (!['image/png', 'image/jpg', 'image/jpeg', 'video/mp4', 'video/mov'].includes(file.mimetype)) {
+    throw new Error('File must be JPG, PNG, MP4 or MOV format.');
+  }
+
+  awsHelpers.uploadBufferToS3(file.name, file.data).then(url => {
     response.success({
       url,
     });

@@ -20,7 +20,7 @@ function _uploadBufferToS3(filename, buffer) {
     ACL: 'public-read',
     Body: buffer,
     Bucket: awsConfig.s3AppsContentBucket,
-    Key: `${uuidV1()}${path.extname(filename).split('?')[0].split('%')[0]}`,
+    Key: `${uuidV1()}${path.extname(filename).split('?')[0].split('%')[0].split('_')[0]}`,
   }).promise().then(result => {
     return result.Location;
   });

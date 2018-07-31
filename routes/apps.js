@@ -63,10 +63,7 @@ router.patch('/', (request, response, next) => {
     app.apnsSnsArn = request.body.apnsSnsArn || app.apnsSnsArn;
     app.gcmSnsArn = request.body.gcmSnsArn || app.gcmSnsArn;
     app.gcmSenderId = request.body.gcmSenderId || app.gcmSenderId;
-
-    if (request.body.runtimeConfig) {
-      app.runtimeConfig = Object.assign({}, app.runtimeConfig, request.body.runtimeConfig);
-    }
+    app.runtimeConfig = Object.assign({}, app.runtimeConfig, request.body.runtimeConfig);
 
     if (request.files && request.files.icon) {
       return app.processIconUploadAndSave(request.files.icon.data);

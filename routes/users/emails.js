@@ -75,11 +75,11 @@ router.post('/', (request, response, next) => {
 
     return UserModel.find({
       where: {
-        $or: {
-          internalEmail: recipient,
-          appleEmail: recipient,
-          googleEmail: recipient,
-        },
+        $or: [
+          { internalEmail: recipient },
+          { appleEmail: recipient },
+          { googleEmail: recipient },
+        ],
       },
     }).then(user => {
       if (user) {

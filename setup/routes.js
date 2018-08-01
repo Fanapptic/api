@@ -13,10 +13,15 @@ const appSourceContentsRouter = rootRequire('/routes/apps/sources/contents');
 const appSourceContentLikesRouter = rootRequire('/routes/apps/sources/contents/likes');
 const appSourceWebhooksRouter = rootRequire('/routes/apps/sources/webhooks');
 const appUsersRouter = rootRequire('/routes/apps/users');
+
+const internalUsersSetupRouter = rootRequire('/routes/internal/users/setup');
+
 const healthRouter = rootRequire('/routes/health');
+
 const oauthTwitterAuthorizationsRouter = rootRequire('/routes/oauth/twitter/authorizations');
 const oauthTwitterUsersRouter = rootRequire('/routes/oauth/twitter/users');
 const oauthYoutubeUsersRouter = rootRequire('/routes/oauth/youtube/users');
+
 const usersRouter = rootRequire('/routes/users');
 const userChargesRouter = rootRequire('/routes/users/charges');
 const userEmailsRouter = rootRequire('/routes/users/emails');
@@ -38,6 +43,7 @@ module.exports = app => {
   app.use('/apps/:appId/sources/:appSourceId/contents/:appSourceContentId/likes/:appSourceContentLikeId?', appSourceContentLikesRouter);
   app.use('/apps/:appId/sources/:appSourceId/webhooks', appSourceWebhooksRouter);
   app.use('/apps/:appId/users/:appUserId?', appUsersRouter);
+  app.use('/internal/fanapptic/users/:userId/setup', internalUsersSetupRouter);
   app.use('/health', healthRouter);
   app.use('/oauth/twitter/authorizations', oauthTwitterAuthorizationsRouter);
   app.use('/oauth/twitter/users', oauthTwitterUsersRouter);

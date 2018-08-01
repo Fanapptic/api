@@ -73,7 +73,7 @@ router.post('/', (request, response, next) => {
       return contentPart.indexOf('Content-Type: text/html') !== -1;
     }) || content;
 
-    return UserModel.find({ internalEmail: recipient }).then(user => {
+    return UserModel.find({ where: { internalEmail: recipient } }).then(user => {
       if (user) {
         return UserEmailModel.create({
           userId: user.id,
